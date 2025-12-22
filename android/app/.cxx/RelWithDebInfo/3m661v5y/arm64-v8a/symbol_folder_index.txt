@@ -1,0 +1,1 @@
+C:\Users\vasvi\Documents\GitHub\Go4Food\restaurant\build\app\intermediates\cxx\RelWithDebInfo\3m661v5y\obj\arm64-v8a

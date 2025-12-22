@@ -1,0 +1,2 @@
+C:/Users/vasvi/Documents/GitHub/Go4Food/restaurant/android/app/.cxx/RelWithDebInfo/3m661v5y/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/vasvi/Documents/GitHub/Go4Food/restaurant/android/app/.cxx/RelWithDebInfo/3m661v5y/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -89,11 +89,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     title: 'Zezale Restaurant'.tr,
                     debugShowCheckedModeBanner: false,
                     theme: Styles.themeData(
-                        themeChangeProvider.darkTheme == 0
-                            ? true
-                            : themeChangeProvider.darkTheme == 1
-                                ? false
-                                : themeChangeProvider.getSystemThem(),
+                        false ??
+                            (themeChangeProvider.darkTheme == 0
+                                ? true
+                                : themeChangeProvider.darkTheme == 1
+                                    ? false
+                                    : themeChangeProvider.getSystemThem()),
                         context),
                     localizationsDelegates: const [
                       CountryLocalizations.delegate,

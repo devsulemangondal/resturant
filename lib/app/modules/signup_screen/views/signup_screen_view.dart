@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/app/modules/login_screen/views/login_screen_view.dart';
+import 'package:restaurant/app/widget/custom_line.dart';
 import 'package:restaurant/app/widget/global_widgets.dart';
 import 'package:restaurant/app/widget/text_field_widget.dart';
 import 'package:restaurant/constant/constant.dart';
@@ -46,146 +47,288 @@ class SignupScreenView extends GetView<SignupScreenController> {
             .addListener(() => controller.checkFieldsFilled());
 
         return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark, // Android → black
-              statusBarBrightness: Brightness.light, // iOS → black
-            ),
-            backgroundColor: Colors.transparent,
-            leading: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey900
-                        : AppThemeData.grey100,
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_sharp,
-                    size: 20,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey100
-                        : AppThemeData.grey900,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: themeChange.isDarkTheme()
-              ? AppThemeData.grey1000
-              : AppThemeData.grey50,
+          backgroundColor: Colors.white,
           body: SingleChildScrollView(
-              child: Stack(
-            children: [
-              Padding(
-                padding: paddingEdgeInsets(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildTopWidget(context),
-                    buildEmailPasswordWidget(context),
-                    34.height,
-                    Obx(
-                      () => Row(
-                        children: [
-                          Expanded(
-                            child: RoundShapeButton(
-                              title: "Save and Continue".tr,
-                              buttonColor: controller.isFirstButtonEnabled.value
-                                  ? AppThemeData.primary300
-                                  : themeChange.isDarkTheme()
-                                      ? AppThemeData.grey800
-                                      : AppThemeData.grey200,
-                              buttonTextColor:
-                                  controller.isFirstButtonEnabled.value
-                                      ? themeChange.isDarkTheme()
-                                          ? AppThemeData.grey1000
-                                          : AppThemeData.textBlack
-                                      : AppThemeData.grey500,
-                              onTap: () async {
-                                if (controller.firstNameController.value.text
-                                        .isEmpty ||
-                                    controller.lastNameController.value.text
-                                        .isEmpty ||
-                                    controller.mobileNumberController.value.text
-                                        .isEmpty ||
-                                    controller
-                                        .emailController.value.text.isEmpty ||
-                                    (controller.loginType.value ==
-                                            Constant.emailLoginType &&
-                                        controller.passwordController.value.text
-                                            .isEmpty)) {
-                                  ShowToastDialog.toast(
-                                      "Please fill in all required fields.".tr);
-                                  return;
-                                }
+            child: Stack(
+              children: [
+                /// 🌈 BACKGROUND
 
-                                // Password check
-                                if (controller.loginType.value ==
-                                    Constant.emailLoginType) {
-                                  if (controller
-                                          .passwordController.value.text !=
-                                      controller.confirmPasswordController.value
-                                          .text) {
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      spaceH(height: 60.h),
+
+                      /// 🔵 ICON
+                      Image.asset(
+                        "assets/images/auth-image.png",
+                        height: 70,
+                      ),
+
+                      spaceH(height: 16),
+
+                      /// 📝 TITLE
+                      Text(
+                        "Create Your Account",
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontFamily: FontFamily.bold,
+                          color: AppThemeData.grey1000,
+                        ),
+                      ),
+
+                      spaceH(height: 6),
+
+                      Text(
+                        "Start your journey with us",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: FontFamily.regular,
+                          color: AppThemeData.grey600,
+                        ),
+                      ),
+
+                      spaceH(height: 28),
+
+                      /// 🧾 SIGNUP CARD
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(20.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: const Color(0xffE3E3E3)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.06),
+                              blurRadius: 30,
+                              offset: const Offset(0, 16),
+                            ),
+                          ],
+                        ),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /// 🧍 PERSONAL INFO
+                              _SectionHeader(
+                                icon: Icons.person_outline,
+                                title: "PERSONAL INFO",
+                              ),
+
+                              spaceH(height: 16),
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextField(
+                                      label: "First Name",
+                                      hintText: "John",
+                                      controller:
+                                          controller.firstNameController.value,
+                                      validator: (v) =>
+                                          v!.isEmpty ? "Required" : null,
+                                    ),
+                                  ),
+                                  spaceW(width: 12),
+                                  Expanded(
+                                    child: CustomTextField(
+                                      label: "Last Name",
+                                      hintText: "Doe",
+                                      controller:
+                                          controller.lastNameController.value,
+                                      validator: (v) =>
+                                          v!.isEmpty ? "Required" : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              spaceH(height: 20),
+
+                              /// 📞 CONTACT
+                              _SectionHeader(
+                                icon: Icons.phone_outlined,
+                                title: "CONTACT",
+                              ),
+
+                              spaceH(height: 16),
+
+                              MobileNumberTextField(
+                                label: "Phone Number",
+                                controller:
+                                    controller.mobileNumberController.value,
+                                countryCode: controller.countryCode.value!,
+                                onCountryChanged: (code) {
+                                  controller.countryCode.value = code;
+                                },
+                              ),
+
+                              CustomTextField(
+                                label: "Email Address",
+                                hintText: "john.doe@example.com",
+                                controller: controller.emailController.value,
+                                validator: Constant.validateEmail,
+                                prefixIcon: const Icon(Icons.email_outlined,
+                                    color: Color(0xFF90A1B9)),
+                                enabled:
+                                    !(controller.ownerModel.value.loginType ==
+                                            Constant.googleLoginType ||
+                                        controller.ownerModel.value.loginType ==
+                                            Constant.appleLoginType),
+                              ),
+
+                              spaceH(height: 20),
+
+                              /// 🔐 SECURITY
+                              if (controller.loginType.value ==
+                                  Constant.emailLoginType) ...[
+                                _SectionHeader(
+                                  icon: Icons.lock_outline,
+                                  title: "SECURITY",
+                                ),
+                                spaceH(height: 16),
+                                Obx(() => CustomTextField(
+                                      label: "Password",
+                                      hintText: "Create a strong password",
+                                      controller:
+                                          controller.passwordController.value,
+                                      obscureText:
+                                          controller.isPasswordVisible.value,
+                                      validator: Constant.validatePassword,
+                                      suffixIcon: Icon(
+                                        controller.isPasswordVisible.value
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: const Color(0xff90A1B9),
+                                      ),
+                                      onSuffixTap: () {
+                                        controller.isPasswordVisible.value =
+                                            !controller.isPasswordVisible.value;
+                                      },
+                                    )),
+                                Obx(() => CustomTextField(
+                                      label: "Confirm Password",
+                                      hintText: "Re-enter your password",
+                                      controller: controller
+                                          .confirmPasswordController.value,
+                                      obscureText:
+                                          controller.isPasswordVisible.value,
+                                      validator: Constant.validatePassword,
+                                      suffixIcon: Icon(
+                                        controller.isPasswordVisible.value
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: const Color(0xff90A1B9),
+                                      ),
+                                      onSuffixTap: () {
+                                        controller.isPasswordVisible.value =
+                                            !controller.isPasswordVisible.value;
+                                      },
+                                    )),
+                              ],
+
+                              spaceH(height: 20),
+
+                              /// 🎁 BONUS
+                              _SectionHeader(
+                                icon: Icons.card_giftcard_outlined,
+                                title: "BONUS",
+                              ),
+
+                              spaceH(height: 16),
+
+                              CustomTextField(
+                                label: "Referral Code (Optional)",
+                                hintText: "Enter code if you have one",
+                                controller:
+                                    controller.referralCodeController.value,
+                              ),
+
+                              spaceH(height: 24),
+
+                              /// 🔵 CREATE ACCOUNT
+                              GradientRoundShapeButton(
+                                title: "Create Account",
+                                size: Size(double.infinity, 52.h),
+                                gradientColors: const [
+                                  Color(0xff4F39F6),
+                                  Color(0xff615FFF),
+                                  Color(0xff155DFC),
+                                ],
+                                onTap: () async {
+                                  if (!formKey.currentState!.validate()) {
                                     ShowToastDialog.toast(
-                                        "Passwords do not match. Please Enter Same Password."
+                                        "Please fill in all required fields."
                                             .tr);
                                     return;
                                   }
-                                }
 
-                                // Proceed to signup
-                                if (controller.loginType.value ==
-                                    Constant.emailLoginType) {
-                                  await controller.signUp();
-                                } else {
-                                  controller.saveData();
-                                }
-                              },
-                              size: Size(358.w, ScreenSize.height(6, context)),
-                            ),
+                                  if (controller.loginType.value ==
+                                      Constant.emailLoginType) {
+                                    if (controller
+                                            .passwordController.value.text !=
+                                        controller.confirmPasswordController
+                                            .value.text) {
+                                      ShowToastDialog.toast(
+                                          "Passwords do not match.".tr);
+                                      return;
+                                    }
+                                    await controller.signUp();
+                                  } else {
+                                    controller.saveData();
+                                  }
+                                },
+                              ),
+
+                              spaceH(height: 18),
+
+                              /// 🔁 LOGIN LINK
+                              Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: "Already have an account? ",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppThemeData.grey600,
+                                      fontFamily: FontFamily.regular,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: "Log in",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppThemeData.accent300,
+                                          fontFamily: FontFamily.medium,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () =>
+                                              Get.to(() => LoginScreenView()),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    spaceH(height: 20),
-                  ],
-                ),
-              ),
-            ],
-          )),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                      text: "Already have an account? ".tr,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: themeChange.isDarkTheme()
-                              ? AppThemeData.grey200
-                              : AppThemeData.grey800,
-                          fontFamily: FontFamily.regular),
-                      children: [
-                        TextSpan(
-                          text: "Log in".tr,
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: AppThemeData.primary300,
-                              fontFamily: FontFamily.medium,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.to(() => LoginScreenView()),
-                        )
-                      ]),
+
+                      spaceH(height: 24),
+
+                      /// 📜 TERMS
+                      Text(
+                        "By creating an account, you agree to our Terms & Privacy Policy",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppThemeData.grey500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      spaceH(height: 24),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -194,163 +337,39 @@ class SignupScreenView extends GetView<SignupScreenController> {
       },
     );
   }
+}
 
-  SizedBox buildTopWidget(BuildContext context) {
-    try {
-      final themeChange = Provider.of<DarkThemeProvider>(context);
+class _SectionHeader extends StatelessWidget {
+  final IconData icon;
+  final String title;
 
-      return SizedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Enter Basic Details".tr,
-              style: TextStyle(
-                fontFamily: FontFamily.bold,
-                fontSize: 24,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey50
-                    : AppThemeData.grey900,
-              ),
-            ),
-            Text(
-              "Please enter your basic details to set up your profile.".tr,
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: FontFamily.regular,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey50
-                    : AppThemeData.grey900,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            24.height,
-          ],
+  const _SectionHeader({required this.icon, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          height: 24,
+          width: 24,
+          decoration: BoxDecoration(
+            color: const Color(0xffE0E7FF),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, size: 14, color: const Color(0xff4F39F6)),
         ),
-      );
-    } catch (e) {
-      return SizedBox(
-        child: Text(
-          "Error loading header".tr,
-          style: TextStyle(color: Colors.red),
+        const SizedBox(width: 12),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 12,
+            letterSpacing: 1,
+            fontFamily: FontFamily.medium,
+            color: Color(0xff45556C),
+          ),
         ),
-      );
-    }
-  }
-
-  Column buildEmailPasswordWidget(BuildContext context) {
-    try {
-      final themeChange = Provider.of<DarkThemeProvider>(context);
-      return Column(
-        children: [
-          TextFieldWidget(
-            title: "First Name".tr,
-            hintText: "Enter First Name".tr,
-            validator: (value) => value != null && value.isNotEmpty
-                ? null
-                : "This field required".tr,
-            controller: controller.firstNameController.value,
-            onPress: () {},
-          ),
-          TextFieldWidget(
-            title: "Last Name".tr,
-            hintText: "Enter Last Name".tr,
-            validator: (value) => value != null && value.isNotEmpty
-                ? null
-                : "This field required".tr,
-            controller: controller.lastNameController.value,
-            onPress: () {},
-          ),
-          MobileNumberTextField(
-            controller: controller.mobileNumberController.value,
-            countryCode: controller.countryCode.value!,
-            onCountryChanged: (newCode) {
-              controller.countryCode.value = newCode;
-            },
-            onPress: () {},
-            title: "Mobile Number".tr,
-            readOnly: controller.ownerModel.value.loginType ==
-                Constant.phoneLoginType,
-          ),
-          Obx(
-            () => Column(
-              children: [
-                TextFieldWidget(
-                  title: "Email".tr,
-                  hintText: "Enter Email".tr,
-                  validator: (value) => Constant.validateEmail(value),
-                  controller: controller.emailController.value,
-                  onPress: () {},
-                  readOnly: (controller.ownerModel.value.loginType ==
-                          Constant.googleLoginType ||
-                      controller.ownerModel.value.loginType ==
-                          Constant.appleLoginType),
-                ),
-              ],
-            ),
-          ),
-          if (controller.loginType.value == Constant.emailLoginType)
-            Obx(() => Column(
-                  children: [
-                    TextFieldWidget(
-                      title: "Password".tr,
-                      hintText: "Enter Password".tr,
-                      validator: (value) => Constant.validatePassword(value),
-                      controller: controller.passwordController.value,
-                      obscureText: controller.isPasswordVisible.value,
-                      suffix: SvgPicture.asset(
-                        controller.isPasswordVisible.value
-                            ? "assets/icons/ic_hide_password.svg"
-                            : "assets/icons/ic_show_password.svg",
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey200
-                            : AppThemeData.grey800,
-                      ).onTap(() {
-                        controller.isPasswordVisible.value =
-                            !controller.isPasswordVisible.value;
-                      }),
-                      onPress: () {},
-                    ),
-                    Obx(() => TextFieldWidget(
-                          title: "Confirm Password".tr,
-                          hintText: "Enter Confirm Password".tr,
-                          validator: (value) =>
-                              Constant.validatePassword(value),
-                          controller:
-                              controller.confirmPasswordController.value,
-                          obscureText: controller.isPasswordVisible.value,
-                          suffix: SvgPicture.asset(
-                            controller.isPasswordVisible.value
-                                ? "assets/icons/ic_hide_password.svg"
-                                : "assets/icons/ic_show_password.svg",
-                            color: themeChange.isDarkTheme()
-                                ? AppThemeData.grey200
-                                : AppThemeData.grey800,
-                          ).onTap(() {
-                            controller.isPasswordVisible.value =
-                                !controller.isPasswordVisible.value;
-                          }),
-                          onPress: () {},
-                        )),
-                  ],
-                )),
-          TextFieldWidget(
-            title: "Refer Code".tr,
-            hintText: "Enter Refer Code".tr,
-            controller: controller.referralCodeController.value,
-            onPress: () {},
-          ),
-        ],
-      );
-    } catch (e) {
-      return Column(
-        children: [
-          Text(
-            "Failed to load email/password fields".tr,
-            style: TextStyle(color: Colors.red),
-          )
-        ],
-      );
-    }
+        Expanded(child: CustomLine())
+      ],
+    );
   }
 }

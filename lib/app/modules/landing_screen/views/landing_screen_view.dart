@@ -1,11 +1,9 @@
-// ignore_for_file: deprecated_member_use, depend_on_referenced_packages
-
 import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/app/modules/login_screen/controllers/login_screen_controller.dart';
@@ -17,7 +15,6 @@ import 'package:restaurant/constant/constant.dart';
 import 'package:restaurant/constant_widgets/round_shape_button.dart';
 import 'package:restaurant/themes/app_fonts.dart';
 import 'package:restaurant/themes/app_theme_data.dart';
-import 'package:restaurant/themes/screen_size.dart';
 import 'package:restaurant/utils/dark_theme_provider.dart';
 
 class LandingScreenView extends StatelessWidget {
@@ -26,151 +23,219 @@ class LandingScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
+
     return GetBuilder(
-        init: LoginScreenController(),
-        builder: (controller) {
-          return Container(
-            height: ScreenSize.height(100, context),
-            width: ScreenSize.width(100, context),
+      init: LoginScreenController(),
+      builder: (controller) {
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+
+            /// 🎨 GRADIENT BACKGROUND (FIGMA STYLE)
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/landing_page.png"),
-                    fit: BoxFit.fill)),
-            child: Padding(
-              padding: paddingEdgeInsets(),
-              child: Column(
-                children: [
-                  spaceH(height: 412.h),
-                  TextCustom(
-                    title: 'join_app'
-                        .trParams({'appName': Constant.appName.value}),
-                    color: AppThemeData.grey50,
-                    fontSize: 28,
-                    fontFamily: FontFamily.bold,
-                  ),
-                  TextCustom(
-                    title:
-                        "Create an account to start managing your restaurant."
-                            .tr,
-                    maxLine: 2,
-                    color: AppThemeData.grey50,
-                    fontSize: 16,
-                    fontFamily: FontFamily.light,
-                  ),
-                  spaceH(height: 32),
-                  RoundShapeButton(
-                      size: Size(358.w, ScreenSize.height(6, context)),
-                      title: "Sign up".tr,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF0B1026), // deep navy
+                  Color(0xFF151B3D), // indigo
+                  Color(0xFF1E2A6D), // blue glow
+                ],
+                stops: [0.0, 0.55, 1.0],
+              ),
+            ),
+
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  children: [
+                    /// 🔵 APP ICON
+                    spaceH(height: 80.h),
+                    Image.asset(
+                      "assets/images/landing-image.png",
+                      height: 150,
+                    ),
+
+                    spaceH(height: 100.h),
+
+                    /// 📝 TITLE
+                    TextCustom(
+                      title: 'Join ZEZALE',
+                      fontSize: 28,
+                      fontFamily: FontFamily.bold,
+                      color: Colors.white,
+                    ),
+
+                    spaceH(height: 12.h),
+
+                    /// 📄 SUBTITLE
+                    TextCustom(
+                      title:
+                          "Create an account to start managing your restaurant.",
+                      textAlign: TextAlign.center,
+                      fontSize: 16,
+                      fontFamily: FontFamily.regular,
+                      color: Colors.white.withOpacity(0.72),
+                      maxLine: 2,
+                    ),
+
+                    spaceH(height: 49.h),
+
+                    /// 🔹 SIGN UP WITH EMAIL
+                    RoundShapeButton(
+                      size: Size(double.infinity, 56.h),
                       buttonColor: AppThemeData.primary300,
-                      buttonTextColor: AppThemeData.textBlack,
                       onTap: () {
-                        Get.to(() => SignupScreenView(),
-                            arguments: {"type": Constant.emailLoginType});
-                      }),
-                  spaceH(height: 12),
-                  RoundShapeButton(
-                    titleWidget: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/ic_google.svg",
-                        ),
-                        const Spacer(),
-                        Text(
-                          "Continue with Google".tr,
-                          style: TextStyle(
+                        Get.to(
+                          () => SignupScreenView(),
+                          arguments: {"type": Constant.emailLoginType},
+                        );
+                      },
+                      titleWidget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.email_outlined,
+                              color: Colors.white, size: 20),
+                          const SizedBox(width: 12),
+                          Text(
+                            "Sign Up with Email".tr,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
                               fontFamily: FontFamily.medium,
-                              color: themeChange.isDarkTheme()
-                                  ? AppThemeData.grey100
-                                  : AppThemeData.grey1000,
-                              fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                      title: '',
+                      buttonTextColor: Colors.white,
+                    ),
+
+                    spaceH(height: 24.h),
+
+                    /// ─── OR ───
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white.withOpacity(0.22),
+                          ),
                         ),
-                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            "or",
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.55),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white.withOpacity(0.22),
+                          ),
+                        ),
                       ],
                     ),
-                    buttonColor: themeChange.isDarkTheme()
-                        ? AppThemeData.grey900
-                        : AppThemeData.grey50,
-                    buttonTextColor: themeChange.isDarkTheme()
-                        ? AppThemeData.grey1000
-                        : AppThemeData.grey100,
-                    onTap: () {
-                      controller.loginWithGoogle();
-                    },
-                    size: Size(358.w, ScreenSize.height(6, context)),
-                    title: '',
-                  ),
-                  spaceH(height: 12),
-                  if (Platform.isIOS)
+
+                    spaceH(height: 24.h),
+
+                    /// 🔹 GOOGLE SIGN IN
                     RoundShapeButton(
+                      size: Size(double.infinity, 56.h),
+                      buttonColor: Colors.white,
+                      onTap: controller.loginWithGoogle,
                       titleWidget: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
-                            "assets/icons/ic_apple.svg",
-                            color: themeChange.isDarkTheme()
-                                ? AppThemeData.grey100
-                                : AppThemeData.grey1000,
+                            "assets/icons/ic_google.svg",
+                            height: 20,
                           ),
-                          const Spacer(),
+                          const SizedBox(width: 12),
                           Text(
-                            "Continue with Apple".tr,
+                            "Continue with Google".tr,
                             style: TextStyle(
-                                fontFamily: FontFamily.medium,
-                                color: themeChange.isDarkTheme()
-                                    ? AppThemeData.grey100
-                                    : AppThemeData.grey1000,
-                                fontSize: 16),
+                              fontSize: 16,
+                              fontFamily: FontFamily.medium,
+                              color: AppThemeData.grey1000,
+                            ),
                           ),
-                          const Spacer(),
                         ],
                       ),
-                      buttonColor: themeChange.isDarkTheme()
-                          ? AppThemeData.grey900
-                          : AppThemeData.grey50,
-                      buttonTextColor: themeChange.isDarkTheme()
-                          ? AppThemeData.grey1000
-                          : AppThemeData.grey100,
-                      onTap: () {
-                        controller.loginWithApple();
-                      },
-                      size: Size(358.w, ScreenSize.height(6, context)),
                       title: '',
+                      buttonTextColor: Colors.white,
                     ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                              text: "Already have an account? ".tr,
+
+                    spaceH(height: 12.h),
+
+                    /// 🍎 APPLE SIGN IN
+                    if (Platform.isIOS)
+                      RoundShapeButton(
+                        size: Size(double.infinity, 56.h),
+                        buttonColor: Colors.black,
+                        onTap: controller.loginWithApple,
+                        titleWidget: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/ic_apple.svg",
+                              height: 20,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              "Continue with Apple".tr,
                               style: const TextStyle(
-                                  fontSize: 14,
-                                  color: AppThemeData.grey50,
-                                  fontFamily: FontFamily.regular),
-                              children: [
-                                TextSpan(
-                                  text: "Log in".tr,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppThemeData.primary300,
-                                      fontFamily: FontFamily.medium,
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap =
-                                        () => Get.to(() => LoginScreenView()),
-                                )
-                              ]),
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: FontFamily.medium,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                        title: '',
+                        buttonTextColor: Colors.white,
+                      ),
+
+                    const Spacer(),
+
+                    /// 🔹 FOOTER LOGIN
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 24.h),
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Already have an account? ",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.65),
+                            fontSize: 14,
+                            fontFamily: FontFamily.regular,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Log in",
+                              style: TextStyle(
+                                color: Color(0xff7C86FF),
+                                fontSize: 14,
+                                fontFamily: FontFamily.medium,
+                                // decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => Get.to(() => LoginScreenView()),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

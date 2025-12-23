@@ -107,15 +107,24 @@ class AddDriverView extends GetView<AddDriverController> {
                       controller: controller.lastNameController.value,
                       onPress: () {},
                     ),
+
                     MobileNumberTextField(
+                      label: "Mobile Number".tr,
                       controller: controller.mobileNumberController.value,
                       countryCode: controller.countryCode.value!,
-                      onCountryChanged: (newCode) {
-                        controller.countryCode.value = newCode;
+                      onCountryChanged: (code) {
+                        controller.countryCode.value = code;
                       },
-                      onPress: () {},
-                      title: "Mobile Number".tr,
                     ),
+                    // MobileNumberTextField(
+                    //   controller: controller.mobileNumberController.value,
+                    //   countryCode: controller.countryCode.value!,
+                    //   onCountryChanged: (newCode) {
+                    //     controller.countryCode.value = newCode;
+                    //   },
+                    //   onPress: () {},
+                    //   title: "Mobile Number".tr,
+                    // ),
                     TextFieldWidget(
                       title: "Email".tr,
                       hintText: "Enter Email".tr,

@@ -15,11 +15,10 @@ class AppThemeData {
   static const Color surface1000 = Color(0xff09090B);
   static const Color darkBackground = Color(0xff1C1C22);
 
-
   static const Color primary600 = Color(0xff180202);
   static const Color primary500 = Color(0xff611A1A);
   static const Color primary400 = Color(0xffAA3232);
-  static  Color primary300 = Color(0xffF24A4A);
+  static const Color primary300 = Color(0xff155DFC);
   static const Color primary200 = Color(0xffF67E7E);
   static const Color primary100 = Color(0xffFAB2B2);
   static const Color primary50 = Color(0xffFDE7E7);
@@ -27,7 +26,7 @@ class AppThemeData {
   static const Color accent600 = Color(0xff020218);
   static const Color accent500 = Color(0xff1A1A61);
   static const Color accent400 = Color(0xff3232AA);
-  static const Color accent300 = Color(0xff4A4AF2);
+  static const Color accent300 = Color(0xff4F39F6);
   static const Color accent200 = Color(0xff7E7EF6);
   static const Color accent100 = Color(0xffB2B2FA);
   static const Color accent50 = Color(0xffE7E7FD);
@@ -43,7 +42,7 @@ class AppThemeData {
   static const Color info600 = Color(0xff00171A);
   static const Color info500 = Color(0xff004B55);
   static const Color info400 = Color(0xff007F90);
-  static const Color  info300 = Color(0xff00B2CB);
+  static const Color info300 = Color(0xff00B2CB);
   static const Color info200 = Color(0xff4CCBDC);
   static const Color info100 = Color(0xff98E4ED);
   static const Color info50 = Color(0xffE5FCFF);
@@ -72,7 +71,6 @@ class AppThemeData {
   static const Color pending100 = Color(0xffFFEEA4);
   static const Color pending50 = Color(0xffFFFAE5);
 
-
   static const Color orange50 = Color(0xffFFF1E5);
   static const Color orange100 = Color(0xffFFC89E);
   static const Color orange200 = Color(0xffFFA056);
@@ -80,7 +78,6 @@ class AppThemeData {
   static const Color orange400 = Color(0xffB2530A);
   static const Color orange500 = Color(0xff662F05);
   static const Color orange600 = Color(0xff1A0B00);
-
 
   static const Color grey1000 = Color(0xff09090B);
   static const Color grey900 = Color(0xff18181B);
@@ -117,5 +114,4 @@ class AppThemeData {
 
     return colorList[random.nextInt(colorList.length)];
   }
-
 }

@@ -66,7 +66,7 @@ class GlobalSettingController extends GetxController {
   Future<void> getSettingData() async {
     try {
       await FireStoreUtils().getSettings();
-      AppThemeData.primary300 = HexColor.fromHex(Constant.appColor.toString());
+      // AppThemeData.primary300 = HexColor.fromHex(Constant.appColor.toString());
     } catch (e, stack) {
       if (kDebugMode) {
         developer.log("Error Setting Data:", error: e, stackTrace: stack);

@@ -143,7 +143,7 @@ class TextFieldWidget extends StatelessWidget {
                           BorderSide(color: AppThemeData.primary300, width: 1),
                     ),
                     hintText: hintText.tr,
-                    labelText: title!.tr,
+                    labelText: title?.tr,
                     labelStyle: TextStyle(
                         fontSize: 14,
                         color: themeChange.isDarkTheme()
@@ -233,201 +233,236 @@ class TextFieldWidget extends StatelessWidget {
 }
 
 class MobileNumberTextField extends StatelessWidget {
-  final String title;
-  String countryCode = "";
+  final String label;
   final TextEditingController controller;
-  final Function() onPress;
+  String countryCode;
   final Function(String) onCountryChanged;
-  final bool? enabled;
-  final bool? readOnly;
+  final bool enabled;
+  final bool readOnly;
+  final String? Function(String?)? validator;
 
   MobileNumberTextField({
     super.key,
+    required this.label,
     required this.controller,
     required this.countryCode,
-    required this.onPress,
     required this.onCountryChanged,
-    required this.title,
-    this.enabled,
-    this.readOnly,
+    this.enabled = true,
+    this.readOnly = false,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    try {
-      final themeChange = Provider.of<DarkThemeProvider>(context);
+    final themeChange = Provider.of<DarkThemeProvider>(context);
 
-      return Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// 🔤 LABEL
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontFamily: FontFamily.medium,
+            color: Color(0xFF62748E),
+          ),
+        ),
+        const SizedBox(height: 4),
+
+        /// 📞 COUNTRY + PHONE
+        Row(
           children: [
-            TextFormField(
-              validator: (value) => validateMobile(value, countryCode),
-              keyboardType:
-                  TextInputType.numberWithOptions(decimal: true, signed: true),
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-              ],
-              textCapitalization: TextCapitalization.sentences,
-              controller: controller,
-              textAlign: TextAlign.start,
-              readOnly: readOnly ?? false,
-              style: TextStyle(
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey200
-                    : AppThemeData.grey800,
-                fontFamily: FontFamily.regular,
-                fontSize: 14,
+            /// 🌍 COUNTRY CODE BOX
+            Container(
+              height: 52,
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              decoration: InputDecoration(
-                errorStyle: const TextStyle(color: Colors.red),
-                isDense: true,
-                filled: true,
-                enabled: enabled ?? true,
-                fillColor: themeChange.isDarkTheme()
-                    ? AppThemeData.grey900
-                    : AppThemeData.grey50,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                prefixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CountryCodePicker(
-                      searchStyle: TextStyle(
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey100
-                            : AppThemeData.grey900,
-                        fontFamily: FontFamily.regular,
-                      ),
-                      showFlag: true,
-                      onChanged: (value) {
-                        try {
-                          countryCode = value.dialCode.toString();
-                          onCountryChanged(
-                              countryCode); // <-- return updated code to parent
-                        } catch (e) {}
-                      },
+              child: CountryCodePicker(
+                showFlag: true,
+                initialSelection: countryCode,
+                onChanged: (value) {
+                  countryCode = value.dialCode ?? '';
+                  onCountryChanged(countryCode);
+                },
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: FontFamily.regular,
+                  color: Color(0xFF45556C),
+                ),
+                dialogTextStyle: const TextStyle(
+                  fontFamily: FontFamily.regular,
+                ),
+                searchStyle: const TextStyle(
+                  fontFamily: FontFamily.regular,
+                ),
+              ),
+            ),
 
-                      // onChanged: (value) {
-                      //   try {
-                      //     countryCode = value.dialCode.toString();
-                      //   } catch (e) {
-                      //     if (kDebugMode) {}
-                      //   }
-                      // },
-                      dialogTextStyle: TextStyle(
-                        fontFamily: FontFamily.regular,
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey100
-                            : AppThemeData.grey900,
-                      ),
-                      dialogBackgroundColor: themeChange.isDarkTheme()
-                          ? AppThemeData.grey900
-                          : AppThemeData.grey100,
-                      initialSelection: countryCode,
-                      comparator: (a, b) =>
-                          b.name!.compareTo(a.name.toString()),
-                      backgroundColor: themeChange.isDarkTheme()
-                          ? AppThemeData.grey900
-                          : AppThemeData.grey100,
-                      flagDecoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                      ),
-                      textStyle: TextStyle(
-                        fontSize: 15,
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey300
-                            : AppThemeData.grey700,
-                        fontFamily: FontFamily.regular,
-                      ),
+            const SizedBox(width: 12),
+
+            /// 📱 PHONE NUMBER BOX
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
-                    Text(
-                      "|",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: FontFamily.light,
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey600
-                            : AppThemeData.grey400,
-                      ),
-                    ),
-                    spaceW(width: 16),
                   ],
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey600
-                        : AppThemeData.grey400,
-                    width: 1,
+                child: TextFormField(
+                  controller: controller,
+                  enabled: enabled,
+                  readOnly: readOnly,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: validator ??
+                      (value) => validateMobile(value, countryCode),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontFamily: FontFamily.regular,
                   ),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey600
-                        : AppThemeData.grey400,
-                    width: 1,
+                  decoration: const InputDecoration(
+                    hintText: "Enter phone number",
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF90A1B9),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                   ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey600
-                        : AppThemeData.grey400,
-                    width: 1,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: AppThemeData.danger300,
-                    width: 1,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey600
-                        : AppThemeData.grey400,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: AppThemeData.primary300,
-                    width: 1,
-                  ),
-                ),
-                labelText: "Phone number".tr,
-                labelStyle: TextStyle(
-                  fontSize: 14,
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey200
-                      : AppThemeData.grey800,
-                  fontFamily: FontFamily.regular,
-                ),
-                hintText: "Enter Phone number".tr,
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey600
-                      : AppThemeData.grey400,
-                  fontFamily: FontFamily.regular,
                 ),
               ),
             ),
           ],
         ),
-      );
-    } catch (e) {
-      return const SizedBox.shrink();
-    }
+
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  final String label;
+  final String hintText;
+  final TextEditingController controller;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
+  final VoidCallback? onSuffixTap;
+  final int maxLines;
+  final bool enabled;
+  final Color? fillColor;
+  final Color? borderColor;
+
+  const CustomTextField({
+    super.key,
+    required this.label,
+    required this.hintText,
+    required this.controller,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.validator,
+    this.onSuffixTap,
+    this.maxLines = 1,
+    this.enabled = true,
+    this.fillColor,
+    this.borderColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// 🔤 LABEL
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontFamily: FontFamily.medium,
+            color: Color(0xFF62748E), // grey
+          ),
+        ),
+
+        const SizedBox(height: 4),
+
+        /// 🧾 TEXT FIELD CONTAINER
+        Container(
+          decoration: BoxDecoration(
+            color: fillColor ?? Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: borderColor ?? const Color(0xFFE5E7EB),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
+            maxLines: maxLines,
+            enabled: enabled,
+            validator: validator,
+            style: const TextStyle(
+              fontSize: 15,
+              fontFamily: FontFamily.regular,
+            ),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF90A1B9),
+              ),
+              prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon != null
+                  ? GestureDetector(
+                      onTap: onSuffixTap,
+                      child: suffixIcon,
+                    )
+                  : null,
+              border: InputBorder.none,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+      ],
+    );
   }
 }

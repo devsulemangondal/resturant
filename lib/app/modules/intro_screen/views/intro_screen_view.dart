@@ -19,17 +19,7 @@ class IntroScreenView extends StatelessWidget {
         builder: (controller) {
           return Obx(
             () => Scaffold(
-                backgroundColor: controller.currentPage.value == 0
-                    ? themeChange.isDarkTheme()
-                        ? const Color(0xFF180202)
-                        : const Color(0xFFFFFFE7)
-                    : controller.currentPage.value == 1
-                        ? themeChange.isDarkTheme()
-                            ? const Color(0xFF180202)
-                            : const Color(0xFFEDFAFF)
-                        : themeChange.isDarkTheme()
-                            ? const Color(0xFF180202)
-                            : const Color(0xFFFFF3F1),
+                backgroundColor: Colors.white,
                 body: PageView.builder(
                     controller: controller.pageController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -38,10 +28,12 @@ class IntroScreenView extends StatelessWidget {
                       controller.currentPage.value = index;
                     },
                     itemBuilder: (context, index) {
-                      OnboardingScreenModel item = controller.onboardingList[index];
+                      OnboardingScreenModel item =
+                          controller.onboardingList[index];
                       return IntroScreenPage(
                         title: item.title!,
                         body: item.description!,
+                        i: index,
                         textColor: index == 0
                             ? AppThemeData.danger300
                             : index == 1

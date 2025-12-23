@@ -189,22 +189,20 @@ class EnterMobileNumberScreenView extends GetView<LoginScreenController> {
   MobileNumberTextField buildMobileNumberWidget(BuildContext context) {
     try {
       return MobileNumberTextField(
+        label: "Mobile Number".tr,
         controller: controller.mobileNumberController.value,
         countryCode: controller.countryCode.value!,
-        onPress: () {},
-        title: "Mobile Number".tr,
-        onCountryChanged: (newCode) {
-          controller.countryCode.value = newCode;
+        onCountryChanged: (code) {
+          controller.countryCode.value = code;
         },
       );
     } catch (e) {
       return MobileNumberTextField(
-        controller: TextEditingController(),
-        countryCode: '+91',
-        onPress: () {},
-        title: "Mobile Number".tr,
-        onCountryChanged: (newCode) {
-          controller.countryCode.value = newCode;
+        label: "Mobile Number".tr,
+        controller: controller.mobileNumberController.value,
+        countryCode: controller.countryCode.value!,
+        onCountryChanged: (code) {
+          controller.countryCode.value = code;
         },
       );
     }

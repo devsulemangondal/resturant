@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable, depend_on_referenced_packages, use_super_parameters
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:restaurant/app/modules/login_screen/controllers/login_screen_con
 import 'package:restaurant/app/modules/login_screen/views/enter_mobile_number_view.dart';
 import 'package:restaurant/app/modules/login_screen/views/forgot_password_view.dart';
 import 'package:restaurant/app/modules/signup_screen/views/signup_screen_view.dart';
+import 'package:restaurant/app/widget/custom_line.dart';
 import 'package:restaurant/app/widget/global_widgets.dart';
 import 'package:restaurant/app/widget/text_field_widget.dart';
 import 'package:restaurant/app/widget/text_widget.dart';
@@ -41,90 +43,132 @@ class LoginScreenView extends GetView<LoginScreenController> {
             .addListener(() => controller.checkFieldsFilled());
 
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark, // Android → black
-              statusBarBrightness: Brightness.light, // iOS → black
-            ),
-            leading: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey900
-                        : AppThemeData.grey100,
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_sharp,
-                    size: 20,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey100
-                        : AppThemeData.grey900,
-                  ),
-                ),
-              ),
-            ),
-          ),
           backgroundColor: themeChange.isDarkTheme()
               ? AppThemeData.grey1000
-              : AppThemeData.grey50,
+              : AppThemeData.primaryWhite,
           body: Form(
             key: formKey,
-            child: SingleChildScrollView(
-                child: Stack(
-              children: [
-                Padding(
-                  padding: paddingEdgeInsets(),
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildTopWidget(context),
-                      buildEmailPasswordWidget(context),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            style: const ButtonStyle(
-                                padding:
-                                    MaterialStatePropertyAll(EdgeInsets.zero)),
-                            onPressed: () {
-                              Get.to(() => ForgotPassword());
-                            },
-                            child: TextCustom(
-                              title: "Forgot password?".tr,
-                              color: AppThemeData.accent300,
-                              fontFamily: FontFamily.medium,
-                              isUnderLine: true,
-                              textAlign: TextAlign.right,
-                            ),
-                          ).flexible(),
-                        ],
+                      spaceH(height: 60.h),
+
+                      /// 🔵 APP ICON
+                      Image.asset(
+                        "assets/images/auth-image.png",
+                        height: 70,
                       ),
-                      Obx(
-                        () => Row(
+
+                      /// 👋 TITLE
+                      TextCustom(
+                        title: "Welcome Back",
+                        fontSize: 26,
+                        fontFamily: FontFamily.bold,
+                        color: AppThemeData.grey1000,
+                      ),
+
+                      spaceH(height: 6),
+
+                      TextCustom(
+                        title: "Sign in to continue",
+                        fontSize: 14,
+                        fontFamily: FontFamily.regular,
+                        color: AppThemeData.grey600,
+                      ),
+
+                      spaceH(height: 32),
+
+                      /// 🧾 LOGIN CARD
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(20.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: Color(0xffE3E3E3)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.06),
+                              blurRadius: 30,
+                              offset: const Offset(0, 16),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: RoundShapeButton(
-                                title: "Log in".tr,
-                                buttonColor:
-                                    controller.isLoginButtonEnabled.value
-                                        ? AppThemeData.primary300
-                                        : themeChange.isDarkTheme()
-                                            ? AppThemeData.grey800
-                                            : AppThemeData.primary300,
-                                buttonTextColor:
-                                    controller.isLoginButtonEnabled.value
-                                        ? themeChange.isDarkTheme()
-                                            ? AppThemeData.grey1000
-                                            : AppThemeData.textBlack
-                                        : AppThemeData.textBlack,
+                            /// 🔐 CARD TITLE
+                            Row(
+                              children: [
+                                Container(
+                                  height: 24,
+                                  width: 24,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffE0E7FF),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.lock,
+                                    color: Color(0xff4F39F6),
+                                    size: 14,
+                                  ),
+                                ),
+                                spaceW(width: 12),
+                                Text(
+                                  "LOGIN CREDENTIALS",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    letterSpacing: 1,
+                                    fontFamily: FontFamily.medium,
+                                    color: Color(0xff45556C),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            spaceH(height: 20),
+
+                            /// 📧 EMAIL
+                            buildEmailPasswordWidget(context),
+
+                            /// 🔑 FORGOT PASSWORD
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  Get.to(() => ForgotPassword());
+                                },
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppThemeData.accent300,
+                                    fontFamily: FontFamily.medium,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            spaceH(height: 10),
+                            CustomLine(),
+                            spaceH(height: 20),
+
+                            /// 🔵 LOGIN BUTTON
+                            Container(
+                              width: double.infinity,
+                              child: GradientRoundShapeButton(
+                                title: "Sign In".tr,
+                                size: Size(double.infinity, 52.h),
+                                gradientColors: [
+                                  Color(0xff4F39F6),
+                                  Color(0xff615FFF),
+                                  Color(0xff155DFC),
+                                ],
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     controller.emailSignIn();
@@ -133,107 +177,61 @@ class LoginScreenView extends GetView<LoginScreenController> {
                                         "Please fill in valid information.".tr);
                                   }
                                 },
-                                size:
-                                    Size(358.w, ScreenSize.height(6, context)),
+                              ),
+                            ),
+
+                            spaceH(height: 18),
+
+                            /// 🆕 CREATE ACCOUNT
+                            Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Don't have an account? ",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppThemeData.grey600,
+                                    fontFamily: FontFamily.regular,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "Create Account",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppThemeData.accent300,
+                                        fontFamily: FontFamily.medium,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Get.to(
+                                              () => SignupScreenView(),
+                                              arguments: {
+                                                "type": Constant.emailLoginType
+                                              },
+                                            ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      spaceH(height: 20),
-                      Row(
-                        children: [
-                          const Expanded(child: SizedBox()),
-                          Expanded(
-                              child: Divider(
-                                  color: themeChange.isDarkTheme()
-                                      ? AppThemeData.grey600
-                                      : AppThemeData.grey400)),
-                          spaceW(),
-                          Text(
-                            "Or".tr,
-                            style: TextStyle(
-                                fontFamily: FontFamily.regular,
-                                color: themeChange.isDarkTheme()
-                                    ? AppThemeData.grey600
-                                    : AppThemeData.grey400),
-                            textAlign: TextAlign.right,
-                          ),
-                          spaceW(),
-                          Expanded(
-                              child: Divider(
-                                  color: themeChange.isDarkTheme()
-                                      ? AppThemeData.grey600
-                                      : AppThemeData.grey400)),
-                          const Expanded(child: SizedBox()),
-                        ],
-                      ),
-                      spaceH(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RoundShapeButton(
-                              titleWidget: Text(
-                                "Continue with mobile number".tr,
-                                style: TextStyle(
-                                    fontFamily: FontFamily.medium,
-                                    color: themeChange.isDarkTheme()
-                                        ? AppThemeData.grey1000
-                                        : AppThemeData.grey50,
-                                    fontSize: 18),
-                              ),
-                              buttonColor: themeChange.isDarkTheme()
-                                  ? AppThemeData.grey50
-                                  : AppThemeData.grey1000,
-                              buttonTextColor: themeChange.isDarkTheme()
-                                  ? AppThemeData.grey1000
-                                  : AppThemeData.grey50,
-                              onTap: () {
-                                Get.to(() => EnterMobileNumberScreenView());
-                              },
-                              size: Size(358.w, ScreenSize.height(6, context)),
-                              title: '',
-                            ),
-                          ),
-                        ],
+
+                      spaceH(height: 24),
+
+                      /// 🔒 FOOTER TEXT
+                      Text(
+                        "Secure login protected by industry-standard encryption",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppThemeData.grey500,
+                          fontFamily: FontFamily.regular,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
-              ],
-            )),
-          ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                      text: "new_in"
-                          .trParams({'appName': Constant.appName.value}),
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: themeChange.isDarkTheme()
-                              ? AppThemeData.grey100
-                              : AppThemeData.grey900,
-                          fontFamily: FontFamily.regular),
-                      children: [
-                        TextSpan(
-                            text: "Create account".tr,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppThemeData.primary300,
-                                fontFamily: FontFamily.medium,
-                                decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.to(() => SignupScreenView(),
-                                      arguments: {
-                                        "type": Constant.emailLoginType
-                                      })),
-                      ]),
-                ),
-              ],
+              ),
             ),
           ),
         );
@@ -241,65 +239,38 @@ class LoginScreenView extends GetView<LoginScreenController> {
     );
   }
 
-  SizedBox buildTopWidget(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("welcome_back".trParams({'appName': Constant.appName.value}),
-              style: TextStyle(
-                fontFamily: FontFamily.bold,
-                fontSize: 28,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey50
-                    : AppThemeData.grey1000,
-              )),
-          Text("Login to manage your restaurant.".tr,
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: FontFamily.regular,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey400
-                    : AppThemeData.grey600,
-              ),
-              textAlign: TextAlign.start),
-        ],
-      ),
-    );
-  }
-
   Column buildEmailPasswordWidget(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-
     return Column(
       children: [
-        TextFieldWidget(
-          title: "Email".tr,
-          hintText: "Enter Email".tr,
-          validator: (value) => Constant.validateEmail(value),
+        CustomTextField(
+          label: "Email or Phone Number",
+          hintText: "Enter email or phone number",
           controller: controller.emailController.value,
-          onPress: () {},
+          prefixIcon:
+              const Icon(Icons.email_outlined, color: Color(0xFF90A1B9)),
+          validator: (value) => value!.isEmpty ? "Required" : null,
         ),
-        Obx(() => TextFieldWidget(
-              title: "Password".tr,
-              hintText: "Enter Password".tr,
+        Obx(() {
+          return CustomTextField(
+              label: "Password",
+              hintText: "Enter your password",
               validator: (value) => Constant.validatePassword(value),
               controller: controller.passwordController.value,
               obscureText: controller.isPasswordVisible.value,
-              suffix: SvgPicture.asset(
-                controller.isPasswordVisible.value
-                    ? "assets/icons/ic_hide_password.svg"
-                    : "assets/icons/ic_show_password.svg",
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey200
-                    : AppThemeData.grey800,
-              ).onTap(() {
-                controller.isPasswordVisible.value =
-                    !controller.isPasswordVisible.value;
-              }),
-              onPress: () {},
-            ))
+              prefixIcon:
+                  const Icon(Icons.lock_outline, color: Color(0xFF9CA3AF)),
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    controller.isPasswordVisible.value =
+                        !controller.isPasswordVisible.value;
+                  },
+                  icon: Icon(
+                    controller.isPasswordVisible.value
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Color(0xff90A1B9),
+                  )));
+        }),
       ],
     );
   }

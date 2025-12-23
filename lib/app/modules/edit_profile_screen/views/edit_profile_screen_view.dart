@@ -180,18 +180,26 @@ class EditProfileScreenView extends StatelessWidget {
                               : false,
                         ),
                         MobileNumberTextField(
+                          label: "Mobile Number".tr,
                           controller: controller.mobileNumberController.value,
-                          onCountryChanged: (newCode) {
-                            controller.countryCode.value = newCode;
+                          countryCode: controller.countryCode.value!,
+                          onCountryChanged: (code) {
+                            controller.countryCode.value = code;
                           },
-                          countryCode: "+91".tr,
-                          onPress: () {},
-                          title: "Mobile Number".tr,
-                          readOnly: Constant.ownerModel!.loginType ==
-                                  Constant.phoneLoginType
-                              ? true
-                              : false,
-                        ),
+                        )
+                        // MobileNumberTextField(
+                        //   controller: controller.mobileNumberController.value,
+                        //   onCountryChanged: (newCode) {
+                        //     controller.countryCode.value = newCode;
+                        //   },
+                        //   countryCode: "+91".tr,
+                        //   onPress: () {},
+                        //   title: "Mobile Number".tr,
+                        //   readOnly: Constant.ownerModel!.loginType ==
+                        //           Constant.phoneLoginType
+                        //       ? true
+                        //       : false,
+                        // ),
                       ],
                     ),
                   ),

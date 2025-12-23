@@ -112,7 +112,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               /// 🧍 PERSONAL INFO
-                              _SectionHeader(
+                              SectionHeader(
                                 icon: Icons.person_outline,
                                 title: "PERSONAL INFO",
                               ),
@@ -148,7 +148,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                               spaceH(height: 20),
 
                               /// 📞 CONTACT
-                              _SectionHeader(
+                              SectionHeader(
                                 icon: Icons.phone_outlined,
                                 title: "CONTACT",
                               ),
@@ -184,7 +184,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                               /// 🔐 SECURITY
                               if (controller.loginType.value ==
                                   Constant.emailLoginType) ...[
-                                _SectionHeader(
+                                SectionHeader(
                                   icon: Icons.lock_outline,
                                   title: "SECURITY",
                                 ),
@@ -232,7 +232,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                               spaceH(height: 20),
 
                               /// 🎁 BONUS
-                              _SectionHeader(
+                              SectionHeader(
                                 icon: Icons.card_giftcard_outlined,
                                 title: "BONUS",
                               ),
@@ -339,11 +339,11 @@ class SignupScreenView extends GetView<SignupScreenController> {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
+class SectionHeader extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const _SectionHeader({required this.icon, required this.title});
+  const SectionHeader({required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {

@@ -103,32 +103,9 @@ class LoginScreenView extends GetView<LoginScreenController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             /// 🔐 CARD TITLE
-                            Row(
-                              children: [
-                                Container(
-                                  height: 24,
-                                  width: 24,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffE0E7FF),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Icon(
-                                    CupertinoIcons.lock,
-                                    color: Color(0xff4F39F6),
-                                    size: 14,
-                                  ),
-                                ),
-                                spaceW(width: 12),
-                                Text(
-                                  "LOGIN CREDENTIALS",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    letterSpacing: 1,
-                                    fontFamily: FontFamily.medium,
-                                    color: Color(0xff45556C),
-                                  ),
-                                ),
-                              ],
+                            SectionHeader(
+                              icon: CupertinoIcons.lock,
+                              title: "LOGIN CREDENTIALS",
                             ),
 
                             spaceH(height: 20),

@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         init: GlobalSettingController(),
                         builder: (context) {
                           return SplashScreenView();
-                        }),
+                        })
                   );
                 });
           },

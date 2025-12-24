@@ -84,7 +84,7 @@ class AppThemeData {
   static const Color grey800 = Color(0xff3F3F46);
   static const Color grey700 = Color(0xff52525B);
   static const Color grey600 = Color(0xff71717A);
-  static const Color grey500 = Color(0xffA1A1AA);
+  static const Color grey500 = Color(0xff90A1B9);
   static const Color grey400 = Color(0xffD4D4D8);
   static const Color grey300 = Color(0xffE4E4E7);
   static const Color grey200 = Color(0xffF4F4F5);

@@ -22,85 +22,131 @@ class DashboardScreenView extends GetView<DashboardScreenController> {
           body: Obx(() => controller.pageList[controller.selectedIndex.value]),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: Obx(() => BottomNavigationBar(
-                  elevation: 0,
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: controller.selectedIndex.value,
-                  onTap: (int index) {
-                    // if (Constant.ownerModel?.isVerified == true) {
-                    controller.selectedIndex.value = index;
-                    // }
-                  },
-                  backgroundColor: themeChange.isDarkTheme()
-                      ? AppThemeData.grey1000
-                      : AppThemeData.grey50,
-                  selectedItemColor: AppThemeData.primary300,
-                  selectedIconTheme:
-                      IconThemeData(color: AppThemeData.primary300),
-                  selectedLabelStyle:
-                      TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  unselectedIconTheme:
-                      IconThemeData(color: AppThemeData.grey500),
-                  unselectedItemColor: AppThemeData.grey500,
-                  unselectedLabelStyle:
-                      TextStyle(fontSize: 12, fontFamily: FontFamily.regular),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        "assets/icons/ic_home.svg",
-                        color: controller.selectedIndex.value == 0
-                            ? AppThemeData.primary300
-                            : AppThemeData.grey500,
-                        width: 20,
-                        height: 20,
-                      ),
+          bottomNavigationBar: Container(
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xffE2E8F0),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26),
+              child: Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BottomBarItem(
+                      index: 0,
+                      selectedIndex: controller.selectedIndex.value,
                       label: "Home".tr,
+                      iconPath: "assets/icons/ic_home.svg",
+                      onTap: () => controller.selectedIndex.value = 0,
                     ),
-                    BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          "assets/icons/ic_statistic.svg",
-                          color: controller.selectedIndex.value == 1
-                              ? AppThemeData.primary300
-                              : AppThemeData.grey500,
-                          width: 20,
-                          height: 20,
-                        ),
-                        label: "Statistic".tr),
-                    BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          "assets/icons/ic_restaurant.svg",
-                          color: controller.selectedIndex.value == 2
-                              ? AppThemeData.primary300
-                              : AppThemeData.grey500,
-                          width: 20,
-                          height: 20,
-                        ),
-                        label: "Restaurant".tr),
-                    BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          "assets/icons/ic_menu.svg",
-                          color: controller.selectedIndex.value == 3
-                              ? AppThemeData.primary300
-                              : AppThemeData.grey500,
-                          width: 20,
-                          height: 20,
-                        ),
-                        label: "Menu".tr),
-                    BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          "assets/icons/ic_profile.svg",
-                          color: controller.selectedIndex.value == 4
-                              ? AppThemeData.primary300
-                              : AppThemeData.grey500,
-                          width: 20,
-                          height: 20,
-                        ),
-                        label: "Profile".tr)
-                  ])),
+                    BottomBarItem(
+                      index: 1,
+                      selectedIndex: controller.selectedIndex.value,
+                      label: "Statistic".tr,
+                      iconPath: "assets/icons/ic_statistic.svg",
+                      onTap: () => controller.selectedIndex.value = 1,
+                    ),
+                    BottomBarItem(
+                      index: 2,
+                      selectedIndex: controller.selectedIndex.value,
+                      label: "Restaurant".tr,
+                      iconPath: "assets/icons/ic_restaurant.svg",
+                      onTap: () => controller.selectedIndex.value = 2,
+                    ),
+                    BottomBarItem(
+                      index: 3,
+                      selectedIndex: controller.selectedIndex.value,
+                      label: "Menu".tr,
+                      iconPath: "assets/icons/ic_menu.svg",
+                      onTap: () => controller.selectedIndex.value = 3,
+                    ),
+                    BottomBarItem(
+                      index: 4,
+                      selectedIndex: controller.selectedIndex.value,
+                      label: "Profile".tr,
+                      iconPath: "assets/icons/ic_profile.svg",
+                      onTap: () => controller.selectedIndex.value = 4,
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ),
         );
       },
+    );
+  }
+}
+
+class BottomBarItem extends StatelessWidget {
+  final int index;
+  final int selectedIndex;
+  final String label;
+  final String iconPath;
+  final VoidCallback onTap;
+
+  const BottomBarItem({
+    super.key,
+    required this.index,
+    required this.selectedIndex,
+    required this.label,
+    required this.iconPath,
+    required this.onTap,
+  });
+
+  bool get isSelected => index == selectedIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: onTap,
+          child: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              gradient: isSelected
+                  ? LinearGradient(
+                      colors: [
+                        AppThemeData.accent300,
+                        AppThemeData.primary300,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                  : null,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              iconPath,
+              width: 20,
+              height: 20,
+              color:
+                  isSelected ? AppThemeData.primaryWhite : AppThemeData.grey500,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label.tr,
+          style: TextStyle(
+            fontSize: 12,
+            fontFamily: FontFamily.regular,
+            color: isSelected ? const Color(0xff1D293D) : AppThemeData.grey500,
+          ),
+        ),
+      ],
     );
   }
 }

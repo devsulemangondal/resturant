@@ -48,14 +48,13 @@ class RoundShapeButton extends StatelessWidget {
   }
 }
 
-
-
-
 class GradientRoundShapeButton extends StatelessWidget {
   final String title;
   final List<Color> gradientColors;
   final VoidCallback onTap;
   final Size size;
+  final Color? buttonColor;
+  final Color? buttonTextColor;
   final double? textSize;
   final Widget? titleWidget;
   final double borderRadius;
@@ -66,10 +65,14 @@ class GradientRoundShapeButton extends StatelessWidget {
     required this.gradientColors,
     required this.onTap,
     required this.size,
+    this.buttonColor,
+    this.buttonTextColor,
     this.textSize,
     this.titleWidget,
     this.borderRadius = 10,
   });
+
+  bool get hasGradient => gradientColors.length >= 2;
 
   @override
   Widget build(BuildContext context) {
@@ -79,19 +82,24 @@ class GradientRoundShapeButton extends StatelessWidget {
         width: size.width,
         height: size.height,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: gradientColors,
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
+          color: hasGradient ? null : buttonColor,
+          gradient: hasGradient
+              ? LinearGradient(
+                  colors: gradientColors,
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                )
+              : null,
           borderRadius: BorderRadius.circular(borderRadius),
-          boxShadow: [
-            BoxShadow(
-              color: gradientColors.first.withOpacity(0.35),
-              blurRadius: 14,
-              offset: const Offset(0, 6),
-            ),
-          ],
+          boxShadow: hasGradient
+              ? [
+                  BoxShadow(
+                    color: gradientColors[0].withOpacity(0.35),
+                    blurRadius: 14,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
+              : [],
         ),
         alignment: Alignment.center,
         child: titleWidget ??
@@ -101,7 +109,7 @@ class GradientRoundShapeButton extends StatelessWidget {
                 fontFamily: FontFamily.medium,
                 fontSize: textSize ?? 16,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
+                color: buttonTextColor ?? Colors.white,
               ),
             ),
       ),

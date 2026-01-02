@@ -197,7 +197,7 @@ class ForgotPassword extends GetView<LoginScreenController> {
               ? AppThemeData.grey600
               : AppThemeData.grey400,
         ),
-        onPress: () {},
+       
       );
     } catch (e) {
       return Padding(

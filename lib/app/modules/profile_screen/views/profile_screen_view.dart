@@ -305,6 +305,7 @@ class ProfileScreenView extends StatelessWidget {
                       labelWidget(name: "About".tr),
                       GestureDetector(
                         onTap: () {
+                          print(Constant.privacyPolicy);
                           Get.to(() => PrivacyPolicyScreenView(
                               title: "Privacy & Policy".tr,
                               htmlData: Constant.privacyPolicy));

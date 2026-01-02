@@ -17,6 +17,7 @@ class MenuScreenController extends GetxController {
   Rx<bool> isLoading = false.obs;
   Rx<bool> isSubCategoryLoading = false.obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
+  RxList<ProductModel> categoryProductList = <ProductModel>[].obs;
   RxList<ProductModel> allProductList = <ProductModel>[].obs;
   RxList<CategoryModel> categoryList = <CategoryModel>[].obs;
 

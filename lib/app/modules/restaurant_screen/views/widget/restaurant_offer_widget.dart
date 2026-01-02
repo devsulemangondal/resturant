@@ -105,7 +105,6 @@ class RestaurantOfferWidget extends GetView<RestaurantScreenController> {
                       title: "Coupon Title".tr,
                       hintText: "Enter Coupon Title".tr,
                       controller: controller.couponTitleController.value,
-                      onPress: () {},
                     ),
                     TextFieldWidget(
                       color: themeChange.isDarkTheme()
@@ -114,7 +113,6 @@ class RestaurantOfferWidget extends GetView<RestaurantScreenController> {
                       title: "Enter Coupon Code".tr,
                       hintText: "Enter Coupon Code".tr,
                       controller: controller.couponCodeController.value,
-                      onPress: () {},
                     ),
                     TextFieldWidget(
                       color: themeChange.isDarkTheme()
@@ -123,7 +121,6 @@ class RestaurantOfferWidget extends GetView<RestaurantScreenController> {
                       title: "Enter Minimum Amount".tr,
                       hintText: "Enter Minimum Amount".tr,
                       controller: controller.couponMinAmountController.value,
-                      onPress: () {},
                       textInputType: TextInputType.numberWithOptions(
                           decimal: true, signed: true),
                       inputFormatters: <TextInputFormatter>[
@@ -138,7 +135,6 @@ class RestaurantOfferWidget extends GetView<RestaurantScreenController> {
                       hintText: "Enter Discount Amount".tr,
                       controller:
                           controller.couponDiscountAmountController.value,
-                      onPress: () {},
                       textInputType: TextInputType.numberWithOptions(
                           decimal: true, signed: true),
                       inputFormatters: <TextInputFormatter>[

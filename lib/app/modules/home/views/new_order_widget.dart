@@ -40,39 +40,32 @@ class NewOrderWidget extends StatelessWidget {
             body: controller.isLoading.value
                 ? Constant.loader()
                 : controller.newOrderList.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                    ? SizedBox(
+                        width: double.infinity,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             spaceH(height: 40.h),
                             Image.asset(
-                              "assets/animation/no_new_orders.gif",
-                              height: 98,
-                              width: 98,
+                              "assets/images/no_new_orders.png",
+                              height: 190,
+                              width: 190,
                             ),
                             spaceH(height: 12.h),
-                            Padding(
-                                padding: paddingEdgeInsets(
-                                    horizontal: 48, vertical: 0),
-                                child: TextCustom(
-                                  title: "No New Orders".tr,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.bold,
-                                )),
+                            TextCustom(
+                              title: "No New Orders".tr,
+                              fontSize: 16,
+                              fontFamily: FontFamily.regular,
+                            ),
                             spaceH(height: 4),
-                            Padding(
-                              padding: paddingEdgeInsets(
-                                  horizontal: 48, vertical: 0),
-                              child: TextCustom(
-                                title:
-                                    "There are currently no new orders to display."
-                                        .tr,
-                                fontSize: 14,
-                                maxLine: 2,
-                              ),
+                            TextCustom(
+                              title:
+                                  "New orders will appear here when they arrive."
+                                      .tr,
+                              fontSize: 14,
+                              fontFamily: FontFamily.regular,
+                              maxLine: 2,
                             ),
                             spaceH(height: 50.h),
                           ],

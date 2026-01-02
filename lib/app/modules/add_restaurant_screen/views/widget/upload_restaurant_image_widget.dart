@@ -36,69 +36,77 @@ class UploadRestaurantImage extends GetView<AddRestaurantScreenController> {
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
-            child: Padding(
-              padding: paddingEdgeInsets(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextCustom(
-                    title: "Upload Restaurant Cover and Logo".tr,
-                    fontSize: 28,
-                    maxLine: 2,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey100
-                        : AppThemeData.grey1000,
-                    fontFamily: FontFamily.bold,
-                    textAlign: TextAlign.start,
-                  ),
-                  2.height,
-                  TextCustom(
-                    title:
-                        "Customize your restaurant's profile with a cover image and logo for better visibility."
-                            .tr,
-                    fontSize: 16,
-                    maxLine: 2,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey400
-                        : AppThemeData.grey600,
-                    fontFamily: FontFamily.regular,
-                    textAlign: TextAlign.start,
-                  ),
-                  spaceH(height: 32),
-                  TextCustom(
-                    title: "Cover Image".tr,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey100
-                        : AppThemeData.grey900,
-                    fontFamily: FontFamily.medium,
-                  ),
-                  spaceH(height: 8),
-                  InkWell(
-                    onTap: () {
-                      if (controller.coverImage.value.isNotEmpty) {
+            child: SizedBox(
+              width: Get.width,
+              child: Padding(
+                padding: paddingEdgeInsets(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    spaceH(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextCustom(
+                              title: "Cover Image".tr,
+                              color: Color(0xff1D293D),
+                              fontSize: 16,
+                              fontFamily: FontFamily.medium,
+                            ),
+                            spaceH(height: 2),
+                            Text(
+                              "Recommended size: 1200 x 400 px",
+                              style: TextStyle(
+                                  fontSize: 12, color: Color(0xff62748E)),
+                            ),
+                          ],
+                        ),
+                        Obx(() {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Color(0xffF0FDF4),
+                                borderRadius: BorderRadius.circular(12)),
+                            child: controller.coverImage.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      Icon(
+                                        Icons.done_rounded,
+                                        color: Color(0xff00A63E),
+                                      ),
+                                      Text(
+                                        "Uploaded",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xff00A63E),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : SizedBox(),
+                          );
+                        }),
+                      ],
+                    ),
+                    spaceH(height: 10),
+                    InkWell(
+                      onTap: () {
                         controller.pickFile().then(
                             (value) => controller.coverImage.value = value!);
-                      }
-                    },
-                    child: DottedBorder(
-                      options: RectDottedBorderOptions(
-                        dashPattern: const [6, 6, 6, 6],
-                        strokeWidth: 2,
-                        padding: EdgeInsets.all(16),
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey600
-                            : AppThemeData.grey400,
-                      ),
+                      },
                       child: controller.coverImage.value.isEmpty
                           ? Container(
-                              height: 174.h,
+                              height: 174,
                               width: 358.w,
                               decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffA3B3FF)),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(12)),
-                                color: themeChange.isDarkTheme()
-                                    ? AppThemeData.surface1000
-                                    : AppThemeData.surface50,
+                                color: Color(0xffEEF2FF),
                               ),
                               child: Padding(
                                 padding: paddingEdgeInsets(),
@@ -112,56 +120,36 @@ class UploadRestaurantImage extends GetView<AddRestaurantScreenController> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(
-                                          height: 18,
-                                          width: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/ic_upload.svg",
-                                            color: AppThemeData.primary300,
+                                        Container(
+                                          height: 64,
+                                          width: 64,
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffE0E7FF),
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: SvgPicture.asset(
+                                              "assets/icons/ic_upload.svg",
+                                              color: AppThemeData.primary300,
+                                              height: 32,
+                                              width: 32,
+                                            ),
                                           ),
                                         ),
-                                        spaceH(height: 16),
+                                        spaceH(height: 12),
                                         TextCustom(
-                                          title:
-                                              "Upload the restaurant cover image"
-                                                  .tr,
-                                          maxLine: 2,
-                                          color: themeChange.isDarkTheme()
-                                              ? AppThemeData.grey100
-                                              : AppThemeData.grey900,
+                                          title: "Upload Cover Image".tr,
+                                          maxLine: 1,
+                                          color: Color(0xff314158),
                                           fontFamily: FontFamily.regular,
                                         ),
                                         TextCustom(
-                                          title:
-                                              "image must be a .jpg, .jpeg".tr,
+                                          title: "Tap to browse files".tr,
                                           maxLine: 1,
                                           fontSize: 12,
-                                          color: AppThemeData.secondary300,
-                                          fontFamily: FontFamily.light,
-                                        ),
-                                        spaceH(),
-                                        RoundShapeButton(
-                                          titleWidget: TextCustom(
-                                            title: "Browse Image".tr,
-                                            fontSize: 14,
-                                            color: themeChange.isDarkTheme()
-                                                ? AppThemeData.grey1000
-                                                : AppThemeData.grey50,
-                                          ),
-                                          title: "",
-                                          buttonColor: AppThemeData.primary300,
-                                          buttonTextColor:
-                                              AppThemeData.primaryWhite,
-                                          onTap: () {
-                                            if (controller
-                                                .coverImage.value.isEmpty) {
-                                              controller.pickFile().then(
-                                                  (value) => controller
-                                                      .coverImage
-                                                      .value = value!);
-                                            }
-                                          },
-                                          size: Size(140.w, 42.h),
+                                          fontFamily: FontFamily.regular,
+                                          color: Color(0xff62748E),
                                         ),
                                       ],
                                     ),
@@ -184,157 +172,331 @@ class UploadRestaurantImage extends GetView<AddRestaurantScreenController> {
                                           .toString()),
                                       height: 174.h,
                                       width: 358.w,
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.cover,
                                     ),
                             ),
                     ),
-                  ),
-                  spaceH(height: 16),
-                  TextCustom(
-                    title: "Restaurant Logo".tr,
-                    color: themeChange.isDarkTheme()
-                        ? AppThemeData.grey100
-                        : AppThemeData.grey900,
-                    fontFamily: FontFamily.medium,
-                  ),
-                  spaceH(height: 8),
-                  Row(
-                    children: [
-                      DottedBorder(
-                        options: RectDottedBorderOptions(
-                          dashPattern: const [6, 6, 6, 6],
-                          strokeWidth: 2,
-                          padding: EdgeInsets.all(16),
-                          color: themeChange.isDarkTheme()
-                              ? AppThemeData.grey600
-                              : AppThemeData.grey400,
+                    spaceH(height: 10),
+                    Row(
+                      children: [
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: Color(0xffF1F5F9),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            "• .jpg",
+                            style: TextStyle(
+                                color: Color(0xff45556C), fontSize: 12),
+                          ),
                         ),
-                        child: controller.logoImage.value.isEmpty
-                            ? Container(
-                                height: 120.h,
-                                width: 120.w,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                  color: themeChange.isDarkTheme()
-                                      ? AppThemeData.surface1000
-                                      : AppThemeData.surface50,
-                                ),
-                                child: Padding(
-                                  padding: paddingEdgeInsets(),
-                                  child: Center(
-                                    child: SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/ic_gallary.svg",
-                                        color: AppThemeData.primary300,
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: Color(0xffF1F5F9),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            "• .jpeg",
+                            style: TextStyle(
+                                color: Color(0xff45556C), fontSize: 12),
+                          ),
+                        )
+                      ],
+                    ),
+                    spaceH(height: 20),
+                    CenterTitleDivider(
+                      title: "Restaurant Logo",
+                    ),
+                    spaceH(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextCustom(
+                              title: "Restaurant Logo".tr,
+                              color: Color(0xff1D293D),
+                              fontSize: 16,
+                              fontFamily: FontFamily.medium,
+                            ),
+                            spaceH(height: 2),
+                            Text(
+                              "Recommended size: 500 x 500 px",
+                              style: TextStyle(
+                                  fontSize: 12, color: Color(0xff62748E)),
+                            ),
+                          ],
+                        ),
+                        Obx(() {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Color(0xffF0FDF4),
+                                borderRadius: BorderRadius.circular(12)),
+                            child: controller.logoImage.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      Icon(
+                                        Icons.done_rounded,
+                                        color: Color(0xff00A63E),
                                       ),
+                                      Text(
+                                        "Uploaded",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xff00A63E),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : SizedBox(),
+                          );
+                        }),
+                      ],
+                    ),
+                    spaceH(height: 8),
+                    Container(
+                        alignment: Alignment.center,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: Get.width * .2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                controller.pickFile().then((value) =>
+                                    controller.logoImage.value = value!);
+                              },
+                              child: controller.logoImage.value.isEmpty
+                                  ? Container(
+                                      height: 174,
+                                      width: 358.w,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xffA3B3FF)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12)),
+                                        color: Color(0xffEEF2FF),
+                                      ),
+                                      child: Padding(
+                                        padding: paddingEdgeInsets(),
+                                        child: Center(
+                                          child: SingleChildScrollView(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 64,
+                                                  width: 64,
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffE0E7FF),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: SvgPicture.asset(
+                                                      "assets/icons/ic_upload.svg",
+                                                      color: AppThemeData
+                                                          .primary300,
+                                                      height: 32,
+                                                      width: 32,
+                                                    ),
+                                                  ),
+                                                ),
+                                                spaceH(height: 12),
+                                                TextCustom(
+                                                  title:
+                                                      "Upload Cover Image".tr,
+                                                  maxLine: 1,
+                                                  color: Color(0xff314158),
+                                                  fontFamily:
+                                                      FontFamily.regular,
+                                                ),
+                                                TextCustom(
+                                                  title:
+                                                      "Tap to browse files".tr,
+                                                  maxLine: 1,
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      FontFamily.regular,
+                                                  color: Color(0xff62748E),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Constant.hasValidUrl(controller
+                                              .logoImage.value
+                                              .toString())
+                                          ? Image.network(
+                                              controller.logoImage.value
+                                                  .toString(),
+                                              height: 174.h,
+                                              width: 358.w,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.file(
+                                              File(controller.logoImage.value
+                                                  .toString()),
+                                              height: 174.h,
+                                              width: 358.w,
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
+                            ),
+                            spaceH(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffF1F5F9),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    "• .jpg",
+                                    style: TextStyle(
+                                        color: Color(0xff45556C), fontSize: 12),
                                   ),
                                 ),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Constant.hasValidUrl(
-                                        controller.logoImage.value.toString())
-                                    ? Image.network(
-                                        controller.logoImage.value.toString(),
-                                        height: 120.h,
-                                        width: 120.w,
-                                        fit: BoxFit.fill,
-                                      )
-                                    : Image.file(
-                                        File(controller.logoImage.value
-                                            .toString()),
-                                        height: 120.h,
-                                        width: 120.w,
-                                        fit: BoxFit.fill,
-                                      ),
-                              ),
-                      ),
-                      const Spacer(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextCustom(
-                            title: "Upload the restaurant logo".tr,
-                            maxLine: 2,
-                            color: themeChange.isDarkTheme()
-                                ? AppThemeData.grey100
-                                : AppThemeData.grey900,
-                            fontFamily: FontFamily.regular,
-                          ),
-                          TextCustom(
-                            title: "image must be a .jpg, .jpeg".tr,
-                            maxLine: 1,
-                            fontSize: 12,
-                            color: AppThemeData.secondary300,
-                            fontFamily: FontFamily.light,
-                          ),
-                          TextCustom(
-                            title: "Logo size will be 120*120px".tr,
-                            maxLine: 1,
-                            fontSize: 12,
-                            color: themeChange.isDarkTheme()
-                                ? AppThemeData.grey400
-                                : AppThemeData.grey600,
-                            fontFamily: FontFamily.light,
-                          ),
-                          spaceH(),
-                          RoundShapeButton(
-                            titleWidget: TextCustom(
-                              title: "Browse Image".tr,
-                              fontSize: 14,
-                              color: themeChange.isDarkTheme()
-                                  ? AppThemeData.grey1000
-                                  : AppThemeData.grey50,
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffF1F5F9),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    "• .jpeg",
+                                    style: TextStyle(
+                                        color: Color(0xff45556C), fontSize: 12),
+                                  ),
+                                )
+                              ],
                             ),
-                            title: "",
-                            buttonColor: AppThemeData.primary300,
-                            buttonTextColor: AppThemeData.primaryWhite,
-                            onTap: () {
-                              controller.pickFile().then((value) {
-                                if (value != null) {
-                                  controller.logoImage.value = value;
-                                }
-                              });
-                            },
-                            size: Size(140.w, 42.h),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                ],
+                          ],
+                        )),
+                  ],
+                ),
               ),
             ),
           ),
-          bottomNavigationBar: Padding(
+          bottomNavigationBar: Container(
+            height: 110,
+            decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Color(0xffE2E8F0)))),
             padding: paddingEdgeInsets(vertical: 8),
-            child: RoundShapeButton(
-              title: "Next".tr,
-              buttonColor: areImagesUploaded
-                  ? AppThemeData.primary300
-                  : themeChange.isDarkTheme()
-                      ? AppThemeData.grey800
+            child: Column(
+              children: [
+                Spacer(),
+                GradientRoundShapeButton(
+                  buttonTextColor: areImagesUploaded
+                      ? AppThemeData.grey50
+                      : AppThemeData.grey500,
+                  title: "Next".tr,
+                  buttonColor: areImagesUploaded
+                      ? AppThemeData.primary300
                       : AppThemeData.grey200,
-              buttonTextColor: areImagesUploaded
-                  ? AppThemeData.grey50
-                  : AppThemeData.grey500,
-              onTap: () {
-                areImagesUploaded
-                    ? controller.nextStep()
-                    : ShowToastDialog.toast(
-                        "Please upload restaurant images.".tr);
-              },
-              size: Size(358.w, ScreenSize.height(6, context)),
+                  size: Size(Get.width, 52),
+                  gradientColors: !areImagesUploaded
+                      ? []
+                      : const [
+                          Color(0xff4F39F6),
+                          Color(0xff155DFC),
+                          Color(0xff155DFC),
+                        ],
+                  onTap: () {
+                    areImagesUploaded
+                        ? controller.nextStep()
+                        : ShowToastDialog.toast(
+                            "Please upload restaurant images.".tr);
+                  },
+                ),
+                Spacer(),
+                Text(
+                  "Please upload both images to continue",
+                  style: TextStyle(fontSize: 12, color: Color(0xff62748E)),
+                ),
+                Spacer(),
+              ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class CenterTitleDivider extends StatelessWidget {
+  final String title;
+  final Color textColor;
+  final Color dividerColor;
+
+  const CenterTitleDivider({
+    super.key,
+    required this.title,
+    this.textColor = const Color(0xFF667085),
+    this.dividerColor = const Color(0xFFE5E7EB),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        /// LEFT LINE
+        Expanded(
+          child: Divider(
+            color: dividerColor,
+            thickness: 1,
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        /// CENTER TEXT
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.normal,
+            color: textColor,
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        /// RIGHT LINE
+        Expanded(
+          child: Divider(
+            color: dividerColor,
+            thickness: 1,
+          ),
+        ),
+      ],
     );
   }
 }

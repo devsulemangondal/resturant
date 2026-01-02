@@ -145,7 +145,7 @@ class PriceDetailWidget extends GetView<AddMenuItemsScreenController> {
                               FilteringTextInputFormatter.allow(
                                   RegExp("[0-9]")),
                             ],
-                            onPress: () {},
+                          
                           ),
                           TextFieldWidget(
                             color: themeChange.isDarkTheme()
@@ -160,7 +160,7 @@ class PriceDetailWidget extends GetView<AddMenuItemsScreenController> {
                               FilteringTextInputFormatter.allow(
                                   RegExp("[0-9]")),
                             ],
-                            onPress: () {},
+                        
                           ),
                           Row(
                             children: [
@@ -177,7 +177,6 @@ class PriceDetailWidget extends GetView<AddMenuItemsScreenController> {
                                       RegExp("[0-9]")),
                                 ],
                                 controller: controller.discountController.value,
-                                onPress: () {},
                               ).expand(),
                               spaceW(width: 20),
                               Padding(
@@ -307,7 +306,7 @@ class PriceDetailWidget extends GetView<AddMenuItemsScreenController> {
               onTap: () {
                 if (formKey.currentState!.validate()) {
                   if (isPriceDetailsButtonEnabled) {
-                    controller.nextStep();
+                    // controller.nextStep();
                   }
                 }
               },

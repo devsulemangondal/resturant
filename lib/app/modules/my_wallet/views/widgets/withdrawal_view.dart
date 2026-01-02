@@ -114,7 +114,7 @@ class WithdrawalView extends StatelessWidget {
                           ? null
                           : "This field required".tr,
                       controller: controller.withdrawalAmountController,
-                      onPress: () {},
+                  
                       textInputType: TextInputType.numberWithOptions(
                           decimal: true, signed: true),
                       inputFormatters: <TextInputFormatter>[
@@ -210,7 +210,7 @@ class WithdrawalView extends StatelessWidget {
                     ),
                     TextFieldWidget(
                       controller: controller.withdrawalNoteController,
-                      onPress: () {},
+                  
                       enabled: true,
                       hintText: "Enter Note".tr,
                       validator: (value) => value != null && value.isNotEmpty

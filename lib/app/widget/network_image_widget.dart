@@ -37,6 +37,7 @@ class NetworkImageWidget extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? 0),
+      
       child: CachedNetworkImage(
         fit: fit ?? BoxFit.cover,
         height: height ?? ScreenSize.height(8, context),

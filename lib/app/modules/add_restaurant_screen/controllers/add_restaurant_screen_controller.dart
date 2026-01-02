@@ -26,10 +26,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddRestaurantScreenController extends GetxController {
   RxString isSelected = "".obs;
-  Rx<TextEditingController> restaurantNameController = TextEditingController().obs;
-  final List<TextEditingController> openingHoursController = List.generate(7, (_) => TextEditingController()).obs;
-  final List<TextEditingController> closingHoursController = List.generate(7, (_) => TextEditingController()).obs;
-  Rx<TextEditingController> restaurantAddressController = TextEditingController().obs;
+  Rx<TextEditingController> restaurantNameController =
+      TextEditingController().obs;
+  final List<TextEditingController> openingHoursController =
+      List.generate(7, (_) => TextEditingController()).obs;
+  final List<TextEditingController> closingHoursController =
+      List.generate(7, (_) => TextEditingController()).obs;
+  Rx<TextEditingController> restaurantAddressController =
+      TextEditingController().obs;
   Rx<LocationLatLng> locationLatLng = LocationLatLng().obs;
   Rx<RestaurantType> restaurantType = RestaurantType.veg.obs;
   TimeOfDay? openingTime;
@@ -39,13 +43,18 @@ class AddRestaurantScreenController extends GetxController {
   Rx<String> coverImage = "".obs;
   Rx<CuisineModel> selectedCuisine = CuisineModel().obs;
   RxList<CuisineModel> cuisineList = <CuisineModel>[].obs;
-  RxList<String> pageList = <String>["Upload Restaurant Cover and Logo", "Add The Restaurant Details", "Select Opening Hours"].obs;
+  RxList<String> pageList = <String>[
+    "Upload Restaurant Cover and Logo",
+    "Add The Restaurant Details",
+    "Select Opening Hours"
+  ].obs;
   Rx<String> editPage = "".obs;
   var currentStep = 0.obs;
   RxBool isTermsCondition = false.obs;
   RxBool isEdited = false.obs;
   RxBool isPasswordVisible = true.obs;
-  Rx<TextEditingController> packagingPriceController = TextEditingController().obs;
+  Rx<TextEditingController> packagingPriceController =
+      TextEditingController().obs;
   RxBool packagingFee = false.obs;
   RxString counCode = "+1".obs;
   RxString loginType = "".obs;
@@ -65,6 +74,9 @@ class AddRestaurantScreenController extends GetxController {
   Future<void> onInit() async {
     await getData();
     checkIfFieldsAreFilled();
+    restaurantNameController.value.addListener(checkIfFieldsAreFilled);
+    restaurantAddressController.value.addListener(checkIfFieldsAreFilled);
+    ever(selectedCuisine, (_) => checkIfFieldsAreFilled());
     super.onInit();
   }
 
@@ -82,14 +94,17 @@ class AddRestaurantScreenController extends GetxController {
     try {
       bool oneValid = false;
       for (int i = 0; i < 7; i++) {
-        if (daySwitches[i].value || openingHoursController[i].text.isNotEmpty || closingHoursController[i].text.isNotEmpty) {
+        if (daySwitches[i].value ||
+            openingHoursController[i].text.isNotEmpty ||
+            closingHoursController[i].text.isNotEmpty) {
           oneValid = true;
           break;
         }
       }
       isAllOpeningHoursSelected.value = oneValid;
     } catch (e, stack) {
-      developer.log("Error validating opening hours:", error: e, stackTrace: stack);
+      developer.log("Error validating opening hours:",
+          error: e, stackTrace: stack);
       isAllOpeningHoursSelected.value = false;
     }
   }
@@ -114,7 +129,10 @@ class AddRestaurantScreenController extends GetxController {
                 backgroundColor: Colors.white,
                 dialBackgroundColor: AppThemeData.grey300,
                 dialHandColor: AppThemeData.primary300,
-                dialTextColor: WidgetStateColor.resolveWith((states) => states.contains(WidgetState.selected) ? Colors.white : Colors.black),
+                dialTextColor: WidgetStateColor.resolveWith((states) =>
+                    states.contains(WidgetState.selected)
+                        ? Colors.white
+                        : Colors.black),
                 hourMinuteColor: AppThemeData.primary300,
                 hourMinuteTextColor: Colors.white,
                 entryModeIconColor: AppThemeData.primary300,
@@ -127,11 +145,13 @@ class AddRestaurantScreenController extends GetxController {
 
       if (picked != null && picked != openingHours[index].value) {
         openingHours[index].value = picked;
-        openingHoursController[index].text = Constant.formatTimeOfDayTo12Hour(picked);
+        openingHoursController[index].text =
+            Constant.formatTimeOfDayTo12Hour(picked);
         validateOpeningHours();
       }
     } catch (e, stack) {
-      developer.log("Error selecting opening hour:", error: e, stackTrace: stack);
+      developer.log("Error selecting opening hour:",
+          error: e, stackTrace: stack);
     }
   }
 
@@ -155,7 +175,10 @@ class AddRestaurantScreenController extends GetxController {
                 backgroundColor: Colors.white,
                 dialBackgroundColor: AppThemeData.grey300,
                 dialHandColor: AppThemeData.primary300,
-                dialTextColor: WidgetStateColor.resolveWith((states) => states.contains(WidgetState.selected) ? Colors.white : Colors.black),
+                dialTextColor: WidgetStateColor.resolveWith((states) =>
+                    states.contains(WidgetState.selected)
+                        ? Colors.white
+                        : Colors.black),
                 hourMinuteColor: AppThemeData.primary300,
                 hourMinuteTextColor: Colors.white,
                 entryModeIconColor: AppThemeData.primary300,
@@ -168,11 +191,13 @@ class AddRestaurantScreenController extends GetxController {
 
       if (picked != null && picked != closingHours[index].value) {
         closingHours[index].value = picked;
-        closingHoursController[index].text = Constant.formatTimeOfDayTo12Hour(picked);
+        closingHoursController[index].text =
+            Constant.formatTimeOfDayTo12Hour(picked);
         validateOpeningHours();
       }
     } catch (e, stack) {
-      developer.log("Error selecting closing hour:", error: e, stackTrace: stack);
+      developer.log("Error selecting closing hour:",
+          error: e, stackTrace: stack);
     }
   }
 
@@ -186,10 +211,13 @@ class AddRestaurantScreenController extends GetxController {
         String opening;
         String closing;
 
-        if (isOpen && openingHoursController[i].text.isNotEmpty && closingHoursController[i].text.isNotEmpty) {
+        if (isOpen &&
+            openingHoursController[i].text.isNotEmpty &&
+            closingHoursController[i].text.isNotEmpty) {
           opening = openingHoursController[i].text.trim();
           closing = closingHoursController[i].text.trim();
-        } else if (restaurantModel.value.openingHoursList != null && restaurantModel.value.openingHoursList!.length == 7) {
+        } else if (restaurantModel.value.openingHoursList != null &&
+            restaurantModel.value.openingHoursList!.length == 7) {
           opening = restaurantModel.value.openingHoursList![i].openingHours!;
           closing = restaurantModel.value.openingHoursList![i].closingHours!;
         } else {
@@ -205,7 +233,8 @@ class AddRestaurantScreenController extends GetxController {
         ));
       }
     } catch (e, stack) {
-      developer.log("Error in openingHoursEntries:", error: e, stackTrace: stack);
+      developer.log("Error in openingHoursEntries:",
+          error: e, stackTrace: stack);
     }
   }
 
@@ -237,7 +266,9 @@ class AddRestaurantScreenController extends GetxController {
 
   void checkIfFieldsAreFilled() {
     try {
-      if (restaurantNameController.value.text.isNotEmpty && restaurantAddressController.value.text.isNotEmpty && selectedCuisine.value.id != null) {
+      if (restaurantNameController.value.text.isNotEmpty &&
+          restaurantAddressController.value.text.isNotEmpty &&
+          selectedCuisine.value.id != null) {
         restaurantDetailButton.value = true;
       } else {
         restaurantDetailButton.value = false;
@@ -255,8 +286,10 @@ class AddRestaurantScreenController extends GetxController {
         restaurantModel.value = argumentData['restaurantModel'];
         logoImage.value = restaurantModel.value.logoImage.toString();
         coverImage.value = restaurantModel.value.coverImage.toString();
-        restaurantNameController.value.text = restaurantModel.value.vendorName.toString();
-        restaurantAddressController.value.text = restaurantModel.value.address!.address.toString();
+        restaurantNameController.value.text =
+            restaurantModel.value.vendorName.toString();
+        restaurantAddressController.value.text =
+            restaurantModel.value.address!.address.toString();
         landmark.value = restaurantModel.value.address!.landmark!;
         locality.value = restaurantModel.value.address!.locality!;
         locationLatLng.value = restaurantModel.value.address!.location!;
@@ -273,19 +306,28 @@ class AddRestaurantScreenController extends GetxController {
           selectedCuisine.value = cuisineList[index];
         }
 
-        if (restaurantModel.value.openingHoursList != null && restaurantModel.value.openingHoursList!.length >= 7) {
+        if (restaurantModel.value.openingHoursList != null &&
+            restaurantModel.value.openingHoursList!.length >= 7) {
           for (int i = 0; i < 7; i++) {
-            daySwitches[i].value = restaurantModel.value.openingHoursList![i].isOpen!;
-            openingHours[i].value = Constant.stringToTimeOfDay(restaurantModel.value.openingHoursList![i].openingHours!);
-            closingHours[i].value = Constant.stringToTimeOfDay(restaurantModel.value.openingHoursList![i].closingHours!);
-            openingHoursController[i].text = restaurantModel.value.openingHoursList![i].openingHours.toString();
-            closingHoursController[i].text = restaurantModel.value.openingHoursList![i].closingHours.toString();
+            daySwitches[i].value =
+                restaurantModel.value.openingHoursList![i].isOpen!;
+            openingHours[i].value = Constant.stringToTimeOfDay(
+                restaurantModel.value.openingHoursList![i].openingHours!);
+            closingHours[i].value = Constant.stringToTimeOfDay(
+                restaurantModel.value.openingHoursList![i].closingHours!);
+            openingHoursController[i].text = restaurantModel
+                .value.openingHoursList![i].openingHours
+                .toString();
+            closingHoursController[i].text = restaurantModel
+                .value.openingHoursList![i].closingHours
+                .toString();
           }
         }
 
         if (restaurantModel.value.packagingFee != null) {
           packagingFee.value = restaurantModel.value.packagingFee!.active!;
-          packagingPriceController.value.text = restaurantModel.value.packagingFee!.price.toString();
+          packagingPriceController.value.text =
+              restaurantModel.value.packagingFee!.price.toString();
         } else {
           packagingFee.value = false;
           packagingPriceController.value.clear();
@@ -310,7 +352,8 @@ class AddRestaurantScreenController extends GetxController {
           cuisineList.value = cuisineData;
         }
       } catch (e, stack) {
-        developer.log("Error fetching cuisine list:", error: e, stackTrace: stack);
+        developer.log("Error fetching cuisine list:",
+            error: e, stackTrace: stack);
       }
 
       try {
@@ -386,7 +429,8 @@ class AddRestaurantScreenController extends GetxController {
         permission = await Geolocator.requestPermission();
       }
       if (permission == LocationPermission.denied) {
-        ShowToastDialog.toast("You have to allow location permission to use your location".tr);
+        ShowToastDialog.toast(
+            "You have to allow location permission to use your location".tr);
       } else if (permission == LocationPermission.deniedForever) {
         showDialog(
           context: Get.context!,
@@ -405,20 +449,24 @@ class AddRestaurantScreenController extends GetxController {
   Future<void> saveData() async {
     try {
       ShowToastDialog.showLoader("Please Wait..".tr);
-      if (restaurantModel.value.id == null || restaurantModel.value.ownerId == null) {
+      if (restaurantModel.value.id == null ||
+          restaurantModel.value.ownerId == null) {
         restaurantModel.value.id = Constant.getUuid();
         restaurantModel.value.ownerId = Constant.ownerModel!.id;
       }
 
       restaurantModel.value.vendorName = restaurantNameController.value.text;
-      restaurantModel.value.searchKeywords = Constant.generateKeywords(restaurantNameController.value.text);
+      restaurantModel.value.searchKeywords =
+          Constant.generateKeywords(restaurantNameController.value.text);
 
       if (!Constant.hasValidUrl(logoImage.value)) {
-        restaurantModel.value.logoImage = await Constant.uploadRestaurantImage(logoImage.value, restaurantModel.value.id!);
+        restaurantModel.value.logoImage = await Constant.uploadRestaurantImage(
+            logoImage.value, restaurantModel.value.id!);
       }
 
       if (!Constant.hasValidUrl(coverImage.value)) {
-        restaurantModel.value.coverImage = await Constant.uploadRestaurantImage(coverImage.value, restaurantModel.value.id!);
+        restaurantModel.value.coverImage = await Constant.uploadRestaurantImage(
+            coverImage.value, restaurantModel.value.id!);
       }
 
       restaurantModel.value.cuisineId = selectedCuisine.value.id;
@@ -430,9 +478,12 @@ class AddRestaurantScreenController extends GetxController {
       restaurantModel.value.reviewCount = '0';
       restaurantModel.value.reviewSum = '0';
 
-      GeoFirePoint position = Geoflutterfire().point(latitude: locationLatLng.value.latitude!, longitude: locationLatLng.value.longitude!);
+      GeoFirePoint position = Geoflutterfire().point(
+          latitude: locationLatLng.value.latitude!,
+          longitude: locationLatLng.value.longitude!);
 
-      restaurantModel.value.position = Positions(geoPoint: position.geoPoint, geohash: position.hash);
+      restaurantModel.value.position =
+          Positions(geoPoint: position.geoPoint, geohash: position.hash);
 
       restaurantModel.value.address = AddAddressModel(
         address: restaurantAddressController.value.text,
@@ -442,12 +493,14 @@ class AddRestaurantScreenController extends GetxController {
       );
 
       restaurantModel.value.openingHoursList = entries;
-      restaurantModel.value.ownerFullName = Constant.ownerModel!.fullNameString();
-      restaurantModel.value.vendorType = restaurantType.value == RestaurantType.veg
-          ? "Veg"
-          : restaurantType.value == RestaurantType.nonVeg
-              ? "Non veg"
-              : "Both";
+      restaurantModel.value.ownerFullName =
+          Constant.ownerModel!.fullNameString();
+      restaurantModel.value.vendorType =
+          restaurantType.value == RestaurantType.veg
+              ? "Veg"
+              : restaurantType.value == RestaurantType.nonVeg
+                  ? "Non veg"
+                  : "Both";
 
       if (Constant.platFormFeeSettingModel!.packagingFeeActive == true) {
         restaurantModel.value.packagingFee = PackagingFeeModel(
@@ -461,7 +514,8 @@ class AddRestaurantScreenController extends GetxController {
         );
       }
 
-      bool isUpdate = await FireStoreUtils.updateRestaurant(restaurantModel.value);
+      bool isUpdate =
+          await FireStoreUtils.updateRestaurant(restaurantModel.value);
       if (isUpdate) {
         restaurantNameController.value.clear();
         restaurantAddressController.value.clear();
@@ -470,13 +524,19 @@ class AddRestaurantScreenController extends GetxController {
       Constant.ownerModel!.vendorId = restaurantModel.value.id;
       await FireStoreUtils.updateOwner(Constant.ownerModel!);
 
-      await EmailTemplateService.sendEmail(type: "restaurant_added", toEmail: Constant.ownerModel!.email.toString(), variables: {
-        'restaurant_name': restaurantModel.value.vendorName.toString(),
-        'name': "${Constant.ownerModel!.firstName} ${Constant.ownerModel!.lastName}",
-        'app_name': Constant.appName.value,
-        'restaurant_address': restaurantModel.value.address!.address.toString(),
-        'restaurant_phone': "${Constant.ownerModel!.countryCode} ${Constant.ownerModel!.phoneNumber}",
-      });
+      await EmailTemplateService.sendEmail(
+          type: "restaurant_added",
+          toEmail: Constant.ownerModel!.email.toString(),
+          variables: {
+            'restaurant_name': restaurantModel.value.vendorName.toString(),
+            'name':
+                "${Constant.ownerModel!.firstName} ${Constant.ownerModel!.lastName}",
+            'app_name': Constant.appName.value,
+            'restaurant_address':
+                restaurantModel.value.address!.address.toString(),
+            'restaurant_phone':
+                "${Constant.ownerModel!.countryCode} ${Constant.ownerModel!.phoneNumber}",
+          });
 
       Constant.vendorModel = restaurantModel.value;
       if (isEdited.value) {

@@ -47,9 +47,7 @@ class NoMenuItemsView extends StatelessWidget {
               title: "No Menu Items Yet".tr,
               fontSize: 18,
               fontFamily: FontFamily.bold,
-              color: themeChange.isDarkTheme()
-                  ? AppThemeData.grey200
-                  : AppThemeData.grey800,
+              color: AppThemeData.grey800,
             ),
             spaceH(height: 4),
             Padding(
@@ -61,9 +59,7 @@ class NoMenuItemsView extends StatelessWidget {
                 maxLine: 3,
                 fontSize: 14,
                 fontFamily: FontFamily.regular,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey400
-                    : AppThemeData.grey600,
+                color: AppThemeData.grey600,
               ),
             ),
             spaceH(height: 24),

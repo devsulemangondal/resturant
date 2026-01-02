@@ -15,7 +15,7 @@ class DarkThemeProvider with ChangeNotifier {
       _darkTheme = value;
       darkThemePreference.setDarkTheme(value);
       notifyListeners();
-    } catch (e,stack) {
+    } catch (e, stack) {
       if (kDebugMode) {
         developer.log('Error setting dark theme: $e', stackTrace: stack);
       }
@@ -24,6 +24,7 @@ class DarkThemeProvider with ChangeNotifier {
 
   bool isDarkTheme() {
     try {
+      return false;
       if (darkTheme == 0) {
         return true;
       } else if (darkTheme == 1) {
@@ -31,7 +32,7 @@ class DarkThemeProvider with ChangeNotifier {
       } else {
         return DarkThemeProvider().getSystemThem();
       }
-    } catch (e,stack) {
+    } catch (e, stack) {
       if (kDebugMode) {
         developer.log('Error determining dark theme: $e', stackTrace: stack);
       }
@@ -41,9 +42,10 @@ class DarkThemeProvider with ChangeNotifier {
 
   bool getSystemThem() {
     try {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      var brightness =
+          SchedulerBinding.instance.platformDispatcher.platformBrightness;
       return brightness == Brightness.dark;
-    } catch (e,stack) {
+    } catch (e, stack) {
       if (kDebugMode) {
         developer.log('Error getting system theme: $e', stackTrace: stack);
       }

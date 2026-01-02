@@ -41,39 +41,32 @@ class InPrepareOrderWidget extends StatelessWidget {
             body: controller.isLoading.value
                 ? Constant.loader()
                 : controller.preparingOrderList.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                    ? SizedBox(
+                        width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             spaceH(height: 24.h),
                             Image.asset(
-                              "assets/animation/no_order_in_preparation_animation.gif",
-                              height: 98,
-                              width: 98,
+                              "assets/images/no_new_orders.png",
+                              height: 190,
+                              width: 190,
                             ),
                             spaceH(height: 12),
-                            Padding(
-                                padding: paddingEdgeInsets(
-                                    horizontal: 48, vertical: 0),
-                                child: TextCustom(
-                                  title: "No Orders for Pickup".tr,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.bold,
-                                )),
+                            TextCustom(
+                              title: "No Orders In Preparation".tr,
+                              fontSize: 16,
+                              fontFamily: FontFamily.regular,
+                            ),
                             spaceH(height: 4.h),
-                            Padding(
-                              padding: paddingEdgeInsets(
-                                  horizontal: 48, vertical: 0),
-                              child: TextCustom(
-                                title:
-                                    "There are no orders available for pickup right now."
-                                        .tr,
-                                fontSize: 14,
-                                maxLine: 2,
-                              ),
+                            TextCustom(
+                              title:
+                                  "Orders being prepared will be displayed here."
+                                      .tr,
+                              fontSize: 14,
+                              maxLine: 2,
+                              fontFamily: FontFamily.regular,
                             ),
                             spaceH(height: 50.h),
                           ],

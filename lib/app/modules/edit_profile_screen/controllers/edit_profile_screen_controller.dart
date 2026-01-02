@@ -16,7 +16,8 @@ class EditProfileScreenController extends GetxController {
   Rx<TextEditingController> firstNameController = TextEditingController().obs;
   Rx<TextEditingController> lastNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
-  Rx<TextEditingController> mobileNumberController = TextEditingController().obs;
+  Rx<TextEditingController> mobileNumberController =
+      TextEditingController().obs;
   Rx<String?> countryCode = "+91".obs;
   Rx<bool> isLoading = false.obs;
   RxString profileImage = "".obs;
@@ -30,10 +31,13 @@ class EditProfileScreenController extends GetxController {
 
   Future<void> getData() async {
     try {
-      firstNameController.value.text = Constant.ownerModel!.firstName.toString();
+      firstNameController.value.text =
+          Constant.ownerModel!.firstName.toString();
       lastNameController.value.text = Constant.ownerModel!.lastName.toString();
       emailController.value.text = Constant.ownerModel!.email.toString();
-      mobileNumberController.value.text = Constant.ownerModel!.phoneNumber.toString();
+      mobileNumberController.value.text =
+          Constant.ownerModel!.phoneNumber.toString();
+      countryCode.value = Constant.ownerModel!.countryCode.toString();
       profileImage.value = Constant.ownerModel!.profileImage.toString();
     } catch (e, stack) {
       developer.log("Error loading data: $e", stackTrace: stack);
@@ -43,7 +47,8 @@ class EditProfileScreenController extends GetxController {
   Future<void> updateProfile() async {
     ShowToastDialog.showLoader("Please Wait..".tr);
     try {
-      if (profileImage.value.isNotEmpty && !Constant.hasValidUrl(profileImage.value)) {
+      if (profileImage.value.isNotEmpty &&
+          !Constant.hasValidUrl(profileImage.value)) {
         profileImage.value = await Constant.uploadImageToFireStorage(
           File(profileImage.value),
           "profileImage/${FireStoreUtils.getCurrentUid()}",
@@ -56,15 +61,19 @@ class EditProfileScreenController extends GetxController {
       Constant.ownerModel!.lastName = lastNameController.value.text;
       Constant.ownerModel!.email = emailController.value.text;
       Constant.ownerModel!.phoneNumber = mobileNumberController.value.text;
-      Constant.ownerModel!.searchNameKeywords = Constant.generateKeywords(Constant.ownerModel!.fullNameString());
-      Constant.ownerModel!.searchEmailKeywords = Constant.generateKeywords(emailController.value.text);
+      Constant.ownerModel!.searchNameKeywords =
+          Constant.generateKeywords(Constant.ownerModel!.fullNameString());
+      Constant.ownerModel!.countryCode = countryCode.value;
+      Constant.ownerModel!.searchEmailKeywords =
+          Constant.generateKeywords(emailController.value.text);
 
       await FireStoreUtils.updateOwner(Constant.ownerModel!).then((value) {
         firstNameController.value.clear();
         lastNameController.value.clear();
         emailController.value.clear();
         mobileNumberController.value.clear();
-        ProfileScreenController profileScreenController = Get.put(ProfileScreenController());
+        ProfileScreenController profileScreenController =
+            Get.put(ProfileScreenController());
         profileScreenController.getData();
         ShowToastDialog.toast("Saved successfully.".tr);
         Get.back();
@@ -79,7 +88,8 @@ class EditProfileScreenController extends GetxController {
   Future<void> pickFile({required ImageSource source}) async {
     isLoading.value = true;
     try {
-      XFile? image = await imagePicker.pickImage(source: source, imageQuality: 100);
+      XFile? image =
+          await imagePicker.pickImage(source: source, imageQuality: 100);
       if (image == null) return;
 
       Get.back();

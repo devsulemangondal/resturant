@@ -1,4 +1,3 @@
-
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +19,7 @@ class NotificationModel {
     this.title,
     this.description,
     this.orderId,
+    this.type,
     this.ownerId,
     this.customerId,
     this.driverId,

@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:restaurant/app/modules/add_restaurant_screen/views/add_restaurant_screen_view.dart';
 import 'package:restaurant/app/modules/restaurant_screen/controllers/restaurant_screen_controller.dart';
+import 'package:restaurant/app/widget/custom_app_bar.dart';
 import 'package:restaurant/app/widget/global_widgets.dart';
 import 'package:restaurant/app/widget/text_widget.dart';
 import 'package:restaurant/constant/constant.dart';
@@ -37,90 +38,18 @@ class NoRestaurantView extends StatelessWidget {
     return Container(
       width: Responsive.width(100, context),
       height: Responsive.height(100, context),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              stops: const [0.1, 0.3],
-              colors: themeChange.isDarkTheme()
-                  ? [const Color(0xff180202), const Color(0xff1C1C22)]
-                  : [const Color(0xffFDE7E7), const Color(0xffFAFAFA)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
+      decoration: BoxDecoration(color: Colors.white),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark, // Android → black
-            statusBarBrightness: Brightness.light, // iOS → black
-          ),
-          title: Row(
-            children: [
-              SizedBox(
-                height: 28,
-                width: 28,
-                child: SvgPicture.asset(
-                  "assets/images/logo.svg",
-                  color: AppThemeData.primary300,
-                ),
-              ),
-              spaceW(),
-              TextCustom(
-                title: Constant.appName.value,
-                fontSize: 20,
-                color: AppThemeData.primary300,
-                fontFamily: FontFamily.bold,
-              ),
-            ],
-          ),
-          actions: [
-            Container(
-              height: 36.h,
-              width: 36.w,
-              decoration: BoxDecoration(
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey900
-                      : AppThemeData.grey100,
-                  shape: BoxShape.circle),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SvgPicture.asset(
-                  "assets/icons/ic_wallet.svg",
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey200
-                      : AppThemeData.grey800,
-                ),
-              ),
-            ),
-            spaceW(),
-            Container(
-              height: 36.h,
-              width: 36.w,
-              decoration: BoxDecoration(
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey900
-                      : AppThemeData.grey100,
-                  shape: BoxShape.circle),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SvgPicture.asset(
-                  "assets/icons/ic_bell.svg",
-                  color: themeChange.isDarkTheme()
-                      ? AppThemeData.grey200
-                      : AppThemeData.grey800,
-                ),
-              ),
-            ),
-            spaceW()
-          ],
-        ),
         body: Container(
           color: Colors.transparent,
-          height: height ?? Responsive.height(75, context),
+          height: height ?? Responsive.height(100, context),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              CustomAppBar(),
+              Spacer(),
               Center(
                 child: Image.asset(
                   "assets/images/no_restaurant.png",
@@ -128,20 +57,21 @@ class NoRestaurantView extends StatelessWidget {
                   width: 140.0,
                 ),
               ),
+              SizedBox(
+                height: 32,
+              ),
               TextCustom(
                 title: "No Restaurants Found".tr,
-                fontSize: 18,
-                fontFamily: FontFamily.bold,
-                color: themeChange.isDarkTheme()
-                    ? AppThemeData.grey200
-                    : AppThemeData.grey800,
+                fontSize: 16,
+                fontFamily: FontFamily.regular,
+                color: Color(0xff1D293D),
               ),
-              spaceH(height: 4),
+              spaceH(height: 10),
               Padding(
                 padding: paddingEdgeInsets(horizontal: 53.w, vertical: 0),
                 child: TextCustom(
                   title:
-                      "Looks like there are no restaurants listed yet. Start by adding your restaurant to get started!"
+                      "You haven't added any restaurants yet. Start by adding your first restaurant to manage orders."
                           .tr,
                   maxLine: 3,
                   fontSize: 14,
@@ -152,44 +82,41 @@ class NoRestaurantView extends StatelessWidget {
                 ),
               ),
               spaceH(height: 4),
-              RichText(
-                text: TextSpan(
-                    text: 'Click add button to '.tr,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: AppThemeData.primary300,
-                        fontFamily: FontFamily.regular),
-                    children: [
-                      TextSpan(
-                        text: 'add the restaurant'.tr,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: AppThemeData.primary300,
-                            fontFamily: FontFamily.regular,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap =
-                              () => Get.to(() => AddRestaurantScreenView()),
-                      )
-                    ]),
+              InkWell(
+                onTap: () => Get.to(() => AddRestaurantScreenView()),
+                child: Text(
+                  'Click add button to add the restaurant'.tr,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppThemeData.accent300,
+                      fontFamily: FontFamily.regular,
+                      decorationColor: AppThemeData.accent300,
+                      decoration: TextDecoration.underline),
+                ),
               ),
-              spaceH(height: 24),
+              Spacer(),
               Center(
-                child: RoundShapeButton(
-                    size: Size(358.w, ScreenSize.height(6, context)),
-                    title: "Add Restaurant".tr,
-                    buttonColor: AppThemeData.primary300,
-                    buttonTextColor: AppThemeData.textBlack,
-                    onTap: () {
-                      Get.to(() => AddRestaurantScreenView())!.then(
-                        (value) async {
-                          if (value == true) {
-                            await controller.getData();
-                          }
-                        },
-                      );
-                    }),
+                child: GradientRoundShapeButton(
+                  size: Size(358.w, ScreenSize.height(6, context)),
+                  title: "Add Restaurant".tr,
+                  onTap: () {
+                    Get.to(() => AddRestaurantScreenView())!.then(
+                      (value) async {
+                        if (value == true) {
+                          await controller.getData();
+                        }
+                      },
+                    );
+                  },
+                  gradientColors: [
+                    Color(0xff4F39F6),
+                    Color(0xff155DFC),
+                  ],
+                ),
               ),
+              SizedBox(
+                height: 14,
+              )
             ],
           ),
         ),

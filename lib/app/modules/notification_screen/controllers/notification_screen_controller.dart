@@ -21,6 +21,18 @@ class NotificationScreenController extends GetxController {
   static FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   var groupedNotifications = <String, List<NotificationModel>>{}.obs;
+  RxSet<String> readNotificationIds = <String>{}.obs;
+  List<NotificationModel> get unreadNotifications => notificationList
+      .where((n) => !readNotificationIds.contains(n.id))
+      .toList();
+
+  void markAllAsRead() {
+    for (var n in notificationList) {
+      if (n.id != null) {
+        readNotificationIds.add(n.id!);
+      }
+    }
+  }
 
   @override
   void onInit() {
@@ -73,7 +85,8 @@ class NotificationScreenController extends GetxController {
 
     for (var notification in notificationList) {
       if (notification.createdAt != null) {
-        String formattedDate = DateFormat('dd/MM/yyyy').format(notification.createdAt!.toDate());
+        String formattedDate =
+            DateFormat('dd/MM/yyyy').format(notification.createdAt!.toDate());
         tempGroupedNotifications.putIfAbsent(formattedDate, () => []);
         tempGroupedNotifications[formattedDate]!.add(notification);
       }
@@ -84,7 +97,10 @@ class NotificationScreenController extends GetxController {
 
   Future<void> deleteNotification(NotificationModel notification) async {
     try {
-      await fireStore.collection(CollectionName.notification).doc(notification.id).delete();
+      await fireStore
+          .collection(CollectionName.notification)
+          .doc(notification.id)
+          .delete();
 
       groupNotificationsByDate();
     } catch (e, stack) {

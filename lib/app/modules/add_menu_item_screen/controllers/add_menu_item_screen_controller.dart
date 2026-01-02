@@ -23,18 +23,26 @@ import 'package:restaurant/utils/api_services.dart';
 import 'package:restaurant/utils/fire_store_utils.dart';
 
 class AddMenuItemsScreenController extends GetxController {
+  RxBool isAddingVariant = false.obs;
+  RxBool isAddingAddon = false.obs;
+
   RxString isSelected = "".obs;
   Rx<TextEditingController> itemNameController = TextEditingController().obs;
-  Rx<TextEditingController> itemDescriptionController = TextEditingController().obs;
-  Rx<TextEditingController> preparationTimeController = TextEditingController().obs;
+  Rx<TextEditingController> itemDescriptionController =
+      TextEditingController().obs;
+  Rx<TextEditingController> preparationTimeController =
+      TextEditingController().obs;
   Rx<TextEditingController> priceController = TextEditingController().obs;
   Rx<TextEditingController> addonsNameController = TextEditingController().obs;
   Rx<TextEditingController> addonsPriceController = TextEditingController().obs;
   Rx<TextEditingController> discountController = TextEditingController().obs;
   Rx<TextEditingController> maxQuantityController = TextEditingController().obs;
-  Rx<TextEditingController> variationNameController = TextEditingController().obs;
-  RxList<TextEditingController> optionNameController = <TextEditingController>[].obs;
-  RxList<TextEditingController> optionPriceController = <TextEditingController>[].obs;
+  Rx<TextEditingController> variationNameController =
+      TextEditingController().obs;
+  RxList<TextEditingController> optionNameController =
+      <TextEditingController>[].obs;
+  RxList<TextEditingController> optionPriceController =
+      <TextEditingController>[].obs;
   RxBool itemInStock = true.obs;
   RxBool addonsInStock = true.obs;
   RxBool variationInStock = true.obs;
@@ -45,15 +53,17 @@ class AddMenuItemsScreenController extends GetxController {
   RxList<CategoryModel> categoryList = <CategoryModel>[].obs;
   Rx<SubCategoryModel> selectedSubCategory = SubCategoryModel().obs;
   RxList<SubCategoryModel> subCategoryList = <SubCategoryModel>[].obs;
-  RxList<SubCategoryModel> subCategoryWithoutCategoryList = <SubCategoryModel>[].obs;
+  RxList<SubCategoryModel> subCategoryWithoutCategoryList =
+      <SubCategoryModel>[].obs;
   RxList<AddonsModel> addonsList = <AddonsModel>[].obs;
   RxList<VariationModel> variationList = <VariationModel>[].obs;
   RxList<String> tagsList = <String>[].obs;
   RxString selectedTags = "".obs;
   List<String> discountType = ["Fixed", "Percentage"];
   RxString selectedDiscountType = "".obs;
-  RxList<String> pageList = <String>["Add Menu Item", "Add Price Details", "Add Addons Details", "Add Variations Details", "Select Tags"].obs;
-  var currentStep = 0.obs;
+  // RxString selectedDiscountType = "".obs; // Removed unused or keep if needed
+  // RxList<String> pageList = <String>["Add Menu Item", "Add Price Details", "Add Addons Details", "Add Variations Details", "Select Tags"].obs; // Removed
+  // var currentStep = 0.obs; // Removed
   RxString productModelId = "".obs;
   Rx<ProductModel> productModel = ProductModel().obs;
   Rx<bool> isLoading = false.obs;
@@ -78,7 +88,8 @@ class AddMenuItemsScreenController extends GetxController {
         );
       }
     } catch (e, stack) {
-      developer.log("Error setting option list from controller:", error: e, stackTrace: stack);
+      developer.log("Error setting option list from controller:",
+          error: e, stackTrace: stack);
     }
     return optionList;
   }
@@ -89,11 +100,14 @@ class AddMenuItemsScreenController extends GetxController {
       optionPriceController.value = [];
 
       for (var option in optionList) {
-        optionNameController.add(TextEditingController(text: option.name.toString()));
-        optionPriceController.add(TextEditingController(text: option.price.toString()));
+        optionNameController
+            .add(TextEditingController(text: option.name.toString()));
+        optionPriceController
+            .add(TextEditingController(text: option.price.toString()));
       }
     } catch (e, stack) {
-      developer.log("Error setting option controllers from list:", error: e, stackTrace: stack);
+      developer.log("Error setting option controllers from list:",
+          error: e, stackTrace: stack);
     }
     update();
   }
@@ -103,7 +117,8 @@ class AddMenuItemsScreenController extends GetxController {
       optionNameController.add(TextEditingController());
       optionPriceController.add(TextEditingController());
     } catch (e, stack) {
-      developer.log("Error adding option controller:", error: e, stackTrace: stack);
+      developer.log("Error adding option controller:",
+          error: e, stackTrace: stack);
     }
     update();
   }
@@ -115,7 +130,8 @@ class AddMenuItemsScreenController extends GetxController {
         optionPriceController.removeAt(optionPriceController.length - 1);
       }
     } catch (e, stack) {
-      developer.log("Error removing option controller:", error: e, stackTrace: stack);
+      developer.log("Error removing option controller:",
+          error: e, stackTrace: stack);
     }
     update();
   }
@@ -147,7 +163,8 @@ class AddMenuItemsScreenController extends GetxController {
 
   bool areAllDetailsFilledOfAddonsDetails() {
     try {
-      return addonsNameController.value.text.isNotEmpty && addonsPriceController.value.text.isNotEmpty;
+      return addonsNameController.value.text.isNotEmpty &&
+          addonsPriceController.value.text.isNotEmpty;
     } catch (e, stack) {
       developer.log("Error All Details Filled:", error: e, stackTrace: stack);
       return false;
@@ -164,16 +181,19 @@ class AddMenuItemsScreenController extends GetxController {
           categoryList.value = categories;
         }
       } catch (e, stack) {
-        developer.log("Error fetching category list:", error: e, stackTrace: stack);
+        developer.log("Error fetching category list:",
+            error: e, stackTrace: stack);
       }
 
       try {
-        final subCategories = await FireStoreUtils.getSubCategoryListWithoutCategoryId();
+        final subCategories =
+            await FireStoreUtils.getSubCategoryListWithoutCategoryId();
         if (subCategories != null) {
           subCategoryWithoutCategoryList.value = subCategories;
         }
       } catch (e, stack) {
-        developer.log("Error fetching category list:", error: e, stackTrace: stack);
+        developer.log("Error fetching category list:",
+            error: e, stackTrace: stack);
       }
 
       try {
@@ -198,7 +218,8 @@ class AddMenuItemsScreenController extends GetxController {
         productModelId.value = argumentData['productModelId'];
 
         try {
-          final value = await FireStoreUtils.getProduct(productModelId.toString());
+          final value =
+              await FireStoreUtils.getProduct(productModelId.toString());
           if (value != null) {
             productModel.value = value;
             itemNameController.value.text = value.productName ?? '';
@@ -207,16 +228,19 @@ class AddMenuItemsScreenController extends GetxController {
             discountController.value.text = value.discount ?? '';
             maxQuantityController.value.text = value.maxQuantity ?? '';
             itemInStock.value = value.inStock ?? false;
-            foodType.value = value.foodType == "Veg" ? FoodType.veg : FoodType.nonVeg;
+            foodType.value =
+                value.foodType == "Veg" ? FoodType.veg : FoodType.nonVeg;
             itemImage.value = value.productImage ?? '';
 
-            int index = categoryList.indexWhere((element) => element.id == value.categoryId);
+            int index = categoryList
+                .indexWhere((element) => element.id == value.categoryId);
             if (index != -1) {
               selectedCategory.value = categoryList[index];
               await getSubCategory(selectedCategory.value.id.toString());
             }
 
-            int index1 = subCategoryList.indexWhere((element) => element.id == value.subCategoryId);
+            int index1 = subCategoryList
+                .indexWhere((element) => element.id == value.subCategoryId);
             if (index1 != -1) {
               selectedSubCategory.value = subCategoryList[index1];
             }
@@ -228,7 +252,8 @@ class AddMenuItemsScreenController extends GetxController {
             preparationTimeController.value.text = value.preparationTime ?? '';
           }
         } catch (e, stack) {
-          developer.log("Error fetching product data:", error: e, stackTrace: stack);
+          developer.log("Error fetching product data:",
+              error: e, stackTrace: stack);
         }
       }
     } finally {
@@ -247,24 +272,48 @@ class AddMenuItemsScreenController extends GetxController {
     }
   }
 
-  void nextStep() {
-    try {
-      if (currentStep.value < pageList.length - 1) {
-        currentStep.value++;
-      }
-    } catch (e, stack) {
-      developer.log("Error in nextStep:", error: e, stackTrace: stack);
+  bool validate() {
+    if (itemImage.value.isEmpty) {
+      ShowToastDialog.toast("Please upload an item image".tr);
+      return false;
     }
-  }
-
-  void previousStep() {
-    try {
-      if (currentStep.value > 0) {
-        currentStep.value--;
-      }
-    } catch (e, stack) {
-      developer.log("Error in previousStep:", error: e, stackTrace: stack);
+    if (itemNameController.value.text.isEmpty) {
+      ShowToastDialog.toast("Please enter item name".tr);
+      return false;
     }
+    if (itemDescriptionController.value.text.isEmpty) {
+      ShowToastDialog.toast("Please enter item description".tr);
+      return false;
+    }
+    if (selectedCategory.value.id == null) {
+      ShowToastDialog.toast("Please select a category".tr);
+      return false;
+    }
+    if (selectedSubCategory.value.id == null) {
+      ShowToastDialog.toast("Please select a sub-category".tr);
+      return false;
+    }
+    if (preparationTimeController.value.text.isEmpty) {
+      ShowToastDialog.toast("Please enter preparation time".tr);
+      return false;
+    }
+    if (priceController.value.text.isEmpty) {
+      ShowToastDialog.toast("Please enter price".tr);
+      return false;
+    }
+    // if (selectedDiscountType.value.isEmpty) {
+    //   ShowToastDialog.toast("Please select discount type".tr);
+    //   return false;
+    // }54321`tre4321`
+    // if (discountController.value.text.isEmpty) {
+    //   ShowToastDialog.toast("Please enter discount".tr);
+    //   return false;
+    // }
+    if (maxQuantityController.value.text.isEmpty) {
+      ShowToastDialog.toast("Please enter max purchase quantity".tr);
+      return false;
+    }
+    return true;
   }
 
   Future<String?> pickFile() async {
@@ -308,7 +357,8 @@ class AddMenuItemsScreenController extends GetxController {
   Future<void> saveData() async {
     ShowToastDialog.showLoader("Please Wait..".tr);
     try {
-      if (productModel.value.id == null || productModel.value.vendorId == null) {
+      if (productModel.value.id == null ||
+          productModel.value.vendorId == null) {
         productModel.value.id = Constant.getUuid();
         productModel.value.vendorId = Constant.vendorModel!.id;
       }
@@ -318,7 +368,8 @@ class AddMenuItemsScreenController extends GetxController {
       productModel.value.categoryModel = selectedCategory.value;
       productModel.value.subCategoryId = selectedSubCategory.value.id;
       productModel.value.subCategoryModel = selectedSubCategory.value;
-      productModel.value.searchKeywords = Constant.generateKeywords(itemNameController.value.text);
+      productModel.value.searchKeywords =
+          Constant.generateKeywords(itemNameController.value.text);
       if (!Constant.hasValidUrl(itemImage.value)) {
         productModel.value.productImage = await Constant.uploadRestaurantImage(
           itemImage.value,
@@ -349,7 +400,8 @@ class AddMenuItemsScreenController extends GetxController {
 
       bool isUpdate = await FireStoreUtils.updateProduct(productModel.value);
       if (isUpdate) {
-        MenuScreenController menuScreenController = Get.put(MenuScreenController());
+        MenuScreenController menuScreenController =
+            Get.put(MenuScreenController());
         await menuScreenController.getData();
         Get.back();
       }
@@ -367,14 +419,19 @@ class AddMenuItemsScreenController extends GetxController {
     }
     try {
       generateVariationDataGenerated.value = true;
-      final jsonString = await ApiServices().generateBasicInfo(itemNameController.value.text, categoryList, subCategoryWithoutCategoryList);
+      final jsonString = await ApiServices().generateBasicInfo(
+          itemNameController.value.text,
+          categoryList,
+          subCategoryWithoutCategoryList);
       final Map<String, dynamic> decoded = jsonDecode(jsonString);
       log("Generated Product ::::::::::::::::: $decoded");
       itemNameController.value.text = decoded['itemName'];
       itemDescriptionController.value.text = decoded['description'];
-      selectedCategory.value = categoryList.firstWhere((element) => element.id == decoded['categoryModel']['id']);
+      selectedCategory.value = categoryList.firstWhere(
+          (element) => element.id == decoded['categoryModel']['id']);
       await getSubCategory(selectedCategory.value.id.toString());
-      selectedSubCategory.value = subCategoryList.firstWhere((element) => element.id == decoded['subCategoryModel']['id']);
+      selectedSubCategory.value = subCategoryList.firstWhere(
+          (element) => element.id == decoded['subCategoryModel']['id']);
     } catch (e, stack) {
       developer.log("Error generating product:", error: e, stackTrace: stack);
       ShowToastDialog.toast("Failed to generate product details: $e");
@@ -408,9 +465,12 @@ class AddMenuItemsScreenController extends GetxController {
     try {
       generateVariationDataGenerated.value = true;
 
-      final jsonString = await ApiServices().generateAddons(itemNameController.value.text);
+      final jsonString =
+          await ApiServices().generateAddons(itemNameController.value.text);
       final List<dynamic> decoded = jsonDecode(jsonString);
-      final generatedAddons = decoded.map((addon) => AddonsModel.fromJson(addon as Map<String, dynamic>)).toList();
+      final generatedAddons = decoded
+          .map((addon) => AddonsModel.fromJson(addon as Map<String, dynamic>))
+          .toList();
       addonsList.value = generatedAddons;
       log("Addons::::::::::::::::::::::${generatedAddons.toString()}");
     } catch (e, stack) {
@@ -424,7 +484,8 @@ class AddMenuItemsScreenController extends GetxController {
   Future<void> generateVariations() async {
     try {
       generateVariationDataGenerated.value = true;
-      final jsonString = await ApiServices().generateVariations(itemNameController.value.text);
+      final jsonString =
+          await ApiServices().generateVariations(itemNameController.value.text);
       final cleaned = jsonString.trim();
       final jsonStart = cleaned.indexOf('[');
       final jsonEnd = cleaned.lastIndexOf(']');
@@ -433,7 +494,9 @@ class AddMenuItemsScreenController extends GetxController {
       }
       final validJson = cleaned.substring(jsonStart, jsonEnd + 1);
       final List<dynamic> decoded = jsonDecode(validJson);
-      final generateVariation = decoded.map((v) => VariationModel.fromJson(v as Map<String, dynamic>)).toList();
+      final generateVariation = decoded
+          .map((v) => VariationModel.fromJson(v as Map<String, dynamic>))
+          .toList();
       variationList.value = generateVariation;
       log("variationList::::::::::::::::::::::${generateVariation.toString()}");
     } catch (e, stack) {

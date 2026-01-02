@@ -95,13 +95,15 @@ class Constant {
     }
   }
 
-  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   static final Random _rnd = Random();
 
   static String getRandomString(int length) {
     try {
       return String.fromCharCodes(
-        Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))),
+        Iterable.generate(
+            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))),
       );
     } catch (e, stack) {
       developer.log("Error Random String", error: e, stackTrace: stack);
@@ -125,7 +127,8 @@ class Constant {
     }
   }
 
-  static String calculateReview({required String? reviewCount, required String? reviewSum}) {
+  static String calculateReview(
+      {required String? reviewCount, required String? reviewSum}) {
     try {
       if (reviewCount == "0.0" && reviewSum == "0.0") {
         return "0.0";
@@ -144,12 +147,15 @@ class Constant {
 
   static String maskMobileNumber({String? mobileNumber, String? countryCode}) {
     try {
-      if (mobileNumber == null || countryCode == null || mobileNumber.length < 4) {
+      if (mobileNumber == null ||
+          countryCode == null ||
+          mobileNumber.length < 4) {
         return "";
       }
       String firstTwoDigits = mobileNumber.substring(0, 2);
       String lastTwoDigits = mobileNumber.substring(mobileNumber.length - 2);
-      String maskedNumber = firstTwoDigits + 'x' * (mobileNumber.length - 4) + lastTwoDigits;
+      String maskedNumber =
+          firstTwoDigits + 'x' * (mobileNumber.length - 4) + lastTwoDigits;
 
       return "$countryCode $maskedNumber";
     } catch (e, stack) {
@@ -169,7 +175,8 @@ class Constant {
       }
       String username = parts[0];
       String domain = parts[1];
-      String maskedUsername = username.substring(0, 2) + 'x' * (username.length - 2);
+      String maskedUsername =
+          username.substring(0, 2) + 'x' * (username.length - 2);
       return '$maskedUsername@$domain';
     } catch (e, stack) {
       developer.log("Error Mask Email:", error: e, stackTrace: stack);
@@ -177,33 +184,40 @@ class Constant {
     }
   }
 
-  static Padding showFoodType({required String name}) {
+  static Container showFoodType({required String name}) {
     try {
       final themeChange = Provider.of<DarkThemeProvider>(Get.context!);
 
-      return Padding(
-        padding: paddingEdgeInsets(horizontal: 0, vertical: 8),
-        child: Row(
-          children: name == "Both"
-              ? [
-                  _buildFoodTypeIcon(true, themeChange),
-                  spaceW(width: 4),
-                  _buildFoodTypeLabel("Veg.".tr, true, themeChange),
-                  spaceW(width: 4),
-                  _buildFoodTypeIcon(false, themeChange),
-                  spaceW(width: 4),
-                  _buildFoodTypeLabel("Non veg".tr, false, themeChange),
-                ]
-              : [
-                  _buildFoodTypeIcon(name == "Veg", themeChange),
-                  spaceW(width: 4),
-                  _buildFoodTypeLabel(name == "Veg" ? "Veg.".tr : "Non veg".tr, name == "Veg", themeChange),
-                ],
+      return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Color(0xffC6D2FF)),
+        child: Padding(
+          padding: paddingEdgeInsets(horizontal: 8, vertical: 2),
+          child: Row(
+            children: name == "Both"
+                ? [
+                    _buildFoodTypeIcon(true, themeChange),
+                    spaceW(width: 4),
+                    _buildFoodTypeLabel("Veg.".tr, true, themeChange),
+                    spaceW(width: 4),
+                    _buildFoodTypeIcon(false, themeChange),
+                    spaceW(width: 4),
+                    _buildFoodTypeLabel("Non veg".tr, false, themeChange),
+                  ]
+                : [
+                    _buildFoodTypeIcon(name == "Veg", themeChange),
+                    spaceW(width: 4),
+                    _buildFoodTypeLabel(
+                        name == "Veg" ? "Veg.".tr : "Non veg".tr,
+                        name == "Veg",
+                        themeChange),
+                  ],
+          ),
         ),
       );
     } catch (e, stack) {
       developer.log("Error Show Food Type:", error: e, stackTrace: stack);
-      return Padding(
+      return Container(
         padding: paddingEdgeInsets(horizontal: 0, vertical: 8),
         child: Text(
           name,
@@ -217,38 +231,25 @@ class Constant {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+        color: Color(0xff432DD7),
       ),
-      height: 16.h,
-      width: 16.w,
-      child: Center(
-        child: Builder(
-          builder: (_) {
-            try {
-              return SvgPicture.asset(
-                "assets/icons/ic_food_type.svg",
-                color: isVeg ? (themeChange.isDarkTheme() ? AppThemeData.success200 : AppThemeData.success400) : AppThemeData.danger300,
-              );
-            } catch (e, stack) {
-              developer.log("Error Build Food Type Icon:", error: e, stackTrace: stack);
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-      ),
+      height: 8.h,
+      width: 8.w,
     );
   }
 
-  static Widget _buildFoodTypeLabel(String title, bool isVeg, DarkThemeProvider themeChange) {
+  static Widget _buildFoodTypeLabel(
+      String title, bool isVeg, DarkThemeProvider themeChange) {
     try {
       return TextCustom(
         title: title,
         fontSize: 16,
         fontFamily: FontFamily.medium,
-        color: isVeg ? (themeChange.isDarkTheme() ? AppThemeData.success200 : AppThemeData.success400) : AppThemeData.danger300,
+        color: Color(0xff432DD7),
       );
     } catch (e, stack) {
-      developer.log("Error Build Food Type Label:", error: e, stackTrace: stack);
+      developer.log("Error Build Food Type Label:",
+          error: e, stackTrace: stack);
       return const SizedBox.shrink();
     }
   }
@@ -264,26 +265,31 @@ class Constant {
     }
   }
 
-  static double calculateAdminCommission({String? amount, AdminCommission? adminCommission}) {
+  static double calculateAdminCommission(
+      {String? amount, AdminCommission? adminCommission}) {
     try {
       double taxAmount = 0.0;
       if (adminCommission != null && adminCommission.active == true) {
         if (adminCommission.isFix == true) {
           taxAmount = double.parse(adminCommission.value.toString());
         } else {
-          taxAmount = (double.parse(amount.toString()) * double.parse(adminCommission.value!.toString())) / 100;
+          taxAmount = (double.parse(amount.toString()) *
+                  double.parse(adminCommission.value!.toString())) /
+              100;
         }
       }
       return taxAmount;
     } catch (e, stack) {
-      developer.log("Error Calculate Admin Commission:", error: e, stackTrace: stack);
+      developer.log("Error Calculate Admin Commission:",
+          error: e, stackTrace: stack);
       return 0.0;
     }
   }
 
   static double amountBeforeTax(OrderModel bookingModel) {
     try {
-      return (double.parse(bookingModel.subTotal ?? '0.0') - double.parse((bookingModel.discount ?? '0.0').toString()));
+      return (double.parse(bookingModel.subTotal ?? '0.0') -
+          double.parse((bookingModel.discount ?? '0.0').toString()));
     } catch (e, stack) {
       developer.log("Error Amount Before Tax:", error: e, stackTrace: stack);
       return 0.0;
@@ -297,7 +303,9 @@ class Constant {
         if (taxModel.isFix == true) {
           taxAmount = double.parse(taxModel.value.toString());
         } else {
-          taxAmount = (double.parse(amount.toString()) * double.parse(taxModel.value!.toString())) / 100;
+          taxAmount = (double.parse(amount.toString()) *
+                  double.parse(taxModel.value!.toString())) /
+              100;
         }
       }
       return taxAmount;
@@ -309,13 +317,17 @@ class Constant {
 
   static double calculateFinalAmount(OrderModel bookingModel) {
     try {
-      double deliveryCharge = double.parse(bookingModel.deliveryCharge ?? '0.0');
-      double platformFee = double.tryParse(bookingModel.platFormFee ?? '0.0') ?? 0.0;
+      double deliveryCharge =
+          double.parse(bookingModel.deliveryCharge ?? '0.0');
+      double platformFee =
+          double.tryParse(bookingModel.platFormFee ?? '0.0') ?? 0.0;
       double deliveryTip = double.parse(bookingModel.deliveryTip ?? '0.0');
       double packagingFee = double.parse(bookingModel.packagingFee ?? '0.0');
 
-      final double subTotal = double.tryParse(bookingModel.subTotal ?? '0') ?? 0.0;
-      final double discount = double.tryParse(bookingModel.discount?.toString() ?? '0') ?? 0.0;
+      final double subTotal =
+          double.tryParse(bookingModel.subTotal ?? '0') ?? 0.0;
+      final double discount =
+          double.tryParse(bookingModel.discount?.toString() ?? '0') ?? 0.0;
 
       double taxAmount = 0.0;
       for (var element in (bookingModel.taxList ?? [])) {
@@ -326,7 +338,9 @@ class Constant {
       }
 
       double deliveryTaxAmount = 0.0;
-      if (bookingModel.deliveryCharge != null && bookingModel.deliveryCharge != "0" && bookingModel.deliveryCharge != "0.0") {
+      if (bookingModel.deliveryCharge != null &&
+          bookingModel.deliveryCharge != "0" &&
+          bookingModel.deliveryCharge != "0.0") {
         for (var element in (bookingModel.deliveryTaxList ?? [])) {
           deliveryTaxAmount += Constant.calculateTax(
             amount: deliveryCharge.toString(),
@@ -336,7 +350,9 @@ class Constant {
       }
 
       double packagingTaxAmount = 0.0;
-      if (bookingModel.packagingFee != null && bookingModel.packagingFee != "0" && bookingModel.packagingFee != "0.0") {
+      if (bookingModel.packagingFee != null &&
+          bookingModel.packagingFee != "0" &&
+          bookingModel.packagingFee != "0.0") {
         for (var element in (bookingModel.packagingTaxList ?? [])) {
           packagingTaxAmount += Constant.calculateTax(
             amount: packagingFee.toString(),
@@ -345,7 +361,14 @@ class Constant {
         }
       }
 
-      double finalAmount = (subTotal - discount) + taxAmount + deliveryCharge + deliveryTaxAmount + packagingFee + packagingTaxAmount + platformFee + deliveryTip;
+      double finalAmount = (subTotal - discount) +
+          taxAmount +
+          deliveryCharge +
+          deliveryTaxAmount +
+          packagingFee +
+          packagingTaxAmount +
+          platformFee +
+          deliveryTip;
 
       return double.parse(
         finalAmount.toStringAsFixed(Constant.currencyModel!.decimalDigits!),
@@ -361,7 +384,8 @@ class Constant {
 
   static String? validateEmail(String? value) {
     try {
-      String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+      String pattern =
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regExp = RegExp(pattern);
       if (value == null || value.isEmpty) {
         return "Email is Required".tr;
@@ -397,7 +421,9 @@ class Constant {
           message,
           style: TextStyle(
             fontSize: 18,
-            color: themeChange.isDarkTheme() ? AppThemeData.grey200 : AppThemeData.grey800,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey200
+                : AppThemeData.grey800,
           ),
         ),
       );
@@ -412,19 +438,24 @@ class Constant {
     }
   }
 
-  static Future<String> uploadImageToFireStorage(File image, String filePath, String fileName) async {
+  static Future<String> uploadImageToFireStorage(
+      File image, String filePath, String fileName) async {
     try {
-      Reference upload = FirebaseStorage.instance.ref().child('$filePath/$fileName');
+      Reference upload =
+          FirebaseStorage.instance.ref().child('$filePath/$fileName');
       UploadTask uploadTask = upload.putFile(image);
-      var downloadUrl = await (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
+      var downloadUrl =
+          await (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
       return downloadUrl.toString();
     } catch (e, stack) {
-      developer.log("Error Upload Firebase Image:", error: e, stackTrace: stack);
+      developer.log("Error Upload Firebase Image:",
+          error: e, stackTrace: stack);
       return '';
     }
   }
 
-  static Future<List<String>> uploadProductImage(List<String> images, String restaurantId) async {
+  static Future<List<String>> uploadProductImage(
+      List<String> images, String restaurantId) async {
     try {
       var uid = FireStoreUtils.getCurrentUid();
       var imageUrls = await Future.wait(
@@ -443,21 +474,25 @@ class Constant {
     }
   }
 
-  static Future<String> uploadRestaurantImage(String image, String restaurantId) async {
+  static Future<String> uploadRestaurantImage(
+      String image, String restaurantId) async {
     try {
       final file = File(image);
       final path = file.path.split("/").last;
-      final imageUrl = await uploadImageToFireStorage(file, "restaurantImages/$restaurantId", path);
+      final imageUrl = await uploadImageToFireStorage(
+          file, "restaurantImages/$restaurantId", path);
       return imageUrl;
     } catch (e, stack) {
-      developer.log("Error Upload RestaurantImage:", error: e, stackTrace: stack);
+      developer.log("Error Upload RestaurantImage:",
+          error: e, stackTrace: stack);
       return '';
     }
   }
 
   static bool hasValidUrl(String value) {
     try {
-      String pattern = r'(http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?';
+      String pattern =
+          r'(http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?';
       RegExp regExp = RegExp(pattern);
 
       if (value.isEmpty) return false;
@@ -513,11 +548,16 @@ class Constant {
               data: Theme.of(context).copyWith(
                 timePickerTheme: TimePickerThemeData(
                   dayPeriodColor: WidgetStateColor.resolveWith(
-                    (states) => states.contains(WidgetState.selected) ? AppThemeData.primary300 : AppThemeData.primary300.withOpacity(0.4),
+                    (states) => states.contains(WidgetState.selected)
+                        ? AppThemeData.primary300
+                        : AppThemeData.primary300.withOpacity(0.4),
                   ),
-                  dayPeriodShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  dayPeriodShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   hourMinuteColor: WidgetStateColor.resolveWith(
-                    (states) => states.contains(WidgetState.selected) ? AppThemeData.primary300 : AppThemeData.primary300.withOpacity(0.4),
+                    (states) => states.contains(WidgetState.selected)
+                        ? AppThemeData.primary300
+                        : AppThemeData.primary300.withOpacity(0.4),
                   ),
                 ),
                 colorScheme: ColorScheme.light(
@@ -603,7 +643,8 @@ class Constant {
       DateTime dateTime = timestamp.toDate();
       return DateFormat.jm().format(dateTime);
     } catch (e, stack) {
-      developer.log("Error TimeStamp To Time 12 Hour:", error: e, stackTrace: stack);
+      developer.log("Error TimeStamp To Time 12 Hour:",
+          error: e, stackTrace: stack);
       return '';
     }
   }
@@ -613,7 +654,8 @@ class Constant {
       DateTime dateTime = timestamp.toDate();
       return DateFormat('d MMMM y \'at\' hh:mm a').format(dateTime);
     } catch (e, stack) {
-      developer.log("Error TimeStamp To Date With Time:", error: e, stackTrace: stack);
+      developer.log("Error TimeStamp To Date With Time:",
+          error: e, stackTrace: stack);
       return '';
     }
   }
@@ -637,7 +679,8 @@ class Constant {
       final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
       return DateFormat.jm().format(dt);
     } catch (e, stack) {
-      developer.log("Error Format Time Of DayTo 12 Hour:", error: e, stackTrace: stack);
+      developer.log("Error Format Time Of DayTo 12 Hour:",
+          error: e, stackTrace: stack);
       return '';
     }
   }
@@ -658,7 +701,8 @@ class Constant {
 
       return TimeOfDay(hour: hour, minute: minute);
     } catch (e, stack) {
-      developer.log("Error String To Time Of Day:", error: e, stackTrace: stack);
+      developer.log("Error String To Time Of Day:",
+          error: e, stackTrace: stack);
       return TimeOfDay.now();
     }
   }
@@ -704,47 +748,63 @@ class Constant {
         iconColor: AppThemeData.primary500,
         isDense: true,
         filled: true,
-        fillColor: themeChange.isDarkTheme() ? AppThemeData.grey1000 : AppThemeData.grey50,
-        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        fillColor: themeChange.isDarkTheme()
+            ? AppThemeData.grey1000
+            : AppThemeData.grey50,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         disabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(100)),
           borderSide: BorderSide(
-            color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey900
+                : AppThemeData.grey50,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(100)),
           borderSide: BorderSide(
-            color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey900
+                : AppThemeData.grey50,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(100)),
           borderSide: BorderSide(
-            color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey900
+                : AppThemeData.grey50,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(100)),
           borderSide: BorderSide(
-            color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey900
+                : AppThemeData.grey50,
           ),
         ),
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(100)),
           borderSide: BorderSide(
-            color: themeChange.isDarkTheme() ? AppThemeData.grey900 : AppThemeData.grey50,
+            color: themeChange.isDarkTheme()
+                ? AppThemeData.grey900
+                : AppThemeData.grey50,
           ),
         ),
         hintText: "Select time",
         hintStyle: TextStyle(
           fontSize: 16,
-          color: themeChange.isDarkTheme() ? AppThemeData.grey50 : AppThemeData.grey900,
+          color: themeChange.isDarkTheme()
+              ? AppThemeData.grey50
+              : AppThemeData.grey900,
           fontWeight: FontWeight.w500,
         ),
       );
     } catch (e, stack) {
-      developer.log("Error Default Input Decoration:", error: e, stackTrace: stack);
+      developer.log("Error Default Input Decoration:",
+          error: e, stackTrace: stack);
       return const InputDecoration(
         hintText: "Select time",
         border: OutlineInputBorder(),
@@ -779,11 +839,16 @@ class Constant {
     return keywords.toSet().toList();
   }
 
-  static double haversineDistanceKm(double lat1, double lon1, double lat2, double lon2) {
+  static double haversineDistanceKm(
+      double lat1, double lon1, double lat2, double lon2) {
     const R = 6371.0;
     final dLat = (lat2 - lat1) * pi / 180.0;
     final dLon = (lon2 - lon1) * pi / 180.0;
-    final a = sin(dLat / 2) * sin(dLat / 2) + cos(lat1 * pi / 180.0) * cos(lat2 * pi / 180.0) * sin(dLon / 2) * sin(dLon / 2);
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1 * pi / 180.0) *
+            cos(lat2 * pi / 180.0) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return R * c;
   }

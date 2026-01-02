@@ -366,7 +366,7 @@ class ItemDetailWidget extends GetView<AddMenuItemsScreenController> {
                             title: "Item Name".tr,
                             hintText: "Enter Item Name".tr,
                             controller: controller.itemNameController.value,
-                            onPress: () {},
+                            
                           ),
                           TextFieldWidget(
                             color: themeChange.isDarkTheme()
@@ -377,7 +377,7 @@ class ItemDetailWidget extends GetView<AddMenuItemsScreenController> {
                             hintText: "Enter Description".tr,
                             controller:
                                 controller.itemDescriptionController.value,
-                            onPress: () {},
+                     
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 20),
@@ -590,7 +590,7 @@ class ItemDetailWidget extends GetView<AddMenuItemsScreenController> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            onPress: () {},
+                        
                           ),
                         ],
                       ),
@@ -618,7 +618,7 @@ class ItemDetailWidget extends GetView<AddMenuItemsScreenController> {
               onTap: () {
                 if (formKey.currentState!.validate()) {
                   areImagesUploaded
-                      ? controller.nextStep()
+                      // ? controller.nextStep()
                       : ShowToastDialog.toast("Please upload item images.".tr);
                 }
               },

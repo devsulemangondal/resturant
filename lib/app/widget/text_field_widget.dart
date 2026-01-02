@@ -20,7 +20,7 @@ class TextFieldWidget extends StatelessWidget {
   Color? color;
   final int? line;
   final TextEditingController controller;
-  final Function() onPress;
+  // final Function() onPress;
   final Widget? prefix;
   final Widget? suffix;
   final bool? enable;
@@ -29,26 +29,29 @@ class TextFieldWidget extends StatelessWidget {
   final TextInputType? textInputType;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final bool isRequired;
 
-  TextFieldWidget(
-      {super.key,
-      this.textInputType,
-      this.validator,
-      this.enable,
-      this.icon,
-      this.prefix,
-      this.suffix,
-      this.obscureText,
-      this.title,
-      required this.hintText,
-      required this.controller,
-      required this.onPress,
-      this.enabled,
-      this.readOnly,
-      this.color,
-      this.line,
-      this.onChanged,
-      this.inputFormatters});
+  TextFieldWidget({
+    super.key,
+    this.textInputType,
+    this.validator,
+    this.enable,
+    this.icon,
+    this.prefix,
+    this.suffix,
+    this.obscureText,
+    this.title,
+    required this.hintText,
+    required this.controller,
+    // required this.onPress,
+    this.enabled,
+    this.readOnly,
+    this.color,
+    this.line,
+    this.onChanged,
+    this.inputFormatters,
+    this.isRequired = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,32 @@ class TextFieldWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (title != null && title!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: RichText(
+                text: TextSpan(
+                  text: title!.tr,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: FontFamily.regular,
+                    color: themeChange.isDarkTheme()
+                        ? AppThemeData.grey200
+                        : AppThemeData.grey800,
+                  ),
+                  children: [
+                    if (isRequired)
+                      const TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
           TextFormField(
             validator: validator ??
                 (value) => value != null && value.isNotEmpty
@@ -69,7 +98,7 @@ class TextFieldWidget extends StatelessWidget {
             textAlign: TextAlign.start,
             enabled: enabled,
             obscureText: obscureText ?? false,
-            readOnly: readOnly ?? false,
+            // readOnly: readOnly ?? false,
             maxLines: line ?? 1,
             textAlignVertical: TextAlignVertical.top,
             onChanged: onChanged,
@@ -143,13 +172,13 @@ class TextFieldWidget extends StatelessWidget {
                           BorderSide(color: AppThemeData.primary300, width: 1),
                     ),
                     hintText: hintText.tr,
-                    labelText: title?.tr,
-                    labelStyle: TextStyle(
-                        fontSize: 14,
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey200
-                            : AppThemeData.grey800,
-                        fontFamily: FontFamily.regular),
+                    // labelText: title?.tr,
+                    // labelStyle: TextStyle(
+                    //     fontSize: 14,
+                    //     color: themeChange.isDarkTheme()
+                    //         ? AppThemeData.grey200
+                    //         : AppThemeData.grey800,
+                    //     fontFamily: FontFamily.regular),
                     hintStyle: TextStyle(
                         fontSize: 14,
                         color: themeChange.isDarkTheme()
@@ -212,13 +241,13 @@ class TextFieldWidget extends StatelessWidget {
                           BorderSide(color: AppThemeData.primary300, width: 1),
                     ),
                     hintText: hintText.tr,
-                    labelText: title!.tr,
-                    labelStyle: TextStyle(
-                        fontSize: 14,
-                        color: themeChange.isDarkTheme()
-                            ? AppThemeData.grey200
-                            : AppThemeData.grey800,
-                        fontFamily: FontFamily.regular),
+                    // labelText: title!.tr,
+                    // labelStyle: TextStyle(
+                    //     fontSize: 14,
+                    //     color: themeChange.isDarkTheme()
+                    //         ? AppThemeData.grey200
+                    //         : AppThemeData.grey800,
+                    //     fontFamily: FontFamily.regular),
                     hintStyle: TextStyle(
                         fontSize: 14,
                         color: themeChange.isDarkTheme()
@@ -234,6 +263,7 @@ class TextFieldWidget extends StatelessWidget {
 
 class MobileNumberTextField extends StatelessWidget {
   final String label;
+  TextStyle? labelStyle;
   final TextEditingController controller;
   String countryCode;
   final Function(String) onCountryChanged;
@@ -244,6 +274,7 @@ class MobileNumberTextField extends StatelessWidget {
   MobileNumberTextField({
     super.key,
     required this.label,
+    this.labelStyle,
     required this.controller,
     required this.countryCode,
     required this.onCountryChanged,
@@ -262,11 +293,12 @@ class MobileNumberTextField extends StatelessWidget {
         /// 🔤 LABEL
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontFamily: FontFamily.medium,
-            color: Color(0xFF62748E),
-          ),
+          style: labelStyle ??
+              const TextStyle(
+                fontSize: 12,
+                fontFamily: FontFamily.medium,
+                color: Color(0xFF62748E),
+              ),
         ),
         const SizedBox(height: 4),
 
@@ -368,6 +400,7 @@ class MobileNumberTextField extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
+  final TextStyle? labelStyle;
   final TextEditingController controller;
   final bool obscureText;
   final TextInputType keyboardType;
@@ -383,6 +416,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.label,
+    this.labelStyle,
     required this.hintText,
     required this.controller,
     this.obscureText = false,
@@ -405,11 +439,12 @@ class CustomTextField extends StatelessWidget {
         /// 🔤 LABEL
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontFamily: FontFamily.medium,
-            color: Color(0xFF62748E), // grey
-          ),
+          style: labelStyle ??
+              const TextStyle(
+                fontSize: 12,
+                fontFamily: FontFamily.medium,
+                color: Color(0xFF62748E), // grey
+              ),
         ),
 
         const SizedBox(height: 4),

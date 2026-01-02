@@ -3,21 +3,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/app/modules/add_restaurant_screen/controllers/add_restaurant_screen_controller.dart';
+import 'package:restaurant/app/modules/add_restaurant_screen/views/widget/restaurant_day_timing_card.dart';
 import 'package:restaurant/app/widget/global_widgets.dart';
-import 'package:restaurant/app/widget/text_field_widget.dart';
 import 'package:restaurant/app/widget/text_widget.dart';
 import 'package:restaurant/constant/show_toast_dialogue.dart';
 import 'package:restaurant/themes/app_fonts.dart';
-import 'package:restaurant/themes/app_theme_data.dart';
 import 'package:restaurant/utils/dark_theme_provider.dart';
 
 import '../../../../../constant_widgets/round_shape_button.dart';
-import '../../../../../themes/screen_size.dart';
 
 class SelectOpeningHoursWidget extends GetView<AddRestaurantScreenController> {
   SelectOpeningHoursWidget({super.key});
@@ -42,12 +39,10 @@ class SelectOpeningHoursWidget extends GetView<AddRestaurantScreenController> {
                   children: [
                     TextCustom(
                       title: "Select Opening Hours".tr,
-                      fontSize: 28,
+                      fontSize: 18,
                       maxLine: 2,
-                      color: themeChange.isDarkTheme()
-                          ? AppThemeData.grey100
-                          : AppThemeData.grey1000,
-                      fontFamily: FontFamily.bold,
+                      color: Color(0xff1D293D),
+                      fontFamily: FontFamily.medium,
                       textAlign: TextAlign.start,
                     ),
                     2.height,
@@ -55,157 +50,41 @@ class SelectOpeningHoursWidget extends GetView<AddRestaurantScreenController> {
                       title:
                           "Choose the days and times your restaurant is open for business."
                               .tr,
-                      fontSize: 16,
+                      fontSize: 14,
                       maxLine: 2,
-                      color: themeChange.isDarkTheme()
-                          ? AppThemeData.grey400
-                          : AppThemeData.grey600,
+                      color: Color(0xff45556C),
                       fontFamily: FontFamily.regular,
                       textAlign: TextAlign.start,
                     ),
-                    spaceH(height: 32),
                     ListView.builder(
                       itemCount: 7,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextCustom(
-                                  title: controller.getWeekDay(index),
-                                  fontSize: 16,
-                                  fontFamily: FontFamily.medium,
-                                ),
-                                Obx(
-                                  () => SizedBox(
-                                    height: 26.h,
-                                    child: FittedBox(
-                                      child: CupertinoSwitch(
-                                        activeTrackColor:
-                                            AppThemeData.primary300,
-                                        value:
-                                            controller.daySwitches[index].value,
-                                        onChanged: (value) {
-                                          controller.toggleDaySwitch(index);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Obx(
-                              () => Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        if (controller
-                                            .daySwitches[index].value) {
-                                          await controller
-                                              .selectOpeningHour(index);
-                                          controller
-                                                  .openingHoursController[index]
-                                                  .text =
-                                              controller
-                                                  .openingHours[index].value
-                                                  .format(context)
-                                                  .toString();
-                                        } else {
-                                          ShowToastDialog.toast(
-                                              "Please on the switch for pick time"
-                                                  .tr);
-                                        }
-                                      },
-                                      child: TextFieldWidget(
-                                        validator: (value) => controller
-                                                .daySwitches[index].value
-                                            ? value != null && value.isNotEmpty
-                                                ? null
-                                                : "This field required".tr
-                                            : null,
-                                        title: "Opening Hours".tr,
-                                        hintText: "00:00:00".tr,
-                                        enable: false,
-                                        color: themeChange.isDarkTheme()
-                                            ? AppThemeData.grey900
-                                            : AppThemeData.grey100,
-                                        controller: controller
-                                            .openingHoursController[index],
-                                        onPress: () {},
-                                        suffix: SvgPicture.asset(
-                                          "assets/icons/ic_clock.svg",
-                                          color: themeChange.isDarkTheme()
-                                              ? AppThemeData.grey600
-                                              : AppThemeData.grey400,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  spaceW(width: 16),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        if (controller
-                                            .daySwitches[index].value) {
-                                          await controller
-                                              .selectClosingHour(index);
-                                          controller
-                                                  .closingHoursController[index]
-                                                  .text =
-                                              controller
-                                                  .closingHours[index].value
-                                                  .format(context)
-                                                  .toString();
-                                        } else {
-                                          ShowToastDialog.toast(
-                                              "Please on the switch for pick time"
-                                                  .tr);
-                                        }
-                                      },
-                                      child: TextFieldWidget(
-                                        validator: (value) => controller
-                                                .daySwitches[index].value
-                                            ? value != null && value.isNotEmpty
-                                                ? null
-                                                : "This field required".tr
-                                            : null,
-                                        title: "Closing Hours".tr,
-                                        hintText: '00:00:00'.tr,
-                                        enable: false,
-                                        color: themeChange.isDarkTheme()
-                                            ? AppThemeData.grey900
-                                            : AppThemeData.grey100,
-                                        controller: controller
-                                            .closingHoursController[index],
-                                        onPress: () {},
-                                        suffix: SvgPicture.asset(
-                                          "assets/icons/ic_clock.svg",
-                                          color: themeChange.isDarkTheme()
-                                              ? AppThemeData.grey600
-                                              : AppThemeData.grey400,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            spaceH(),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: Divider(
-                                        color: themeChange.isDarkTheme()
-                                            ? AppThemeData.grey600
-                                            : AppThemeData.grey400)),
-                              ],
-                            ),
-                            spaceH(),
-                          ],
+                        return Obx(
+                          () => RestaurantDayTimingCard(
+                            shortDay:
+                                controller.getWeekDay(index).substring(0, 3),
+                            fullDay: controller.getWeekDay(index),
+                            isEnabled: controller.daySwitches[index].value,
+                            onToggle: () => controller.toggleDaySwitch(index),
+                            openController:
+                                controller.openingHoursController[index],
+                            closeController:
+                                controller.closingHoursController[index],
+                            onOpenTap: () async {
+                              await controller.selectOpeningHour(index);
+                              controller.openingHoursController[index].text =
+                                  controller.openingHours[index].value
+                                      .format(context);
+                            },
+                            onCloseTap: () async {
+                              await controller.selectClosingHour(index);
+                              controller.closingHoursController[index].text =
+                                  controller.closingHours[index].value
+                                      .format(context);
+                            },
+                          ),
                         );
                       },
                     ),
@@ -215,18 +94,15 @@ class SelectOpeningHoursWidget extends GetView<AddRestaurantScreenController> {
             ),
           ),
           bottomNavigationBar: Padding(
-            padding: paddingEdgeInsets(vertical: 8),
-            child: Obx(() {
-              return RoundShapeButton(
-                title: "Next".tr,
-                buttonColor: controller.isAllOpeningHoursSelected.value
-                    ? AppThemeData.primary300
-                    : (themeChange.isDarkTheme()
-                        ? AppThemeData.grey800
-                        : AppThemeData.grey200),
-                buttonTextColor: controller.isAllOpeningHoursSelected.value
-                    ? AppThemeData.textBlack
-                    : AppThemeData.grey500,
+              padding: paddingEdgeInsets(vertical: 8),
+              child: GradientRoundShapeButton(
+                title: "Complete Setup".tr,
+                size: Size(double.infinity, 52.h),
+                gradientColors: [
+                  Color(0xff4F39F6),
+                  Color(0xff155DFC),
+                  Color(0xff155DFC),
+                ],
                 onTap: () async {
                   if (formKey.currentState!.validate()) {
                     controller.validateOpeningHours();
@@ -241,10 +117,7 @@ class SelectOpeningHoursWidget extends GetView<AddRestaurantScreenController> {
                     controller.editPage.value = "";
                   }
                 },
-                size: Size(358.w, ScreenSize.height(6, context)),
-              );
-            }),
-          ),
+              )),
         );
       },
     );

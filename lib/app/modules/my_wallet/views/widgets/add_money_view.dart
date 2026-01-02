@@ -28,9 +28,7 @@ class AddMoneyView extends StatelessWidget {
         init: MyWalletController(),
         builder: (controller) {
           return Scaffold(
-            backgroundColor: themeChange.isDarkTheme()
-                ? AppThemeData.darkBackground
-                : AppThemeData.grey50,
+            backgroundColor: AppThemeData.grey50,
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
@@ -90,9 +88,7 @@ class AddMoneyView extends StatelessWidget {
                               .tr,
                       fontSize: 16,
                       maxLine: 2,
-                      color: themeChange.isDarkTheme()
-                          ? AppThemeData.grey400
-                          : AppThemeData.grey600,
+                      color: AppThemeData.grey600,
                       fontFamily: FontFamily.regular,
                       textAlign: TextAlign.start,
                     ),
@@ -104,20 +100,21 @@ class AddMoneyView extends StatelessWidget {
                           ? null
                           : "This field required".tr,
                       controller: controller.amountController,
-                      onPress: () {},
                       textInputType: TextInputType.numberWithOptions(
                           decimal: true, signed: true),
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(RegExp("[0-9]")),
                       ],
-                      prefix: Text(
-                        " ${Constant.currencyModel!.symbol.toString()}  |",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: themeChange.isDarkTheme()
-                                ? AppThemeData.grey200
-                                : AppThemeData.grey800),
-                      ),
+                      prefix: Constant.currencyModel != null
+                          ? Text(
+                              " ${Constant.currencyModel!.symbol.toString()}  |",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: themeChange.isDarkTheme()
+                                      ? AppThemeData.grey200
+                                      : AppThemeData.grey800),
+                            )
+                          : null,
                     ),
                     spaceH(height: 4.h),
                     TextCustom(
@@ -489,7 +486,7 @@ class AddMoneyView extends StatelessWidget {
                                           0.0, -10.0, 0.0),
                                       child: RadioListTile(
                                         value: Constant
-                                            .paymentModel!.mercadoPago!.name
+                                            .paymentModel?.mercadoPago?.name
                                             .toString(),
                                         controlAffinity:
                                             ListTileControlAffinity.trailing,
@@ -504,8 +501,8 @@ class AddMoneyView extends StatelessWidget {
                                             ),
                                             const SizedBox(width: 12),
                                             Text(
-                                              Constant.paymentModel!
-                                                      .mercadoPago!.name ??
+                                              Constant.paymentModel?.mercadoPago
+                                                      ?.name ??
                                                   "",
                                               style: TextStyle(
                                                 color: themeChange.isDarkTheme()
@@ -725,51 +722,60 @@ class AddMoneyView extends StatelessWidget {
                               .toString()
                               .toDouble()) {
                         ShowToastDialog.showLoader("Please Wait..");
-                        if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.paypal!.name) {
+                        if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.paypal?.name) {
                           await controller.payPalPayment(
                               amount: controller.amountController.value.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.strip!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.strip?.name) {
                           await controller.stripeMakePayment(
                               amount: controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.razorpay!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.razorpay?.name) {
                           await controller.razorpayMakePayment(
                               amount: controller.amountController.text);
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.flutterWave!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.flutterWave?.name) {
                           await controller.flutterWaveInitiatePayment(
                               context: context,
                               amount: controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.payStack!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.payStack?.name) {
                           await controller.payStackPayment(
                               controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.mercadoPago!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.mercadoPago?.name) {
                           controller.mercadoPagoMakePayment(
                               context: context,
                               amount: controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.payFast!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.payFast?.name) {
                           controller.payFastPayment(
                               context: context,
                               amount: controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.midtrans!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.midtrans?.name) {
                           controller.midtransPayment(
                               context: context,
                               amount: controller.amountController.text);
                           Get.back();
-                        } else if (controller.selectedPaymentMethod.value ==
-                            Constant.paymentModel!.xendit!.name) {
+                        } else if (Constant.paymentModel != null &&
+                            controller.selectedPaymentMethod.value ==
+                                Constant.paymentModel!.xendit?.name) {
                           controller.xenditPayment(
                               context: context,
                               amount: controller.amountController.text);

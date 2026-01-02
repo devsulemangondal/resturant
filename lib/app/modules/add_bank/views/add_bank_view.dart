@@ -87,7 +87,7 @@ class AddBankView extends GetView<MyBankController> {
                       ),
                       spaceH(height: 16),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.bankHolderNameController,
                         hintText: "Enter Bank Holder Name".tr,
                         title: "Bank Holder Name".tr,
@@ -98,7 +98,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.bankAccountNumberController,
                         hintText: "Enter bank account number".tr,
                         title: "Bank Account Number".tr,
@@ -109,7 +109,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.swiftCodeController,
                         hintText: "Enter Swift Code".tr,
                         title: "Swift Code".tr,
@@ -120,7 +120,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.ifscCodeController,
                         hintText: "Enter IFSC Code".tr,
                         title: "IFSC Code".tr,
@@ -131,7 +131,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.bankNameController,
                         hintText: "Enter Bank Name".tr,
                         title: "Bank Name".tr,
@@ -142,7 +142,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.bankBranchCityController,
                         hintText: "Enter Bank Branch City".tr,
                         title: "Bank Branch City".tr,
@@ -153,7 +153,7 @@ class AddBankView extends GetView<MyBankController> {
                             : "This field required".tr,
                       ),
                       TextFieldWidget(
-                        onPress: () {},
+                        
                         controller: controller.bankBranchCountryController,
                         hintText: "Enter Bank Branch Country".tr,
                         title: "Bank Branch Country".tr,

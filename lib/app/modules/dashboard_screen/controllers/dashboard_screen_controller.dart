@@ -1,9 +1,9 @@
 import 'dart:developer' as developer;
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurant/app/modules/home/views/home_view.dart';
 import 'package:restaurant/app/modules/menu_screen/views/menu_screen_view.dart';
-import 'package:restaurant/app/modules/profile_screen/views/profile_screen_view.dart';
+import 'package:restaurant/app/modules/profile_screen/views/profile_screen_view2.dart';
 import 'package:restaurant/app/modules/restaurant_screen/views/restaurant_screen_view.dart';
 import 'package:restaurant/app/modules/statistic_screen/views/statistic_screen_view.dart';
 import 'package:restaurant/constant/constant.dart';
@@ -13,19 +13,37 @@ import '../../../../constant/show_toast_dialogue.dart';
 
 class DashboardScreenController extends GetxController {
   RxInt selectedIndex = 0.obs;
-  RxList pageList = [
-    const HomeView(),
-    const StatisticScreenView(),
-    RestaurantScreenView(),
-    const MenuScreenView(),
-    const ProfileScreenView()
-  ].obs;
+
+  late RxList pageList;
 
   @override
   void onInit() {
+    _initializePageList();
     getData();
     redirectScreen();
     super.onInit();
+  }
+
+  void _initializePageList() {
+    pageList = [
+      const HomeView(),
+      _buildScreenWithBackHandler(const StatisticScreenView()),
+      _buildScreenWithBackHandler(RestaurantScreenView()),
+      _buildScreenWithBackHandler(const MenuScreenView()),
+      _buildScreenWithBackHandler(const ProfileScreenView2())
+    ].obs;
+  }
+
+  Widget _buildScreenWithBackHandler(Widget screen) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          selectedIndex.value = 0;
+        }
+      },
+      child: screen,
+    );
   }
 
   Future<void> getData() async {

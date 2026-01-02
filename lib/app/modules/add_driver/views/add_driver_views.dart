@@ -96,7 +96,7 @@ class AddDriverView extends GetView<AddDriverController> {
                           ? null
                           : "This field required".tr,
                       controller: controller.firstNameController.value,
-                      onPress: () {},
+                 
                     ),
                     TextFieldWidget(
                       title: "Last Name".tr,
@@ -105,7 +105,7 @@ class AddDriverView extends GetView<AddDriverController> {
                           ? null
                           : "This field required".tr,
                       controller: controller.lastNameController.value,
-                      onPress: () {},
+                 
                     ),
 
                     MobileNumberTextField(
@@ -132,7 +132,7 @@ class AddDriverView extends GetView<AddDriverController> {
                           ? null
                           : "This field required".tr,
                       controller: controller.emailController.value,
-                      onPress: () {},
+               
                       readOnly: controller.driverModel.value.driverId != null &&
                           controller.driverModel.value.driverId!.isNotEmpty,
                     ),
@@ -163,7 +163,7 @@ class AddDriverView extends GetView<AddDriverController> {
                               controller.isPasswordVisible.value =
                                   !controller.isPasswordVisible.value;
                             }),
-                            onPress: () {},
+                 
                           ),
                           TextFieldWidget(
                             title: "Confirm Password".tr,
@@ -192,7 +192,7 @@ class AddDriverView extends GetView<AddDriverController> {
                               controller.isConfPasswordVisible.value =
                                   !controller.isConfPasswordVisible.value;
                             }),
-                            onPress: () {},
+                  
                           ),
                         ],
                       );
@@ -204,7 +204,7 @@ class AddDriverView extends GetView<AddDriverController> {
                       title: "Bike Model Name".tr,
                       hintText: "Enter Bike Model Name".tr,
                       controller: controller.vehicleNameController.value,
-                      onPress: () {},
+                   
                     ),
                     TextFieldWidget(
                       color: themeChange.isDarkTheme()
@@ -213,7 +213,7 @@ class AddDriverView extends GetView<AddDriverController> {
                       title: "Vehicle Number".tr,
                       hintText: "Enter Vehicle Number".tr,
                       controller: controller.vehicleNumberController.value,
-                      onPress: () {},
+                  
                     ),
                     Row(
                       children: [

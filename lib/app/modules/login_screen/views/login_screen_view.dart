@@ -220,8 +220,8 @@ class LoginScreenView extends GetView<LoginScreenController> {
     return Column(
       children: [
         CustomTextField(
-          label: "Email or Phone Number",
-          hintText: "Enter email or phone number",
+          label: "Email",
+          hintText: "Enter your email",
           controller: controller.emailController.value,
           prefixIcon:
               const Icon(Icons.email_outlined, color: Color(0xFF90A1B9)),
@@ -242,7 +242,7 @@ class LoginScreenView extends GetView<LoginScreenController> {
                         !controller.isPasswordVisible.value;
                   },
                   icon: Icon(
-                    controller.isPasswordVisible.value
+                    !controller.isPasswordVisible.value
                         ? Icons.visibility
                         : Icons.visibility_off,
                     color: Color(0xff90A1B9),

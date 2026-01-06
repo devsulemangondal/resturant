@@ -31,10 +31,13 @@ class SignupScreenController extends GetxController {
   Rx<TextEditingController> firstNameController = TextEditingController().obs;
   Rx<TextEditingController> lastNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
-  Rx<TextEditingController> mobileNumberController = TextEditingController().obs;
+  Rx<TextEditingController> mobileNumberController =
+      TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
-  Rx<TextEditingController> confirmPasswordController = TextEditingController().obs;
-  Rx<TextEditingController> referralCodeController = TextEditingController().obs;
+  Rx<TextEditingController> confirmPasswordController =
+      TextEditingController().obs;
+  Rx<TextEditingController> referralCodeController =
+      TextEditingController().obs;
   Rx<String?> countryCode = "+91".obs;
   RxBool isPasswordVisible = true.obs;
   RxBool isConfPasswordVisible = true.obs;
@@ -82,9 +85,11 @@ class SignupScreenController extends GetxController {
           loginType.value = ownerModel.value.loginType!;
         }
         if (loginType.value == Constant.phoneLoginType) {
-          mobileNumberController.value.text = ownerModel.value.phoneNumber.toString();
+          mobileNumberController.value.text =
+              ownerModel.value.phoneNumber.toString();
           countryCode.value = ownerModel.value.countryCode.toString();
-        } else if (loginType.value == Constant.googleLoginType || loginType.value == Constant.appleLoginType) {
+        } else if (loginType.value == Constant.googleLoginType ||
+            loginType.value == Constant.appleLoginType) {
           emailController.value.text = ownerModel.value.email.toString();
         }
       }
@@ -98,7 +103,8 @@ class SignupScreenController extends GetxController {
     }
   }
 
-  Future<UserCredential> signUpEmailWithPass(String email, String password) async {
+  Future<UserCredential> signUpEmailWithPass(
+      String email, String password) async {
     return await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -114,12 +120,15 @@ class SignupScreenController extends GetxController {
       UserCredential value = await signUpEmailWithPass(email, password);
 
       String fcmToken = await NotificationService.getToken();
-      String firstTwoChar = firstNameController.value.text.substring(0, 2).toUpperCase();
+      String firstTwoChar =
+          firstNameController.value.text.substring(0, 2).toUpperCase();
 
       ownerModel.value.id = value.user!.uid;
       ownerModel.value.firstName = firstNameController.value.text;
       ownerModel.value.lastName = lastNameController.value.text;
-      ownerModel.value.slug = Constant.fullNameString(firstNameController.value.text, lastNameController.value.text).toSlug(delimiter: "-");
+      ownerModel.value.slug = Constant.fullNameString(
+              firstNameController.value.text, lastNameController.value.text)
+          .toSlug(delimiter: "-");
       ownerModel.value.loginType = Constant.emailLoginType;
       ownerModel.value.email = email;
       ownerModel.value.password = password;
@@ -133,17 +142,25 @@ class SignupScreenController extends GetxController {
       ownerModel.value.walletAmount = "0.0";
       ownerModel.value.userType = Constant.owner;
       ownerModel.value.vendorId = "";
-      ownerModel.value.isVerified = Constant.isDocumentVerificationEnable == false ? true : false;
-      ownerModel.value.searchNameKeywords = Constant.generateKeywords(ownerModel.value.fullNameString());
-      ownerModel.value.searchEmailKeywords = Constant.generateKeywords(ownerModel.value.email.toString());
+      ownerModel.value.isVerified =
+          Constant.isDocumentVerificationEnable == false ? true : false;
+      ownerModel.value.searchNameKeywords =
+          Constant.generateKeywords(ownerModel.value.fullNameString());
+      ownerModel.value.searchEmailKeywords =
+          Constant.generateKeywords(ownerModel.value.email.toString());
 
       if (referralCodeController.value.text.isNotEmpty) {
-        await FireStoreUtils.checkReferralCodeValidOrNot(referralCodeController.value.text).then((value) async {
+        await FireStoreUtils.checkReferralCodeValidOrNot(
+                referralCodeController.value.text)
+            .then((value) async {
           if (value == true) {
-            FireStoreUtils.getReferralUserByCode(referralCodeController.value.text).then(
+            FireStoreUtils.getReferralUserByCode(
+                    referralCodeController.value.text)
+                .then(
               (value) async {
                 if (value != null) {
-                  await addReferralAmount(value.userId.toString(), value.role.toString());
+                  await addReferralAmount(
+                      value.userId.toString(), value.role.toString());
                   ReferralModel ownReferralModel = ReferralModel(
                       userId: FireStoreUtils.getCurrentUid(),
                       referralBy: value.userId,
@@ -155,15 +172,20 @@ class SignupScreenController extends GetxController {
                   String? referrerEmail;
                   String? referrerName;
                   if (value.role == Constant.user) {
-                    UserModel? user = await FireStoreUtils.getCustomerUserProfile(value.userId.toString());
+                    UserModel? user =
+                        await FireStoreUtils.getCustomerUserProfile(
+                            value.userId.toString());
                     referrerEmail = user?.email;
                     referrerName = "${user?.firstName} ${user?.lastName}";
                   } else if (value.role == Constant.owner) {
-                    OwnerModel? owner = await FireStoreUtils.getOwnerProfile(value.userId.toString());
+                    OwnerModel? owner = await FireStoreUtils.getOwnerProfile(
+                        value.userId.toString());
                     referrerEmail = owner?.email;
                     referrerName = "${owner?.firstName} ${owner?.lastName}";
                   } else {
-                    DriverUserModel? driver = await FireStoreUtils.getDriverUserProfile(value.userId.toString());
+                    DriverUserModel? driver =
+                        await FireStoreUtils.getDriverUserProfile(
+                            value.userId.toString());
                     referrerEmail = driver?.email;
                     referrerName = "${driver?.firstName} ${driver?.lastName}";
                   }
@@ -174,15 +196,21 @@ class SignupScreenController extends GetxController {
                       toEmail: referrerEmail,
                       variables: {
                         "name": referrerName,
-                        "referral_name": "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
-                        "amount": Constant.amountShow(amount: Constant.referralAmount),
+                        "referral_name":
+                            "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
+                        "amount": Constant.amountShow(
+                            amount: Constant.referralAmount),
                         'app_name': Constant.appName.value
                       },
                     );
                   }
                 } else {
                   ReferralModel referralModel = ReferralModel(
-                      userId: FireStoreUtils.getCurrentUid(), referralBy: "", role: Constant.owner, referralRole: "", referralCode: Constant.getReferralCode(firstTwoChar));
+                      userId: FireStoreUtils.getCurrentUid(),
+                      referralBy: "",
+                      role: Constant.owner,
+                      referralRole: "",
+                      referralCode: Constant.getReferralCode(firstTwoChar));
                   await FireStoreUtils.referralAdd(referralModel);
                 }
               },
@@ -193,8 +221,12 @@ class SignupScreenController extends GetxController {
           }
         });
       } else {
-        ReferralModel referralModel =
-            ReferralModel(userId: FireStoreUtils.getCurrentUid(), referralBy: "", role: Constant.owner, referralRole: "", referralCode: Constant.getReferralCode(firstTwoChar));
+        ReferralModel referralModel = ReferralModel(
+            userId: FireStoreUtils.getCurrentUid(),
+            referralBy: "",
+            role: Constant.owner,
+            referralRole: "",
+            referralCode: Constant.getReferralCode(firstTwoChar));
         await FireStoreUtils.referralAdd(referralModel);
       }
 
@@ -203,12 +235,18 @@ class SignupScreenController extends GetxController {
 
       if (updateResult == true) {
         Constant.isLogin = await FireStoreUtils.isLogin();
-        Constant.ownerModel = await FireStoreUtils.getOwnerProfile(FireStoreUtils.getCurrentUid()!);
+        Constant.ownerModel = await FireStoreUtils.getOwnerProfile(
+            FireStoreUtils.getCurrentUid()!);
+        ShowToastDialog.toast("Account created successfully!".tr);
         Get.offAll(const AccountCreatedView());
         await EmailTemplateService.sendEmail(
           type: "signup",
           toEmail: ownerModel.value.email.toString(),
-          variables: {"name": "${ownerModel.value.firstName} ${ownerModel.value.lastName}", "app_name": Constant.appName.value},
+          variables: {
+            "name":
+                "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
+            "app_name": Constant.appName.value
+          },
         );
       } else {
         ShowToastDialog.toast("Failed to update user data.".tr);
@@ -254,9 +292,13 @@ class SignupScreenController extends GetxController {
         type: role,
         createdDate: Timestamp.now());
 
-    bool? isSuccess = await FireStoreUtils.setWalletTransaction(walletTransaction);
+    bool? isSuccess =
+        await FireStoreUtils.setWalletTransaction(walletTransaction);
     if (isSuccess == true) {
-      await FireStoreUtils.updateWalletForReferral(userId: userId, amount: double.parse(Constant.referralAmount!).toString(), role: role);
+      await FireStoreUtils.updateWalletForReferral(
+          userId: userId,
+          amount: double.parse(Constant.referralAmount!).toString(),
+          role: role);
     }
   }
 
@@ -264,7 +306,8 @@ class SignupScreenController extends GetxController {
 
   Future<void> initializeGoogleSignIn() async {
     await googleSignIn.initialize(
-      serverClientId: '339012005849-mt8hkep8nt1s0l9djgfp4lbqgol4mrei.apps.googleusercontent.com',
+      serverClientId:
+          '339012005849-mt8hkep8nt1s0l9djgfp4lbqgol4mrei.apps.googleusercontent.com',
     );
   }
 
@@ -279,8 +322,10 @@ class SignupScreenController extends GetxController {
       }
 
       // Obtain the auth details from the request
-      GoogleSignInAccount? googleSignInAccount = await googleSignIn.authenticate();
-      final GoogleSignInAuthentication googleAuth = googleSignInAccount.authentication;
+      GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.authenticate();
+      final GoogleSignInAuthentication googleAuth =
+          googleSignInAccount.authentication;
 
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
@@ -312,19 +357,24 @@ class SignupScreenController extends GetxController {
           ownerModel.loginType = Constant.googleLoginType;
           loginType.value = Constant.googleLoginType;
 
-          Get.to(() => SignupScreenView(), arguments: {"ownerModel": ownerModel});
+          Get.to(() => SignupScreenView(),
+              arguments: {"ownerModel": ownerModel});
         } else {
           bool userExist = await FireStoreUtils.userExistOrNot(value.user!.uid);
 
           if (userExist) {
-            OwnerModel? ownerModel = await FireStoreUtils.getOwnerProfile(value.user!.uid);
+            OwnerModel? ownerModel =
+                await FireStoreUtils.getOwnerProfile(value.user!.uid);
 
             if (ownerModel != null) {
               if (ownerModel.active == true) {
-                if (ownerModel.vendorId != null && ownerModel.vendorId!.isNotEmpty) {
-                  Constant.vendorModel = await FireStoreUtils.getRestaurant(ownerModel.vendorId!);
+                if (ownerModel.vendorId != null &&
+                    ownerModel.vendorId!.isNotEmpty) {
+                  Constant.vendorModel =
+                      await FireStoreUtils.getRestaurant(ownerModel.vendorId!);
 
-                  if (Constant.vendorModel != null && Constant.vendorModel!.active == true) {
+                  if (Constant.vendorModel != null &&
+                      Constant.vendorModel!.active == true) {
                     ShowToastDialog.toast("Login successful!".tr);
                     Constant.isLogin = await FireStoreUtils.isLogin();
                     Get.offAllNamed(Routes.DASHBOARD_SCREEN);
@@ -332,15 +382,20 @@ class SignupScreenController extends GetxController {
                     Get.offAll(() => AccountDisabledScreen());
                   }
                 } else {
-                  ShowToastDialog.toast("Login successful! Please complete your restaurant setup.".tr);
+                  ShowToastDialog.toast(
+                      "Login successful! Please complete your restaurant setup."
+                          .tr);
                   Constant.isLogin = await FireStoreUtils.isLogin();
                   Get.offAllNamed(Routes.DASHBOARD_SCREEN);
                 }
               } else {
-                ShowToastDialog.toast("Unable to Log In? Please Contact the Admin for Assistance".tr);
+                ShowToastDialog.toast(
+                    "Unable to Log In? Please Contact the Admin for Assistance"
+                        .tr);
               }
             } else {
-              ShowToastDialog.toast("This account is not linked with this app.".tr);
+              ShowToastDialog.toast(
+                  "This account is not linked with this app.".tr);
             }
           } else {
             OwnerModel ownerModel = OwnerModel();
@@ -351,7 +406,8 @@ class SignupScreenController extends GetxController {
             emailController.value.text = value.user!.email!;
             loginType.value = Constant.googleLoginType;
 
-            Get.to(() => SignupScreenView(), arguments: {"ownerModel": ownerModel});
+            Get.to(() => SignupScreenView(),
+                arguments: {"ownerModel": ownerModel});
           }
         }
       }
@@ -397,9 +453,11 @@ class SignupScreenController extends GetxController {
 
   String generateNonce([int length = 32]) {
     try {
-      const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+      const charset =
+          '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
       final random = Random.secure();
-      return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+      return List.generate(
+          length, (_) => charset[random.nextInt(charset.length)]).join();
     } catch (e, stack) {
       developer.log(
         'Error in generateNonce: $e',
@@ -440,19 +498,24 @@ class SignupScreenController extends GetxController {
           emailController.value.text = value.user!.email!;
           loginType.value = Constant.appleLoginType;
 
-          Get.to(() => SignupScreenView(), arguments: {"ownerModel": ownerModel});
+          Get.to(() => SignupScreenView(),
+              arguments: {"ownerModel": ownerModel});
         } else {
           bool userExit = await FireStoreUtils.userExistOrNot(value.user!.uid);
           ShowToastDialog.closeLoader();
 
           if (userExit) {
-            OwnerModel? ownerModel = await FireStoreUtils.getOwnerProfile(value.user!.uid);
+            OwnerModel? ownerModel =
+                await FireStoreUtils.getOwnerProfile(value.user!.uid);
             if (ownerModel != null) {
               if (ownerModel.active == true) {
-                if (ownerModel.vendorId != null && ownerModel.vendorId!.isNotEmpty) {
-                  Constant.vendorModel = await FireStoreUtils.getRestaurant(Constant.ownerModel!.vendorId!);
+                if (ownerModel.vendorId != null &&
+                    ownerModel.vendorId!.isNotEmpty) {
+                  Constant.vendorModel = await FireStoreUtils.getRestaurant(
+                      Constant.ownerModel!.vendorId!);
 
-                  if (Constant.vendorModel != null && Constant.vendorModel!.active == true) {
+                  if (Constant.vendorModel != null &&
+                      Constant.vendorModel!.active == true) {
                     ShowToastDialog.toast("Login successful!".tr);
                     Constant.isLogin = await FireStoreUtils.isLogin();
                     ShowToastDialog.closeLoader();
@@ -462,17 +525,22 @@ class SignupScreenController extends GetxController {
                     Get.offAll(() => AccountDisabledScreen());
                   }
                 } else {
-                  ShowToastDialog.toast("Login successful! Please complete your restaurant setup.".tr);
+                  ShowToastDialog.toast(
+                      "Login successful! Please complete your restaurant setup."
+                          .tr);
                   Constant.isLogin = await FireStoreUtils.isLogin();
                   ShowToastDialog.closeLoader();
                   Get.offAllNamed(Routes.DASHBOARD_SCREEN);
                 }
               } else {
-                ShowToastDialog.toast("Unable to Log In?  Please Contact the Admin for Assistance".tr);
+                ShowToastDialog.toast(
+                    "Unable to Log In?  Please Contact the Admin for Assistance"
+                        .tr);
               }
             } else {
               ShowToastDialog.closeLoader();
-              ShowToastDialog.toast("This account is not linked with this app.".tr);
+              ShowToastDialog.toast(
+                  "This account is not linked with this app.".tr);
             }
           } else {
             OwnerModel ownerModel = OwnerModel();
@@ -482,7 +550,8 @@ class SignupScreenController extends GetxController {
 
             emailController.value.text = value.user!.email!;
             loginType.value = Constant.appleLoginType;
-            Get.to(() => SignupScreenView(), arguments: {"ownerModel": ownerModel});
+            Get.to(() => SignupScreenView(),
+                arguments: {"ownerModel": ownerModel});
           }
         }
       }
@@ -499,11 +568,14 @@ class SignupScreenController extends GetxController {
   Future<void> saveData() async {
     ShowToastDialog.showLoader("Please Wait..".tr);
     try {
-      String firstTwoChar = firstNameController.value.text.substring(0, 2).toUpperCase();
+      String firstTwoChar =
+          firstNameController.value.text.substring(0, 2).toUpperCase();
 
       ownerModel.value.firstName = firstNameController.value.text;
       ownerModel.value.lastName = lastNameController.value.text;
-      ownerModel.value.slug = Constant.fullNameString(firstNameController.value.text, lastNameController.value.text).toSlug(delimiter: "-");
+      ownerModel.value.slug = Constant.fullNameString(
+              firstNameController.value.text, lastNameController.value.text)
+          .toSlug(delimiter: "-");
       ownerModel.value.email = emailController.value.text;
       ownerModel.value.password = passwordController.value.text;
       ownerModel.value.countryCode = countryCode.value;
@@ -513,16 +585,23 @@ class SignupScreenController extends GetxController {
       ownerModel.value.active = true;
       ownerModel.value.walletAmount = "0.0";
       ownerModel.value.userType = Constant.user;
-      ownerModel.value.searchNameKeywords = Constant.generateKeywords(ownerModel.value.fullNameString());
-      ownerModel.value.searchEmailKeywords = Constant.generateKeywords(ownerModel.value.email.toString());
+      ownerModel.value.searchNameKeywords =
+          Constant.generateKeywords(ownerModel.value.fullNameString());
+      ownerModel.value.searchEmailKeywords =
+          Constant.generateKeywords(ownerModel.value.email.toString());
 
       if (referralCodeController.value.text.isNotEmpty) {
-        await FireStoreUtils.checkReferralCodeValidOrNot(referralCodeController.value.text).then((value) async {
+        await FireStoreUtils.checkReferralCodeValidOrNot(
+                referralCodeController.value.text)
+            .then((value) async {
           if (value == true) {
-            FireStoreUtils.getReferralUserByCode(referralCodeController.value.text).then(
+            FireStoreUtils.getReferralUserByCode(
+                    referralCodeController.value.text)
+                .then(
               (value) async {
                 if (value != null) {
-                  await addReferralAmount(value.userId.toString(), value.role.toString());
+                  await addReferralAmount(
+                      value.userId.toString(), value.role.toString());
                   ReferralModel ownReferralModel = ReferralModel(
                       userId: FireStoreUtils.getCurrentUid(),
                       referralBy: value.userId,
@@ -534,15 +613,20 @@ class SignupScreenController extends GetxController {
                   String? referrerEmail;
                   String? referrerName;
                   if (value.role == Constant.user) {
-                    UserModel? user = await FireStoreUtils.getCustomerUserProfile(value.userId.toString());
+                    UserModel? user =
+                        await FireStoreUtils.getCustomerUserProfile(
+                            value.userId.toString());
                     referrerEmail = user?.email;
                     referrerName = "${user?.firstName} ${user?.lastName}";
                   } else if (value.role == Constant.owner) {
-                    OwnerModel? owner = await FireStoreUtils.getOwnerProfile(value.userId.toString());
+                    OwnerModel? owner = await FireStoreUtils.getOwnerProfile(
+                        value.userId.toString());
                     referrerEmail = owner?.email;
                     referrerName = "${owner?.firstName} ${owner?.lastName}";
                   } else {
-                    DriverUserModel? driver = await FireStoreUtils.getDriverUserProfile(value.userId.toString());
+                    DriverUserModel? driver =
+                        await FireStoreUtils.getDriverUserProfile(
+                            value.userId.toString());
                     referrerEmail = driver?.email;
                     referrerName = "${driver?.firstName} ${driver?.lastName}";
                   }
@@ -553,15 +637,21 @@ class SignupScreenController extends GetxController {
                       toEmail: referrerEmail,
                       variables: {
                         "name": referrerName,
-                        "referral_name": "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
-                        "amount": Constant.amountShow(amount: Constant.referralAmount),
+                        "referral_name":
+                            "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
+                        "amount": Constant.amountShow(
+                            amount: Constant.referralAmount),
                         'app_name': Constant.appName.value
                       },
                     );
                   }
                 } else {
                   ReferralModel referralModel = ReferralModel(
-                      userId: FireStoreUtils.getCurrentUid(), referralBy: "", role: Constant.owner, referralRole: "", referralCode: Constant.getReferralCode(firstTwoChar));
+                      userId: FireStoreUtils.getCurrentUid(),
+                      referralBy: "",
+                      role: Constant.owner,
+                      referralRole: "",
+                      referralCode: Constant.getReferralCode(firstTwoChar));
                   await FireStoreUtils.referralAdd(referralModel);
                 }
               },
@@ -572,19 +662,29 @@ class SignupScreenController extends GetxController {
           }
         });
       } else {
-        ReferralModel referralModel =
-            ReferralModel(userId: FireStoreUtils.getCurrentUid(), referralBy: "", role: Constant.owner, referralRole: "", referralCode: Constant.getReferralCode(firstTwoChar));
+        ReferralModel referralModel = ReferralModel(
+            userId: FireStoreUtils.getCurrentUid(),
+            referralBy: "",
+            role: Constant.owner,
+            referralRole: "",
+            referralCode: Constant.getReferralCode(firstTwoChar));
         await FireStoreUtils.referralAdd(referralModel);
       }
 
       bool value = await FireStoreUtils.addOwner(ownerModel.value);
       if (value) {
         Constant.isLogin = await FireStoreUtils.isLogin();
-        Constant.ownerModel = await FireStoreUtils.getOwnerProfile(FireStoreUtils.getCurrentUid()!);
+        Constant.ownerModel = await FireStoreUtils.getOwnerProfile(
+            FireStoreUtils.getCurrentUid()!);
+        ShowToastDialog.toast("Account created successfully!".tr);
         await EmailTemplateService.sendEmail(
           type: "signup",
           toEmail: ownerModel.value.email.toString(),
-          variables: {"name": "${ownerModel.value.firstName} ${ownerModel.value.lastName}", "app_name": Constant.appName.value},
+          variables: {
+            "name":
+                "${ownerModel.value.firstName} ${ownerModel.value.lastName}",
+            "app_name": Constant.appName.value
+          },
         );
         Get.offAll(const AccountCreatedView());
       }

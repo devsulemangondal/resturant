@@ -347,6 +347,7 @@ class MobileNumberTextField extends StatelessWidget {
             /// 📱 PHONE NUMBER BOX
             Expanded(
               child: Container(
+                padding: const EdgeInsets.only(bottom: 6),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14),
@@ -380,9 +381,11 @@ class MobileNumberTextField extends StatelessWidget {
                       color: Color(0xFF90A1B9),
                     ),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
+                    contentPadding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 14,
+                      bottom: 4,
                     ),
                   ),
                 ),
@@ -451,6 +454,7 @@ class CustomTextField extends StatelessWidget {
 
         /// 🧾 TEXT FIELD CONTAINER
         Container(
+          padding: const EdgeInsets.only(top: 4, bottom: 4),
           decoration: BoxDecoration(
             color: fillColor ?? Colors.white,
             borderRadius: BorderRadius.circular(14),
@@ -490,8 +494,8 @@ class CustomTextField extends StatelessWidget {
                     )
                   : null,
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              contentPadding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 14, bottom: 4),
             ),
           ),
         ),

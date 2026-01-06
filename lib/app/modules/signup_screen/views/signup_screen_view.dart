@@ -108,6 +108,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                         ),
                         child: Form(
                           key: formKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -198,7 +199,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                                           controller.isPasswordVisible.value,
                                       validator: Constant.validatePassword,
                                       suffixIcon: Icon(
-                                        controller.isPasswordVisible.value
+                                        !controller.isPasswordVisible.value
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                         color: const Color(0xff90A1B9),
@@ -217,7 +218,7 @@ class SignupScreenView extends GetView<SignupScreenController> {
                                           controller.isPasswordVisible.value,
                                       validator: Constant.validatePassword,
                                       suffixIcon: Icon(
-                                        controller.isPasswordVisible.value
+                                        !controller.isPasswordVisible.value
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                         color: const Color(0xff90A1B9),

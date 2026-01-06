@@ -29,11 +29,11 @@ class SplashScreenView extends GetView<SplashScreenController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/splash-image.png",
-                  height: 150,
+                  "assets/images/app-icon.jpeg",
+                  height: 120,
                 ),
                 TextCustom(
-                  title: "Order Flow",
+                  title: "Zezale",
                   fontSize: 24,
                   fontFamily: FontFamily.regular,
                   color: themeChange.isDarkTheme()

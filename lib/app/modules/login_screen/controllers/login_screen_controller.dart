@@ -55,7 +55,9 @@ class LoginScreenController extends GetxController {
   Future<void> resetPassword(String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ShowToastDialog.toast("Password reset email sent.".tr);
+      ShowToastDialog.toast(
+          "Password reset email sent. Check you spam folder if mail not showen in mailbox"
+              .tr);
     } on FirebaseAuthException catch (e, stack) {
       developer.log("Error resetting password:", error: e, stackTrace: stack);
       if (e.code == 'user-not-found') {

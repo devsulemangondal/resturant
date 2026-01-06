@@ -3,6 +3,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -55,32 +57,49 @@ class ForgotPassword extends GetView<LoginScreenController> {
               Row(
                 children: [
                   Expanded(
-                    child: RoundShapeButton(
-                      title: "Send".tr,
-                      buttonColor: AppThemeData.primary300,
-                      buttonTextColor: AppThemeData.textBlack,
-                      onTap: () async {
-                        if (controller
-                            .resetEmailController.value.text.isNotEmpty) {
-                          await controller
-                              .resetPassword(
-                                  controller.resetEmailController.value.text)
-                              .then((value) {
-                            ShowToastDialog.closeLoader();
+                    child: Container(
+                      width: double.infinity,
+                      child: GradientRoundShapeButton(
+                        title: "Send".tr,
+                        size: Size(double.infinity, 52.h),
+                        gradientColors: [
+                          Color(0xff4F39F6),
+                          Color(0xff615FFF),
+                          Color(0xff155DFC),
+                        ],
+                        onTap: () async {
+                          if (controller
+                              .resetEmailController.value.text.isNotEmpty) {
+                            ShowToastDialog.showLoader("Loading");
+                            await controller
+                                .resetPassword(
+                                    controller.resetEmailController.value.text)
+                                .then((value) {
+                              ShowToastDialog.closeLoader();
+                              // ShowToastDialog.toast(
+                              //     "Reset password link sent successfully.".tr);
+                              Get.back();
+                            }).catchError((e) {
+                              ShowToastDialog.toast("Error".tr);
+                              ShowToastDialog.closeLoader();
+                            });
+                          } else {
                             ShowToastDialog.toast(
-                                "Reset password link sent successfully.".tr);
-                            Get.offAllNamed(Routes.LOGIN_SCREEN);
-                          }).catchError((e) {
-                            ShowToastDialog.toast("Error".tr);
-                            ShowToastDialog.closeLoader();
-                          });
-                        } else {
-                          ShowToastDialog.toast(
-                              "Please enter a valid email address.".tr);
-                        }
-                      },
-                      size: const Size(350, 55),
+                                "Please enter a valid email address.".tr);
+                          }
+                        },
+                      ),
                     ),
+
+                    //  RoundShapeButton(
+                    //   title: "Send".tr,
+                    //   buttonColor: AppThemeData.primary300,
+                    //   buttonTextColor: AppThemeData.textBlack,
+                    //   onTap: () async {
+
+                    //   },
+                    //   size: const Size(350, 55),
+                    // ),
                   ),
                 ],
               ),
@@ -103,13 +122,13 @@ class ForgotPassword extends GetView<LoginScreenController> {
         )),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
               text: TextSpan(
-                  text: "Didn’t have an account?".tr,
+                  text: "Didn’t have an account? ".tr,
                   style: TextStyle(
                       fontSize: 14,
                       color: themeChange.isDarkTheme()
@@ -121,9 +140,7 @@ class ForgotPassword extends GetView<LoginScreenController> {
                       text: "Sign Up".tr,
                       style: TextStyle(
                           fontSize: 14,
-                          color: themeChange.isDarkTheme()
-                              ? AppThemeData.primary200
-                              : AppThemeData.primary500,
+                          color: AppThemeData.primary300,
                           fontFamily: FontFamily.medium),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => Get.to(() => SignupScreenView(),
@@ -186,19 +203,27 @@ class ForgotPassword extends GetView<LoginScreenController> {
   Widget buildEmailPasswordWidget(BuildContext context) {
     try {
       final themeChange = Provider.of<DarkThemeProvider>(context);
-      return TextFieldWidget(
-        title: "Email".tr,
-        hintText: "Enter Email".tr,
-        validator: (value) => Constant.validateEmail(value),
+      return CustomTextField(
+        label: "Email",
+        hintText: "Enter your email",
         controller: controller.resetEmailController.value,
-        prefix: SvgPicture.asset(
-          "assets/icons/ic_mail.svg",
-          color: themeChange.isDarkTheme()
-              ? AppThemeData.grey600
-              : AppThemeData.grey400,
-        ),
-       
+        prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF90A1B9)),
+        validator: (value) => Constant.validateEmail(value),
       );
+
+      // TextFieldWidget(
+      //   title: "Email".tr,
+      //   hintText: "Enter Email".tr,
+      //   validator: (value) => Constant.validateEmail(value),
+      //   controller: controller.resetEmailController.value,
+      //   prefix: SvgPicture.asset(
+      //     "assets/icons/ic_mail.svg",
+      //     color: themeChange.isDarkTheme()
+      //         ? AppThemeData.grey600
+      //         : AppThemeData.grey400,
+      //   ),
+
+      // );
     } catch (e) {
       return Padding(
         padding: const EdgeInsets.all(8.0),

@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant/app/modules/login_screen/controllers/login_screen_controller.dart';
 import 'package:restaurant/app/modules/splash_screen/views/splash_screen_view.dart';
 import 'package:restaurant/app/routes/app_pages.dart';
 import 'package:restaurant/constant/constant.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(LoginScreenController());
   runApp(const MyApp());
 }
 
@@ -86,36 +88,35 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 splitScreenMode: true,
                 builder: (context, child) {
                   return GetMaterialApp(
-                    title: 'Zezale Restaurant'.tr,
-                    debugShowCheckedModeBanner: false,
-                    theme: Styles.themeData(
-                        false ??
-                            (themeChangeProvider.darkTheme == 0
-                                ? true
-                                : themeChangeProvider.darkTheme == 1
-                                    ? false
-                                    : themeChangeProvider.getSystemThem()),
-                        context),
-                    localizationsDelegates: const [
-                      CountryLocalizations.delegate,
-                    ],
-                    locale: LocalizationService.locale,
-                    fallbackLocale: LocalizationService.locale,
-                    translations: LocalizationService(),
-                    builder: (context, child) {
-                      return SafeArea(
-                          bottom: true,
-                          top: false,
-                          child: EasyLoading.init()(context, child));
-                    },
-                    initialRoute: AppPages.initial,
-                    getPages: AppPages.routes,
-                    home: GetBuilder<GlobalSettingController>(
-                        init: GlobalSettingController(),
-                        builder: (context) {
-                          return SplashScreenView();
-                        })
-                  );
+                      title: 'Zezale Restaurant'.tr,
+                      debugShowCheckedModeBanner: false,
+                      theme: Styles.themeData(
+                          false ??
+                              (themeChangeProvider.darkTheme == 0
+                                  ? true
+                                  : themeChangeProvider.darkTheme == 1
+                                      ? false
+                                      : themeChangeProvider.getSystemThem()),
+                          context),
+                      localizationsDelegates: const [
+                        CountryLocalizations.delegate,
+                      ],
+                      locale: LocalizationService.locale,
+                      fallbackLocale: LocalizationService.locale,
+                      translations: LocalizationService(),
+                      builder: (context, child) {
+                        return SafeArea(
+                            bottom: true,
+                            top: false,
+                            child: EasyLoading.init()(context, child));
+                      },
+                      initialRoute: AppPages.initial,
+                      getPages: AppPages.routes,
+                      home: GetBuilder<GlobalSettingController>(
+                          init: GlobalSettingController(),
+                          builder: (context) {
+                            return SplashScreenView();
+                          }));
                 });
           },
         ),

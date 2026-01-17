@@ -339,7 +339,7 @@ class NewOrderWidget extends StatelessWidget {
                                           title: "Accept".tr,
                                           buttonColor: AppThemeData.success300,
                                           buttonTextColor:
-                                              AppThemeData.grey1000,
+                                              AppThemeData.primaryWhite,
                                           onTap: () async {
                                             if (Constant.isSelfDelivery ==
                                                     true &&
@@ -353,7 +353,7 @@ class NewOrderWidget extends StatelessWidget {
                                                         controller.minutes.value
                                                   });
                                             } else {
-                                              bool isDriverAvailable =
+                                              String? driver =
                                                   await controller
                                                       .checkNearestDriverAvailable(
                                                 Constant.vendorModel!.address!
@@ -363,8 +363,9 @@ class NewOrderWidget extends StatelessWidget {
                                                         .location?.longitude ??
                                                     0.0,
                                               );
+                                              
 
-                                              if (!isDriverAvailable) {
+                                              if (driver==null) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {
@@ -457,6 +458,7 @@ class NewOrderWidget extends StatelessWidget {
                                                   OrderStatus.orderAccepted;
                                               pendingOrder.foodIsReadyToPickup =
                                                   false;
+                                                  pendingOrder.driverId=driver;
                                               // pendingOrder.preparationTime = controller.minutes.value.toString();
                                               controller
                                                   .computeAndSaveEtaLocalFallback(

@@ -272,7 +272,7 @@ class InPrepareOrderWidget extends StatelessWidget {
                                                   : "On Going".tr,
                                           buttonColor: AppThemeData.primary300,
                                           buttonTextColor:
-                                              AppThemeData.textBlack,
+                                              AppThemeData.primaryWhite,
                                           onTap: () async {
                                             if (bookingModel.orderStatus ==
                                                     OrderStatus.orderAccepted ||
@@ -326,40 +326,16 @@ class InPrepareOrderWidget extends StatelessWidget {
                                                               bookingModel.id
                                                         },
                                                         isNewOrder: false);
-                                              } else {
-                                                DriverUserModel? driverModel =
-                                                    await FireStoreUtils
-                                                        .getDriverUserProfile(
-                                                            bookingModel
-                                                                .driverId
-                                                                .toString());
-                                                await SendNotification
-                                                    .sendOneNotification(
-                                                        senderId: FireStoreUtils
-                                                            .getCurrentUid(),
-                                                        driverId: driverModel!
-                                                            .driverId
-                                                            .toString(),
-                                                        token: driverModel
-                                                            .fcmToken
-                                                            .toString(),
-                                                        title:
-                                                            "Order Ready to Pickup ✅",
-                                                        body:
-                                                            'The order from ${vendorModel!.vendorName} is ready for pickup.',
-                                                        type: 'order',
-                                                        orderId: bookingModel.id
-                                                            .toString(),
-                                                        payload: {
-                                                          "orderId":
-                                                              bookingModel.id
-                                                        },
-                                                        isNewOrder: false);
-                                              }
+                                              } 
                                               controller.update();
                                             } else if (bookingModel
                                                     .orderStatus ==
                                                 OrderStatus.orderOnReady) {
+                                                  VendorModel? vendorModel =
+                                                  await FireStoreUtils
+                                                      .getRestaurant(
+                                                          bookingModel.vendorId
+                                                              .toString());
                                               if (bookingModel.deliveryType ==
                                                   "take_away") {
                                                 bookingModel.orderStatus =
@@ -436,6 +412,40 @@ class InPrepareOrderWidget extends StatelessWidget {
                                                     });
 
                                                 controller.update();
+                                              }
+                                              else {
+                                                print("id driver${bookingModel
+                                                                .driverId.toString()}");
+                                                DriverUserModel? driverModel =
+                                                    await FireStoreUtils
+                                                        .getDriverUserProfile(
+                                                            bookingModel
+                                                                .driverId
+                                                                .toString());
+                                                                print(driverModel?.toJson().toString());
+                                                await SendNotification
+                                                    .sendOneNotification(
+                                                        senderId: FireStoreUtils
+                                                            .getCurrentUid(),
+                                                        driverId: driverModel!
+                                                            .driverId
+                                                            .toString(),
+                                                        token: driverModel
+                                                            .fcmToken
+                                                            .toString(),
+                                                        title:
+                                                            "Order Ready to Pickup ✅",
+                                                        body:
+                                                            'The order from ${vendorModel!.vendorName} is ready for pickup.',
+                                                        type: 'order',
+                                                        orderId: bookingModel.id
+                                                            .toString(),
+                                                        payload: {
+                                                          "orderId":
+                                                              bookingModel.id
+                                                        },
+                                                        isNewOrder: false);
+                                                           controller.update();
                                               }
                                             }
                                           },

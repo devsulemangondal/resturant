@@ -30,13 +30,9 @@ class DriverOrderAssignView extends GetView<DriverOrderAssignController> {
       init: DriverOrderAssignController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: themeChange.isDarkTheme()
-              ? AppThemeData.darkBackground
-              : AppThemeData.grey50,
+          backgroundColor:  AppThemeData.grey50,
           appBar: UiInterface.customAppBar(
-            backgroundColor: themeChange.isDarkTheme()
-                ? AppThemeData.darkBackground
-                : AppThemeData.grey50,
+            backgroundColor:  AppThemeData.grey50,
             context,
             themeChange,
             "".tr,

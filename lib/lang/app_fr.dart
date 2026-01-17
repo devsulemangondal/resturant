@@ -720,5 +720,5 @@ const Map<String, String> frFR = {
       "Saisissez le temps de préparation des aliments (en minutes).",
   "Food Preparation Time": "Temps de préparation des aliments",
   "Estimated food preparation time": "Temps de préparation des aliments estimé",
-  "mins": "minutes",
+  "mins": "minutes"
 };

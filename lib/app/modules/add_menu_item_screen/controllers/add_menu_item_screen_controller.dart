@@ -60,7 +60,7 @@ class AddMenuItemsScreenController extends GetxController {
   RxList<String> tagsList = <String>[].obs;
   RxString selectedTags = "".obs;
   List<String> discountType = ["Fixed", "Percentage"];
-  RxString selectedDiscountType = "".obs;
+  RxString selectedDiscountType = "Fixed".obs;
   // RxString selectedDiscountType = "".obs; // Removed unused or keep if needed
   // RxList<String> pageList = <String>["Add Menu Item", "Add Price Details", "Add Addons Details", "Add Variations Details", "Select Tags"].obs; // Removed
   // var currentStep = 0.obs; // Removed

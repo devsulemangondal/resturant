@@ -844,6 +844,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/app/models/product_model.dart';
@@ -853,15 +855,21 @@ import 'package:restaurant/app/widget/network_image_widget.dart';
 import 'package:restaurant/app/widget/text_widget.dart';
 import 'package:restaurant/constant/constant.dart';
 import 'package:restaurant/constant/show_toast_dialogue.dart';
+import 'package:restaurant/constant_widgets/custom_dialog_box.dart';
 import 'package:restaurant/constant_widgets/no_menu_items_view.dart';
 import 'package:restaurant/themes/app_fonts.dart';
 import 'package:restaurant/themes/app_theme_data.dart';
 import 'package:restaurant/themes/responsive.dart';
 import 'package:restaurant/utils/dark_theme_provider.dart';
 
-class CategoryDetailView extends StatelessWidget {
+class CategoryDetailView extends StatefulWidget {
   const CategoryDetailView({super.key});
 
+  @override
+  State<CategoryDetailView> createState() => _CategoryDetailViewState();
+}
+
+class _CategoryDetailViewState extends State<CategoryDetailView> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
@@ -1296,6 +1304,80 @@ class CategoryDetailView extends StatelessWidget {
                                                               true
                                                           ? Color(0xff62748E)
                                                           : Color(0xff62748E),
+                                                    ),
+                                                    Spacer(),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return CustomDialogBox(
+                                                                img:
+                                                                    Image.asset(
+                                                                  "assets/animation/am_delete.gif",
+                                                                  height: 64.h,
+                                                                  width: 64.w,
+                                                                ),
+                                                                themeChange:
+                                                                    themeChange,
+                                                                title:
+                                                                    "Delete Item"
+                                                                        .tr,
+                                                                descriptions:
+                                                                    "Are you sure you want to delete this item from the menu?"
+                                                                        .tr,
+                                                                positiveString:
+                                                                    "Yes".tr,
+                                                                negativeString:
+                                                                    "No".tr,
+                                                                positiveClick:
+                                                                    () async {
+                                                                  await controller
+                                                                      .removeItem(
+                                                                          product
+                                                                              .id
+                                                                              .toString());
+                                                                  Get.back();
+                                                                  Get.back();
+                                                                },
+                                                                negativeClick:
+                                                                    () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                positiveButtonColor:
+                                                                    AppThemeData
+                                                                        .danger300,
+                                                                negativeButtonColor: themeChange.isDarkTheme()
+                                                                    ? AppThemeData
+                                                                        .grey1000
+                                                                    : AppThemeData
+                                                                        .grey50,
+                                                                positiveButtonTextColor: themeChange.isDarkTheme()
+                                                                    ? AppThemeData
+                                                                        .grey1000
+                                                                    : AppThemeData
+                                                                        .grey50,
+                                                                negativeButtonTextColor: themeChange.isDarkTheme()
+                                                                    ? AppThemeData
+                                                                        .grey100
+                                                                    : AppThemeData
+                                                                        .grey900,
+                                                                negativeButtonBorderColor: themeChange.isDarkTheme()
+                                                                    ? AppThemeData
+                                                                        .grey600
+                                                                    : AppThemeData
+                                                                        .grey400,
+                                                              );
+                                                            });
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/ic_delete.svg",
+                                                        color: AppThemeData
+                                                            .danger300,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

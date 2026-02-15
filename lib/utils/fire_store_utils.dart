@@ -701,6 +701,25 @@ class FireStoreUtils {
     }
   }
 
+  static Future<bool> updateDriverOrderId({
+  required String driverId,
+  required String orderId,
+}) async {
+  try {
+    await fireStore
+        .collection(CollectionName.driver)
+        .doc(driverId)
+        .update({
+          "orderId": orderId,
+        });
+
+    return true;
+  } catch (e) {
+    developer.log("Failed to update driver orderId: $e");
+    return false;
+  }
+}
+
   static Future<List<OrderModel>> getOrders() async {
     List<OrderModel> bookingsList = [];
     try {

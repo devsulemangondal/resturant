@@ -238,13 +238,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<bool> checkNearestDriverAvailable(double restaurantLat, double restaurantLng) async {
+  Future<String?> checkNearestDriverAvailable(double restaurantLat, double restaurantLng) async {
     try {
       QuerySnapshot driverSnapshot = await FirebaseFirestore.instance.collection(CollectionName.driver).where('isOnline', isEqualTo: true).where('status', isEqualTo: 'free').get();
 
       if (driverSnapshot.docs.isEmpty) {
         debugPrint("No online drivers found.");
-        return false;
+        return null;
       }
 
       log("Driver count: ${driverSnapshot.docs.length}");
@@ -274,7 +274,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
           if (distance <= maxDistance) {
             debugPrint("✅ Found driver ${doc.id} within $distance ${Constant.driverDistanceType}");
-            return true;
+            return doc.id;
           }
         } catch (e) {
           debugPrint("Skipping driver ${doc.id} due to error: $e");
@@ -282,10 +282,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       }
 
       debugPrint("❌ No drivers found within $maxDistance ${Constant.driverDistanceType}");
-      return false;
+      return null;
     } catch (e) {
       debugPrint("Error checking driver availability: $e");
-      return false;
+      return null;
     }
   }
 
@@ -358,7 +358,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         ..lastUpdated = Timestamp.now();
 
       FireStoreUtils.updateOrder(order);
-
+      FireStoreUtils.updateDriverOrderId(driverId:  order.driverId??'', orderId:  order.id??'');
       print('computeAndSaveEtaLocalFallback: wrote ETA for order ${order.id} -> '
           'prep=$prepMinutes, d2v=$driverToVendorMin, v2c=$vendorToCustomerMin, total=$total, eta=$estimatedAt');
     } catch (e, st) {

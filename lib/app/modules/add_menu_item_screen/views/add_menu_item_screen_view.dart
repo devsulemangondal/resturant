@@ -236,44 +236,44 @@ class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
                               controller: controller.discountController.value,
                               textInputType: TextInputType.number,
                               hintText: "0",
-                              // onPress: () {},
+                             
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(
-                                color: themeChange.isDarkTheme()
-                                    ? AppThemeData.grey900
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: AppThemeData.grey300),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: controller
-                                          .selectedDiscountType.value.isNotEmpty
-                                      ? controller.selectedDiscountType.value
-                                      : null,
-                                  hint: Text("Type"),
-                                  items: controller.discountType
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedDiscountType.value =
-                                        newValue!;
-                                    controller.update();
-                                  },
-                                ),
-                              ),
-                            ),
-                          )
+                          // const SizedBox(width: 8),
+                          // Expanded(
+                          //   flex: 1,
+                          //   child: Container(
+                          //     padding: EdgeInsets.symmetric(horizontal: 12),
+                          //     decoration: BoxDecoration(
+                          //       color: themeChange.isDarkTheme()
+                          //           ? AppThemeData.grey900
+                          //           : Colors.white,
+                          //       borderRadius: BorderRadius.circular(8),
+                          //       border: Border.all(color: AppThemeData.grey300),
+                          //     ),
+                          //     child: DropdownButtonHideUnderline(
+                          //       child: DropdownButton<String>(
+                          //         value: controller
+                          //                 .selectedDiscountType.value.isNotEmpty
+                          //             ? controller.selectedDiscountType.value
+                          //             : null,
+                          //         hint: Text("Type"),
+                          //         items: controller.discountType
+                          //             .map((String value) {
+                          //           return DropdownMenuItem<String>(
+                          //             value: value,
+                          //             child: Text(value),
+                          //           );
+                          //         }).toList(),
+                          //         onChanged: (newValue) {
+                          //           controller.selectedDiscountType.value =
+                          //               newValue!;
+                          //           controller.update();
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                       const SizedBox(height: 16),

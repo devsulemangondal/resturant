@@ -102,7 +102,6 @@
 
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,12 +116,9 @@ import 'package:restaurant/constant/constant.dart';
 import 'package:restaurant/themes/app_fonts.dart';
 import 'package:restaurant/themes/app_theme_data.dart';
 import 'package:restaurant/utils/dark_theme_provider.dart';
-import 'package:restaurant/app/models/addons_model.dart' as import_addons_model;
-import 'package:restaurant/app/models/variation_model.dart'
-    as import_variation_model;
 
 class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
-  const AddMenuItemsScreenView({Key? key}) : super(key: key);
+  const AddMenuItemsScreenView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +217,6 @@ class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
                       TextFieldWidget(
                         controller: controller.itemNameController.value,
                         hintText: "e.g., Classic Burger",
-                     
                       ),
                       const SizedBox(height: 10),
                       _buildLabel("Base Price *"),
@@ -230,64 +225,62 @@ class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
                         textInputType:
                             TextInputType.numberWithOptions(decimal: true),
                         hintText: "0.00",
-                        
                       ),
-                      // const SizedBox(height: 16),
-                      // _buildLabel("Discount"),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       flex: 2,
-                      //       child: TextFieldWidget(
-                      //         controller: controller.discountController.value,
-                      //         textInputType: TextInputType.number,
-                      //         hintText: "0",
-                      //         onPress: () {},
-                      //       ),
-                      //     ),
-                      //     const SizedBox(width: 8),
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Container(
-                      //         padding: EdgeInsets.symmetric(horizontal: 12),
-                      //         decoration: BoxDecoration(
-                      //           color: themeChange.isDarkTheme()
-                      //               ? AppThemeData.grey900
-                      //               : Colors.white,
-                      //           borderRadius: BorderRadius.circular(8),
-                      //           border: Border.all(color: AppThemeData.grey300),
-                      //         ),
-                      //         child: DropdownButtonHideUnderline(
-                      //           child: DropdownButton<String>(
-                      //             value: controller
-                      //                     .selectedDiscountType.value.isNotEmpty
-                      //                 ? controller.selectedDiscountType.value
-                      //                 : null,
-                      //             hint: Text("Type"),
-                      //             items: controller.discountType
-                      //                 .map((String value) {
-                      //               return DropdownMenuItem<String>(
-                      //                 value: value,
-                      //                 child: Text(value),
-                      //               );
-                      //             }).toList(),
-                      //             onChanged: (newValue) {
-                      //               controller.selectedDiscountType.value =
-                      //                   newValue!;
-                      //               controller.update();
-                      //             },
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
+                      const SizedBox(height: 16),
+                      _buildLabel("Discount"),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: TextFieldWidget(
+                              controller: controller.discountController.value,
+                              textInputType: TextInputType.number,
+                              hintText: "0",
+                              // onPress: () {},
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                color: themeChange.isDarkTheme()
+                                    ? AppThemeData.grey900
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: AppThemeData.grey300),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: controller
+                                          .selectedDiscountType.value.isNotEmpty
+                                      ? controller.selectedDiscountType.value
+                                      : null,
+                                  hint: Text("Type"),
+                                  items: controller.discountType
+                                      .map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (newValue) {
+                                    controller.selectedDiscountType.value =
+                                        newValue!;
+                                    controller.update();
+                                  },
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       const SizedBox(height: 16),
                       _buildLabel("Description"),
                       TextFieldWidget(
                         controller: controller.itemDescriptionController.value,
                         hintText: "Describe your item...",
-                   
                         line: 3,
                       ),
                       const SizedBox(height: 16),
@@ -361,7 +354,6 @@ class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
                         controller: controller.preparationTimeController.value,
                         textInputType: TextInputType.number,
                         hintText: "e.g., 20",
-                    
                       ),
                       const SizedBox(height: 16),
                       _buildLabel("Max Quantity *"),
@@ -369,7 +361,6 @@ class AddMenuItemsScreenView extends GetView<AddMenuItemsScreenController> {
                         controller: controller.maxQuantityController.value,
                         textInputType: TextInputType.number,
                         hintText: "e.g., 10",
-                      
                       ),
                       const SizedBox(height: 16),
                       _buildLabel("Item Type *"),

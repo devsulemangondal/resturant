@@ -360,8 +360,7 @@ class InPrepareOrderWidget extends StatelessWidget {
                                             } else if (bookingModel
                                                     .orderStatus ==
                                                 OrderStatus.orderOnReady) {
-                                              if (bookingModel.deliveryType ==
-                                                  "take_away") {
+                                              if (true) {
                                                 bookingModel.orderStatus =
                                                     OrderStatus.orderComplete;
                                                 controller.orderModel.value
